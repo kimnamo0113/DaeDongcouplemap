@@ -1,5 +1,5 @@
 
-DROP database daedong;
+DROP database if exists daedong;
 create database daedong;
 
 use daedong;
