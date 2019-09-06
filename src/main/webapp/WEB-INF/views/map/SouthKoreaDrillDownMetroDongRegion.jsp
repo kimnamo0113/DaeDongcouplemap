@@ -13,7 +13,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/rMateMapChartH5/JS/rMateMapChartH5.js"></script>
 <!-- rMateMapChartH5 CSS -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/map/rMateMapChartH5/Assets/rMateMapChartH5.css"/>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 
 <script type="text/javascript">
@@ -42,11 +42,11 @@ function mapReadyHandler(id) {
 
 // Map Data 경로 정의
 // setMapDataBase함수로 mapDataBase를 문자열로 넣어줄 경우 주석처리나 삭제하십시오.
-var mapDataBaseURL = "${pageContext.request.contextPath}/resources/map/MapDataBaseXml/SouthKoreaDrillDownMetroDongRegion.xml";
+var mapDataBaseURL = "${pageContext.request.contextPath}/resources/map/Samples/MapDataBaseXml/SouthKoreaDrillDownMetroDongRegion.xml";
 
 // MapChart Source 선택
 // MapSource 디렉토리의 지도 이미지중 택일가능하며, 이외에 사용자가 작성한 별도의 Svg이미지를 지정할 수 있습니다.(매뉴얼 참조)
-var sourceURL = "${pageContext.request.contextPath}/resources/map/MapSource/SouthKoreaDrillDownMetroDongRegion.svg";
+var sourceURL = "${pageContext.request.contextPath}/resources/map/Samples/MapSource/SouthKoreaDrillDownMetroDongRegion.svg";
 
 // rMateMapChart 를 생성합니다.
 // 파라메터 (순서대로) 
@@ -64,10 +64,17 @@ function colorFunction(code, label, data) {
 		return "#ebf0f4";
 }
 
+
+function clickFunction(code, label, data) {
+	alert("code:"+code+"\nlabel:"+label);
+	/* \ndata.sales:"+data.sales */
+	}
+
+
 var layoutStr = '\
 <?xml version="1.0" encoding="utf-8"?>\
 <rMateMapChart>\
-	<MapChart id="mainMap1" showDataTips="true">\
+	<MapChart id="mainMap1" showDataTips="true" mapChangeJsFunction="clickFunction">\
 		<series>\
 			<MapSeries id="mapseries" interactive="true" selectionMarking="line" color="#777777" labelPosition="inside" displayName="Map" localFillJsFunction="colorFunction">\
 				<showDataEffect>\
@@ -91,14 +98,14 @@ var mapData;
 
 </script>
 <!-- 샘플 작동을 위한 css와 js -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Web/JS/common.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Web/JS/sample_util.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/map/Web/sample.css"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Samples/Web/JS/common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Samples/Web/JS/sample_util.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/map/Samples/Web/sample.css"/>
 
 <!-- SyntaxHighlighter -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Web/syntax/shCore.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Web/syntax/shBrushJScript.js"></script>
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/map/Web/syntax/shCoreDefault.css"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Samples/Web/syntax/shCore.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/Samples/Web/syntax/shBrushJScript.js"></script>
+<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/map/Samples/Web/syntax/shCoreDefault.css"/>
 </head>
 <body>
 	<div class="wrapper">
