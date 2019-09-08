@@ -28,6 +28,7 @@ public class DataSourceTest {
 			e.printStackTrace();
 		}finally {
 			con.close();
+			
 		}
 	}
 }

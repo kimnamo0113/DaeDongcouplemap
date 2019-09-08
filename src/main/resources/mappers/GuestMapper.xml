@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ko.mapper.GuestMapper">
+	
+	<select id="selectById" resultType="Guest" parameterType="Guest">
+		select * from guest where g_id = #{gId}
+	</select>
+	<select id="selectIdCheck" resultType="int">
+		select count(g_no) from guest where g_id = #{gId}
+	</select>
+	<select id="selectEmailCheck" resultType="int">
+		select count(g_no) from guest where g_email = #{gEmail}
+	</select>
+</mapper>

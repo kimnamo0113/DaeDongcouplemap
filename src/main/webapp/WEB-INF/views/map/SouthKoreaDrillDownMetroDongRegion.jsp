@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/map/rMateMapChartH5/JS/rMateMapChartH5.js"></script>
 <!-- rMateMapChartH5 CSS -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/map/rMateMapChartH5/Assets/rMateMapChartH5.css"/>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 
