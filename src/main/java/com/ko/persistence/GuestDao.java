@@ -8,5 +8,7 @@ public interface GuestDao {
 	//회원가입시 중복확인용
 	public int selectIdCheck(String gId);
 	public int selectEmailCheck(String gEmail);
-	
+
+	public void insertJoinDefault(Guest guest);
+	public void updateJoinPlus(Guest guest);
 }

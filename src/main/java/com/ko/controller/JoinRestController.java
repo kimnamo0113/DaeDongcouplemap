@@ -24,13 +24,29 @@ public class JoinRestController {
 	@Autowired
 	private GuestService service;
 	
+	//중복체크용
 	@RequestMapping(value="id",method=RequestMethod.POST)
 	public ResponseEntity<Integer> id(@RequestParam("gId") String gId){
-		logger.info("----------------id"+gId);
+		logger.info("----------------idPOST id="+gId);
 		ResponseEntity<Integer> entity = null;
 		
 		try {
 			int res = service.selectIdCheck(gId);
+			logger.info("res="+res);
+			entity = new ResponseEntity<>(res,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<>(0,HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	@RequestMapping(value="email",method=RequestMethod.POST)
+	public ResponseEntity<Integer> email(@RequestParam("gEmail") String gEmail){
+		logger.info("----------------gEmailPOST gmail="+gEmail);
+		ResponseEntity<Integer> entity = null;
+		
+		try {
+			int res = service.selectEmailCheck(gEmail);
 			logger.info("res="+res);
 			entity = new ResponseEntity<>(res,HttpStatus.OK);
 		} catch (Exception e) {
