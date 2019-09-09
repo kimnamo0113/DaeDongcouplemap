@@ -28,4 +28,14 @@ public class GuestDaoImpl implements GuestDao{
 		return sqlSession.selectOne(namespace+".selectEmailCheck", gEmail);
 	}
 
+	@Override
+	public void insertJoinDefault(Guest guest) {
+		sqlSession.insert(namespace+".insertJoinDefault",guest);
+	}
+
+	@Override
+	public void updateJoinPlus(Guest guest) {
+		sqlSession.insert(namespace+".updateJoinPlus",guest);
+	}
+
 }

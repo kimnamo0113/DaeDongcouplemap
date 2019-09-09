@@ -26,4 +26,14 @@ public class GuestServiceImpl implements GuestService{
 	public int selectEmailCheck(String gEmail) {
 		return dao.selectEmailCheck(gEmail);
 	}
+
+	@Override
+	public void insertJoinDefault(Guest guest) {
+		dao.insertJoinDefault(guest);
+	}
+
+	@Override
+	public void updateJoinPlus(Guest guest) {
+		dao.updateJoinPlus(guest);
+	}
 }
