@@ -40,12 +40,18 @@
     });
 </script>
 <body>
-
+	
+	
  
     <form action="insert" method="post" id="insertBoardFrm" enctype="multipart/form-data">
         <input type="text" id="title" name="title" style="width:100%" placeholder="제목을 입력해주세요."/>
-        <textarea name="editor" id="editor" style="width: 90%; height: 400px;"></textarea>
-        <input type="button" id="insertBoard" value="등록" />
+        <textarea name="editor" id="editor" style="width: 90%; height: 400px;"></textarea><br><br>
+        <label>태그</label> : <input type="text" id="hashTag" placeholder="# 검색에 사용할 태그를 입력해주세요(최대 10개)" style="width:80%;"><button type="button">추가</button><br>
+        <fieldset>
+	        <p id="hashResult"></p><br>
+	        <input type="button" id="insertBoard" value="등록" />
+        </fieldset>
+        
     </form>
     
     
