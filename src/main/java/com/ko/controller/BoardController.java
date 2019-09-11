@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -16,14 +17,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ko.util.UploadFileUtils;
+
+
 
 @RequestMapping("/board/*")
 @Controller
 public class BoardController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+	//내부 서버경로로 올리기
 	private String innerUploadPath = "resources/upload";
+	
+	@Resource(name="uploadPath")
+	private String outUploadPath;
 	
 	@RequestMapping(value="board/write",method=RequestMethod.GET)
 	public void writeGET() {
@@ -69,6 +76,8 @@ public class BoardController {
                           .append(UUID.randomUUID().toString())
                           .append(oldName.substring(oldName.lastIndexOf("."))).toString();
             InputStream is = request.getInputStream();
+            System.out.println("집에가고싶당~ 되라");
+            System.out.println(is.toString().getBytes());
             OutputStream os = new FileOutputStream(root_path+"/"+innerUploadPath +"/"+ saveName);
             int numRead;
             byte b[] = new byte[Integer.parseInt(request.getHeader("file-size"))];
@@ -77,6 +86,12 @@ public class BoardController {
             }
             os.flush();
             os.close();
+            System.out.println("b입니다:"+b);
+            
+//            String savedName = UploadFileUtils.uploadFile(root_path+"/"+innerUploadPath+"/", oldName,b );
+            
+//            System.out.println("이거"+savedName);
+            
             // 정보 출력
             
             sb = new StringBuffer();
