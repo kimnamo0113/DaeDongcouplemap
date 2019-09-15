@@ -215,9 +215,9 @@ function compIE(){
 	return false;
 }
 
-function setupSampleListsHeight(){
+/*function setupSampleListsHeight(){
 	$("#sample_lists").height($(".wrapper").outerHeight() - ($(".title").outerHeight() + $("#sample_menus").outerHeight() + $(".manual_menus").outerHeight() + $(".footer").outerHeight()));
-}
+}*/
 
 // effect
 // e : 적용 엘리먼트

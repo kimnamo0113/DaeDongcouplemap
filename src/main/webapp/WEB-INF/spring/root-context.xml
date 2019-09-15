@@ -36,6 +36,7 @@
         <!-- max size of file in memory (in bytes) -->
         <property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </bean>
+	<bean id="UploadServerFileUrl" class="com.ko.util.UploadServerFileUrl"/>
 	
 	<context:component-scan base-package="com.ko.persistence" />
 	<context:component-scan base-package="com.ko.service" />

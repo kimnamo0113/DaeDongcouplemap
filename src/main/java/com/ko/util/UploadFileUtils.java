@@ -28,8 +28,7 @@ public class UploadFileUtils {
 		
 		String thumbFile = null;
 		thumbFile = makeThumbnail(uploadPath, path, savedName);
-		
-//		return path + "/" + savedName;
+		System.out.println("아니엇자나:"+thumbFile);
 		return thumbFile; //
 	}
 
@@ -62,11 +61,8 @@ public class UploadFileUtils {
 
 	private static String makeThumbnail(String uploadPath, String path, String fileName) throws Exception {
 		
-		System.out.println(uploadPath);
-		System.out.println(path);
-		System.out.println(fileName);
-		System.out.println("hi:"+new File(uploadPath + path, fileName).getAbsolutePath());
 		//메모리에 원본 이미지 정보를 읽어 들임
+		
 		File f = new File(uploadPath + path, fileName);
 		BufferedImage sourceImg=null;
 		try {
@@ -74,10 +70,6 @@ public class UploadFileUtils {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-//		BufferedImage sourceImg = ImageIO.read(f);
-//
-//		System.out.println(f);
-//		System.out.println(sourceImg);
 		//원본 이미지를 활용하여 메모리에 사이즈 변경한 새 이미지 만들기. 높이 100으로 고정하여 가로 비율은 자동 조절
 		String thumbnailName = null;
 		try {
@@ -97,7 +89,6 @@ public class UploadFileUtils {
 			ImageIO.write(destImg, formatName.toUpperCase(), newFile); //작은 파일이 생성됨
 			//c:/zzz/upload를 뺀 나머지 경로를 리턴함
 		}catch (Exception e) {
-			System.out.println("여기요");
 			e.printStackTrace();
 		}
 	

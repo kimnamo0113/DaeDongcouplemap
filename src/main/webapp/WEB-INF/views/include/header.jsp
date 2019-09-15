@@ -28,6 +28,16 @@
 	#logoutToggle li:hover{
 		font-size: 20px;
 	}
+	#map{
+		z-index:99999;
+		position: absolute;
+		top:100px;
+		left: 100px;
+		display: none;
+		
+		
+		
+	}
 </style>
 
 <!-- Bootstrap core JavaScript-->
@@ -35,12 +45,15 @@
 <script type="text/javascript">
 
 	$(function() {
+		
 		$("#hanbandoImg").click(function(){
-			var scX = window.screenLeft;
+			/* var scX = window.screenLeft;
 			var scY = window.screenTop;
-			var position=$(this).offset();
+			var position=$(this).offset(); */
 			/* window.open("http://www.naver.net", "네이버새창", "top="+position.top+",left="+position.left+"  width=500, height=500,left=300,top=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes" ); */
-			window.open('http://localhost:8080/daedong/map', '네이버', "location=no,width=500, height=500, left=" + Number(scX+position.left+80)+ ", top=" + Number(scY+position.top));
+			/* window.open('http://localhost:8080/daedong/map', '네이버', "location=no,width=500, height=500, left=" + Number(scX+position.left+80)+ ", top=" + Number(scY+position.top)); */
+			
+			$("#map").toggle();
 		})
 	})
 
@@ -374,7 +387,9 @@
         </nav>
         
         <!-- End of Topbar -->
-        
+        <div id="map">
+        	<%@ include file="../map/SouthKoreaDrillDownMetroDongRegion.jsp" %>
+        </div>
         
         
         

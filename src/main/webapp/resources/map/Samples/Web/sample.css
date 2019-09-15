@@ -1,4 +1,6 @@
-@font-face{
+
+/* 이 좇같은게 사이즈 작게만듬 */
+/* @font-face{
 	font-family:open-sans;
 	src:url(./fonts/OpenSans.woff);
 }
@@ -17,7 +19,8 @@ html, body{
 	font-family:open-sans, "malgun gothic", Arial;
 	background-color: #f6f6f6;
 }
-
+ */
+ 
 div, span, ul, li{
 	box-sizing:border-box;
 }
@@ -223,7 +226,7 @@ ul, li, pre{
 }
 
 #content, .content{
-	width:850px;
+	width:100%;
 	height:550px;
 	border: 1px solid #e8e8e8;
 	background-color: #fefefe;

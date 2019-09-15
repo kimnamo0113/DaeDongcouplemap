@@ -14,6 +14,7 @@
 <!-- rMateMapChartH5 CSS -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/map/rMateMapChartH5/Assets/rMateMapChartH5.css"/>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 
@@ -110,19 +111,19 @@ var mapData;
 </head>
 <body>
 	<div class="wrapper">
-		<div class="header">
+		<!-- <div class="header">
 			<div class="headerTitle">대한민국 - 권역별 (서울, 광역시 하위 동지역 포함)</div>
-		</div>
+		</div> -->
 		<div id="content">
 			<!-- 차트가 삽입될 DIV -->
 			<div id="mapHolder"></div>
 		</div>
-		<div class="description">
+		<!-- <div class="description">
 		■ 수도권, 충청권 등 권역별로 나눠진 지도 입니다.<br>
 		색상이 적용된 지역을 클릭하시면 동까지 표현된 화면을 보실 수 있습니다.
-		</div>
+		</div> -->
 
-		<div id="updater">
+		<!-- <div id="updater">
 			<div>Layout과 Data를 수정 후 적용 할 수 있습니다.</div>
 			<div id="updaterTab">
 				<ul id="updaterTabUl">
@@ -139,7 +140,7 @@ var mapData;
 				<textarea id="updaterTareaLayout" class="updaterTextarea" spellcheck="false"></textarea>
 				<textarea id="updaterTareaData" class="updaterTextarea" spellcheck="false"></textarea>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </body>
 </html>

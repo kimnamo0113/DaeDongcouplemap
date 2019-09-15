@@ -4,6 +4,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ko.domain.Board;
+
 @Repository
 public class BoardDaoImpl implements BoardDao{
 	private static final String namespace = "com.ko.mapper.BoardMapper";
@@ -19,6 +21,12 @@ public class BoardDaoImpl implements BoardDao{
 	
 	@Autowired
 	SqlSession sqlSession;
+
+
+	@Override
+	public void insertBoard(Board board) {
+		sqlSession.insert(namespace+".insertBoard",board);
+	}
 	
 	
 }

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -38,6 +37,14 @@ public class MemberController {
 		logger.info("-------------------joinPost guest="+guest);
 		return "member/joinNext";
 	}
-	
+	@RequestMapping(value="forgotPassWord",method=RequestMethod.GET)
+	public String forgotPassGet() {
+		return "member/forgotPassGet";
+	}
+	@RequestMapping(value="forgotPassWord",method=RequestMethod.PUT)
+	public String forgotPassPOST() {
+		
+		return "member/forgotPassGet";
+	}
 	
 }

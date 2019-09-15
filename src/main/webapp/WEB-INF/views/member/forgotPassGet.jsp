@@ -1,16 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="utf-8"%>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>SB Admin 2 - Login</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>SB Admin 2 - Forgot Password</title>
 
   <!-- Custom fonts for this template-->
   <link href="${pageContext.request.contextPath }/resources/bootTemplate/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -18,6 +16,42 @@
 
   <!-- Custom styles for this template-->
   <link href="${pageContext.request.contextPath }/resources/bootTemplate/css/sb-admin-2.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#submitBtn").click(function() {
+			if($(this).text()=="Send Email"){
+				$("#f1").submit(function() {
+					var gEmail = $("#gEmail").val();
+					alert(gEmail);
+					var json = {gEmail:gEmail};
+					var data = JSON.stringify(json)
+					
+					$.ajax({
+						url:"forgotPassWord",
+						type:"post",
+						data:data,
+						dataType:"text",
+						headers:{
+							"Content-Type":"application/json"
+						},
+						success:function(res){
+							console.log(res);
+							if(res=='success'){
+								alert("수정되었습니당.");
+								getListAll(currentPage);
+								$("#modifyModal").modal("hide");
+							}
+						}
+						
+					})
+				})
+			}
+		})
+		
+		
+	})
+</script>
 
 </head>
 
@@ -34,42 +68,25 @@
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
+                    <p class="mb-4">We get it, stuff happens. Just enter your email address below and we'll send you a link to reset your password!</p>
                   </div>
-                  <form class="user" action="login" method="post">
+                  <form class="user" action="forgotPassWord" id="f1" method="post">
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email" name="gEmail" class="form-control form-control-user" id="gEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                     </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">Remember Me</label>
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                      Login
-                    </button>
-                    <hr>
-                    <a href="#" class="btn btn-google btn-user btn-block">
-                      <i class="fab fa-google fa-fw"></i> Login with Google
-                    </a>
-                    <a href="#" class="btn btn-facebook btn-user btn-block">
-                      <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
+                    <button id="submitBtn" class="btn btn-primary btn-user btn-block">Send Email</button>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgotPassWord">Forgot Password?</a>
+                    <a class="small" href="${pageContext.request.contextPath }/member/join">Create an Account!</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="${pageContext.request.contextPath }/member/join">Create an Account!</a>
+                    <a class="small" href="${pageContext.request.contextPath }/member/login">Already have an account? Login!</a>
                   </div>
                   <div class="text-center">
                     <a class="small" href="${pageContext.request.contextPath }">Go to Main!</a>
@@ -85,7 +102,6 @@
     </div>
 
   </div>
-  
 
   <!-- Bootstrap core JavaScript-->
   <script src="${pageContext.request.contextPath }/resources/bootTemplate/vendor/jquery/jquery.min.js"></script>
@@ -100,4 +116,3 @@
 </body>
 
 </html>
-

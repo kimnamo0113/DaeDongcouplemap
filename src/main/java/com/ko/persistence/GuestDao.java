@@ -11,4 +11,7 @@ public interface GuestDao {
 
 	public void insertJoinDefault(Guest guest);
 	public void updateJoinPlus(Guest guest);
+	
+	//비번찾기
+	public void send_mail(Guest guest, String div) throws Exception;
 }

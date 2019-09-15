@@ -26,4 +26,10 @@
 		g_tel=#{gTel}, g_birth=#{gBirth}, g_join=#{gJoin}, g_memo=#{gMemo}, g_addr=#{gAddr}, g_addr2=#{gAddr2}, g_addr3=#{gAddr3}, g_image=#{gImage}
 		WHERE g_no=#{gNo};
 	</update>
+	
+	<update id="updatePassWord" parameterType="Guest">
+		UPDATE daedong.guest
+		SET g_id='', g_password='', g_name='', g_tel='', g_email='', g_birth='', g_join='', g_point=0, g_memo='', g_delete=0, g_addr='', g_addr2='', g_addr3='', g_image=?
+		WHERE g_no=0;
+	</update>
 </mapper>
