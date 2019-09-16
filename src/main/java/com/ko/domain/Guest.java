@@ -6,7 +6,7 @@ public class Guest {
 	private int gNo;
 	private String gId;
 	private String gPassword;
-	private String gPassword2;
+	private String gTempPassword;
 	private String gName;
 	private int gTel;
 	private String gEmail;
@@ -22,14 +22,14 @@ public class Guest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Guest(int gNo, String gId, String gPassword, String gPassword2, String gName, int gTel, String gEmail,
+	public Guest(int gNo, String gId, String gPassword, String gTempPassword, String gName, int gTel, String gEmail,
 			Date gBirth, Date gJoin, String gMemo, int gDelete, String gAddr, String gAddr2, String gAddr3,
 			String gImage) {
 		super();
 		this.gNo = gNo;
 		this.gId = gId;
 		this.gPassword = gPassword;
-		this.gPassword2 = gPassword2;
+		this.gTempPassword = gTempPassword;
 		this.gName = gName;
 		this.gTel = gTel;
 		this.gEmail = gEmail;
@@ -60,11 +60,11 @@ public class Guest {
 	public void setgPassword(String gPassword) {
 		this.gPassword = gPassword;
 	}
-	public String getgPassword2() {
-		return gPassword2;
+	public String getgTempPassword() {
+		return gTempPassword;
 	}
-	public void setgPassword2(String gPassword2) {
-		this.gPassword2 = gPassword2;
+	public void setgTempPassword(String gTempPassword) {
+		this.gTempPassword = gTempPassword;
 	}
 	public String getgName() {
 		return gName;
@@ -134,12 +134,11 @@ public class Guest {
 	}
 	@Override
 	public String toString() {
-		return "Guest [gNo=" + gNo + ", gId=" + gId + ", gPassword=" + gPassword + ", gPassword2=" + gPassword2
+		return "Guest [gNo=" + gNo + ", gId=" + gId + ", gPassword=" + gPassword + ", gTempPassword=" + gTempPassword
 				+ ", gName=" + gName + ", gTel=" + gTel + ", gEmail=" + gEmail + ", gBirth=" + gBirth + ", gJoin="
 				+ gJoin + ", gMemo=" + gMemo + ", gDelete=" + gDelete + ", gAddr=" + gAddr + ", gAddr2=" + gAddr2
 				+ ", gAddr3=" + gAddr3 + ", gImage=" + gImage + "]";
 	}
-	
 	
 	
 }

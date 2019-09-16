@@ -59,30 +59,36 @@ public class GuestServiceImpl implements GuestService{
 		@Override
 		public void find_pw(HttpServletResponse response, Guest guest) throws Exception {
 			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
+//			PrintWriter out = response.getWriter();
 			// 아이디가 없으면
-			if(manager.check_id(member.getId()) == 0) {
-				out.print("아이디가 없습니다.");
-				out.close();
+			System.out.println(guest);
+			guest = dao.selectByEmail(guest.getgEmail());
+			System.out.println(guest);
+			if(guest.getgId()==null) {
+//				out.print("이메일이 존재하지 않습니다.");
+//				out.close();
 			}
-			// 가입에 사용한 이메일이 아니면
-			else if(!member.getEmail().equals(manager.login(member.getId()).getEmail())) {
+			/*// 가입에 사용한 이메일이 아니면
+			else if(!guest.getgEmail().equals(dao.login(member.getId()).getEmail())) {
 				out.print("잘못된 이메일 입니다.");
 				out.close();
-			}else {
+			}*/
+			else {
+				
 				// 임시 비밀번호 생성
 				String pw = "";
 				for (int i = 0; i < 12; i++) {
 					pw += (char) ((Math.random() * 26) + 97);
 				}
-				member.setPw(pw);
+				guest.setgTempPassword(pw);
+				System.out.println(guest);
 				// 비밀번호 변경
-				manager.update_pw(member);
+				dao.updateTempPassWord(guest);
 				// 비밀번호 변경 메일 발송
-				send_mail(member, "find_pw");
+				dao.send_mail(guest, "find_pw");
 				
-				out.print("이메일로 임시 비밀번호를 발송하였습니다.");
-				out.close();
+//				out.print("이메일로 임시 비밀번호를 발송하였습니다.");
+//				out.close();
 			}
 		}
 }

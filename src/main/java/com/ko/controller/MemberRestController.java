@@ -60,11 +60,11 @@ public class MemberRestController {
 	}
 
 	@RequestMapping(value = "forgotPassWord", method = RequestMethod.POST)
-	public ResponseEntity<Boolean> emailSend(@RequestBody Guest guest,HttpServletResponse response) {
+	public ResponseEntity<Boolean> emailSend(@RequestBody Guest guest,HttpServletResponse response) throws Exception {
 		logger.info("--------------------forgotPassWordPOST");
 		logger.info("--------------------guest : " + guest);
-
-		service.find_pw(response, member);
+		service.find_pw(response, guest);
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 
 }

@@ -44,12 +44,12 @@ public class GuestDaoImpl implements GuestDao{
 		// Mail Server 설정
 				String charSet = "utf-8";
 				String hostSMTP = "smtp.naver.com";
-				String hostSMTPid = "이메일 입력";
-				String hostSMTPpwd = "비밀번호 입력";
+				String hostSMTPid = "klnver@naver.com";
+				String hostSMTPpwd = "knh9482";
 
 				// 보내는 사람 EMail, 제목, 내용
-				String fromEmail = "이메일 입력";
-				String fromName = "Spring Homepage";
+				String fromEmail = "klnver@naver.com";
+				String fromName = "Daedong Couple Map";
 				String subject = "";
 				String msg = "";
 				
@@ -71,7 +71,7 @@ public class GuestDaoImpl implements GuestDao{
 					msg += "<h3 style='color: blue;'>";
 					msg += guest.getgId() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
 					msg += "<p>임시 비밀번호 : ";
-					msg += guest.getgPassword2() + "</p></div>";
+					msg += guest.getgTempPassword() + "</p></div>";
 				}
 				// 받는 사람 E-Mail 주소
 				String mail = guest.getgEmail();
@@ -93,6 +93,18 @@ public class GuestDaoImpl implements GuestDao{
 				} catch (Exception e) {
 					System.out.println("메일발송 실패 : " + e);
 				}
+	}
+
+	@Override
+	public void updateTempPassWord(Guest guest) throws Exception {
+		System.out.println("IMPL");
+		System.out.println(guest);
+		sqlSession.update(namespace+".updateTempPassWord",guest);
+	}
+
+	@Override
+	public Guest selectByEmail(String gEmail) throws Exception{
+		return sqlSession.selectOne(namespace+".selectByEmail",gEmail);
 	}
 	
 

@@ -5,6 +5,9 @@
 	<select id="selectById" resultType="Guest" parameterType="Guest">
 		select * from guest where g_id = #{gId}
 	</select>
+	<select id="selectByEmail" resultType="Guest" parameterType="string">
+		select * from guest where g_email=#{gEmail}
+	</select>
 	
 	<!-- 회원가입시 중복체크용 -->
 	<select id="selectIdCheck" resultType="int">
@@ -27,9 +30,11 @@
 		WHERE g_no=#{gNo};
 	</update>
 	
-	<update id="updatePassWord" parameterType="Guest">
+	<update id="updateTempPassWord" parameterType="Guest">
 		UPDATE daedong.guest
-		SET g_id='', g_password='', g_name='', g_tel='', g_email='', g_birth='', g_join='', g_point=0, g_memo='', g_delete=0, g_addr='', g_addr2='', g_addr3='', g_image=?
-		WHERE g_no=0;
+		SET g_temp_password=#{gTempPassword}
+		WHERE g_no=#{gNo};
 	</update>
+	
+	
 </mapper>

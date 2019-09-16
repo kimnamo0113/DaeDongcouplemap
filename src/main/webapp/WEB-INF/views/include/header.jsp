@@ -43,7 +43,8 @@
 <!-- Bootstrap core JavaScript-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
-
+	var test="";
+	
 	$(function() {
 		
 		$("#hanbandoImg").click(function(){
@@ -54,8 +55,17 @@
 			/* window.open('http://localhost:8080/daedong/map', '네이버', "location=no,width=500, height=500, left=" + Number(scX+position.left+80)+ ", top=" + Number(scY+position.top)); */
 			
 			$("#map").toggle();
+			$("#map").empty();
+			$("#map").load("${pageContext.request.contextPath}/resources/SouthKoreaDrillDownMetroDongRegion.jsp");
 		})
+		
+		
+		$("#test").click(function(){
+			alert(test);
+		})
+		
 	})
+	
 
 </script>  
 
@@ -195,7 +205,7 @@
           </button>
 			
 			<img src="${pageContext.request.contextPath }/resources/images/hanbando.png" id="hanbandoImg">	
-			
+			<button id="test">ㅎㅎ</button>
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
@@ -388,7 +398,6 @@
         
         <!-- End of Topbar -->
         <div id="map">
-        	<%@ include file="../map/SouthKoreaDrillDownMetroDongRegion.jsp" %>
         </div>
         
         

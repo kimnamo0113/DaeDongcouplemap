@@ -70,6 +70,7 @@ function colorFunction(code, label, data) {
 function clickFunction(code, label, data) {
 	alert("code:"+code+"\nlabel:"+label);
 	/* \ndata.sales:"+data.sales */
+	test=label;
 	}
 
 

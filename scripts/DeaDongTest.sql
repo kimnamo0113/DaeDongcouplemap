@@ -1,0 +1,1 @@
+select * from guest where g_email = 'klnver@naver.com';

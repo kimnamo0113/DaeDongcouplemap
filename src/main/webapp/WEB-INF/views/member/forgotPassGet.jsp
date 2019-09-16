@@ -23,7 +23,6 @@
 			if($(this).text()=="Send Email"){
 				$("#f1").submit(function() {
 					var gEmail = $("#gEmail").val();
-					alert(gEmail);
 					var json = {gEmail:gEmail};
 					var data = JSON.stringify(json)
 					
@@ -31,13 +30,14 @@
 						url:"forgotPassWord",
 						type:"post",
 						data:data,
-						dataType:"text",
-						headers:{
-							"Content-Type":"application/json"
-						},
+						dataType:"json",
+						/* headers:{
+							contentType : "application/json; charset=UTF-8",
+						}, */
+						contentType : "application/json;charset=UTF-8",
 						success:function(res){
 							console.log(res);
-							if(res=='success'){
+							if(res==true){
 								alert("수정되었습니당.");
 								getListAll(currentPage);
 								$("#modifyModal").modal("hide");
