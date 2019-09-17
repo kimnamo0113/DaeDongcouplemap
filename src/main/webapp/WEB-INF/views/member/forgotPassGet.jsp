@@ -30,11 +30,11 @@
 						url:"forgotPassWord",
 						type:"post",
 						data:data,
-						dataType:"json",
-						/* headers:{
-							contentType : "application/json; charset=UTF-8",
-						}, */
-						contentType : "application/json;charset=UTF-8",
+						dataType:"text",
+						headers:{
+							"Content-Type":"application/json"
+						},
+						/* contentType : "application/json;charset=UTF-8", */
 						success:function(res){
 							console.log(res);
 							if(res==true){
@@ -45,6 +45,8 @@
 						}
 						
 					})
+					
+					return false;
 				})
 			}
 		})
