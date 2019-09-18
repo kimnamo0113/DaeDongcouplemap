@@ -1,29 +1,3 @@
-
-DROP database if exists daedong;
-create database daedong;
-
-use daedong;
-
-	
-grant all privileges 
-on daedong.* 
-to 'user_daedong'@'localhost'
-identified by 'rootroot';
-
-
-
-grant all privileges 
-on daedong.* 
-to 'user_daedong'@'%'
-identified by 'rootroot';
-
-
-
-
-
-
-
-
 -- 대동연애지도
 DROP SCHEMA IF EXISTS daedong;
 
@@ -69,7 +43,8 @@ CREATE TABLE daedong.Guest (
 	g_addr          VARCHAR(10)  NULL     COMMENT '우편번호', -- 우편번호
 	g_addr2         VARCHAR(50)  NULL     COMMENT '주소', -- 주소
 	g_addr3         VARCHAR(50)  NULL     COMMENT '상세주소', -- 상세주소
-	g_image         VARCHAR(50)  NULL     COMMENT '사진' -- 사진
+	g_image         VARCHAR(50)  NULL     COMMENT '사진', -- 사진
+	g_certification VARCHAR(20)  NULL     COMMENT '회원인증' -- 회원인증
 )
 COMMENT '회원';
 

@@ -18,13 +18,14 @@ public class Guest {
 	private String gAddr2;
 	private String gAddr3;
 	private String gImage;
+	private String gCertification;
 	public Guest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Guest(int gNo, String gId, String gPassword, String gTempPassword, String gName, int gTel, String gEmail,
 			Date gBirth, Date gJoin, String gMemo, int gDelete, String gAddr, String gAddr2, String gAddr3,
-			String gImage) {
+			String gImage, String gCertification) {
 		super();
 		this.gNo = gNo;
 		this.gId = gId;
@@ -41,6 +42,7 @@ public class Guest {
 		this.gAddr2 = gAddr2;
 		this.gAddr3 = gAddr3;
 		this.gImage = gImage;
+		this.gCertification = gCertification;
 	}
 	public int getgNo() {
 		return gNo;
@@ -132,13 +134,20 @@ public class Guest {
 	public void setgImage(String gImage) {
 		this.gImage = gImage;
 	}
+	public String getgCertification() {
+		return gCertification;
+	}
+	public void setgCertification(String gCertification) {
+		this.gCertification = gCertification;
+	}
 	@Override
 	public String toString() {
 		return "Guest [gNo=" + gNo + ", gId=" + gId + ", gPassword=" + gPassword + ", gTempPassword=" + gTempPassword
 				+ ", gName=" + gName + ", gTel=" + gTel + ", gEmail=" + gEmail + ", gBirth=" + gBirth + ", gJoin="
 				+ gJoin + ", gMemo=" + gMemo + ", gDelete=" + gDelete + ", gAddr=" + gAddr + ", gAddr2=" + gAddr2
-				+ ", gAddr3=" + gAddr3 + ", gImage=" + gImage + "]";
+				+ ", gAddr3=" + gAddr3 + ", gImage=" + gImage + ", gCertification=" + gCertification + "]";
 	}
+	
 	
 	
 }

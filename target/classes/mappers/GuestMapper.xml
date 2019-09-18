@@ -10,31 +10,42 @@
 	</select>
 	
 	<!-- 회원가입시 중복체크용 -->
-	<select id="selectIdCheck" resultType="int">
-		select count(g_no) from guest where g_id = #{gId}
-	</select>
-	<select id="selectEmailCheck" resultType="int">
-		select count(g_no) from guest where g_email = #{gEmail}
-	</select>
+		<select id="selectIdCheck" resultType="int">
+			select count(g_no) from guest where g_id = #{gId}
+		</select>
+		<select id="selectEmailCheck" resultType="int">
+			select count(g_no) from guest where g_email = #{gEmail}
+		</select>
 	<!--  -->
 	
-	<!-- 회원가입후 insert/update -->
-	<insert id="insertJoinDefault" parameterType="Guest" useGeneratedKeys="true" keyProperty="gNo">
-		INSERT INTO daedong.guest
-		(g_id, g_password, g_name, g_email, g_join)
-		VALUES(#{gId}, #{gPassword}, #{gName}, #{gEmail}, now());
-	</insert>	
-	<update id="updateJoinPlus" parameterType="Guest">
-		UPDATE daedong.guest
-		g_tel=#{gTel}, g_birth=#{gBirth}, g_join=#{gJoin}, g_memo=#{gMemo}, g_addr=#{gAddr}, g_addr2=#{gAddr2}, g_addr3=#{gAddr3}, g_image=#{gImage}
-		WHERE g_no=#{gNo};
-	</update>
+	<!-- 회원가입후-->
+		<insert id="insertJoinDefault" parameterType="Guest" useGeneratedKeys="true" keyProperty="gNo">
+			INSERT INTO guest
+			(g_id, g_password, g_name, g_email, g_join, g_certification)
+			VALUES(#{gId}, #{gPassword}, #{gName}, #{gEmail}, now(), #{gCertification});
+		</insert>	
+		<update id="updateJoinPlus" parameterType="Guest">
+			UPDATE guest
+			g_tel=#{gTel}, g_birth=#{gBirth}, g_join=#{gJoin}, g_memo=#{gMemo}, g_addr=#{gAddr}, g_addr2=#{gAddr2}, g_addr3=#{gAddr3}, g_image=#{gImage}
+			WHERE g_no=#{gNo};
+		</update>
+		<!-- 인증 -->
+		<update id="updateCertification">
+			update guest set g_certification = #{check} where g_email = #{guest.gEmail} and g_certification = #{guest.gCertification}
+		</update>
+	<!--  -->
 	
-	<update id="updateTempPassWord" parameterType="Guest">
-		UPDATE daedong.guest
-		SET g_temp_password=#{gTempPassword}
-		WHERE g_no=#{gNo};
-	</update>
+	<!-- 임시비밀번호 -->	
+		<update id="updateTempPassWord" parameterType="Guest">
+			UPDATE guest
+			SET g_temp_password=#{gTempPassword}
+			WHERE g_no=#{gNo};
+		</update>
 	
+	<!-- 로그인시 체크 -->
+		<select id="selectByEmailAndPassword" resultType="Guest">
+			select * from guest where g_email=#{gEmail} and g_password=#{gPassword}
+		</select>
+	<!--  -->
 	
 </mapper>

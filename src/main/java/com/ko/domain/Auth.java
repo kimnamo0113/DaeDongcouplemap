@@ -1,48 +1,32 @@
 package com.ko.domain;
 
 public class Auth {
-	private int aNo;
-	private String aName;
-	private String aId;
-	private boolean aIsMgr; //1=관리자, 0=guest
+	private String userid;
+	private String username;
 	public Auth() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Auth(int aNo, String aName, String aId, boolean aIsMgr) {
+	public Auth(String userid, String username) {
 		super();
-		this.aNo = aNo;
-		this.aName = aName;
-		this.aId = aId;
-		this.aIsMgr = aIsMgr;
+		this.userid = userid;
+		this.username = username;
 	}
-	public int getaNo() {
-		return aNo;
+	public String getUserid() {
+		return userid;
 	}
-	public void setaNo(int aNo) {
-		this.aNo = aNo;
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
-	public String getaName() {
-		return aName;
+	public String getUsername() {
+		return username;
 	}
-	public void setaName(String aName) {
-		this.aName = aName;
-	}
-	public String getaId() {
-		return aId;
-	}
-	public void setaId(String aId) {
-		this.aId = aId;
-	}
-	public boolean isaIsMgr() {
-		return aIsMgr;
-	}
-	public void setaIsMgr(boolean aIsMgr) {
-		this.aIsMgr = aIsMgr;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	@Override
 	public String toString() {
-		return "Auth [aNo=" + aNo + ", aName=" + aName + ", aId=" + aId + ", aIsMgr=" + aIsMgr + "]";
+		return "LoginDTO [userid=" + userid + ", username=" + username + "]";
 	}
 	
 	

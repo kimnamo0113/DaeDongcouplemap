@@ -35,4 +35,18 @@
 	<context:component-scan base-package="com.ko.controller" />
 	
 	
+	<beans:bean id="loginInterceptor" class="com.ko.interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="authInterceptor" class="com.ko.interceptor.AuthInterceptor"></beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/member/loginPost"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/sboard/modPage"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 </beans:beans>

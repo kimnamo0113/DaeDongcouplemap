@@ -12,8 +12,14 @@ public interface GuestService {
 	public int selectEmailCheck(String gEmail);
 	
 	//회원가입후 insert:기본, update:추가기입
-	public void insertJoinDefault(Guest guest);
+	public void insertJoinDefault(Guest guest) throws Exception;
 	public void updateJoinPlus(Guest guest);
 	//비번찾기
 	public void find_pw(HttpServletResponse response, Guest guest) throws Exception;
+	
+	public Guest selectByEmailAndPassword(String gEmail,String gPassword);
+
+	String create_key();
+
+	public void updateCertification(Guest guest, String check);
 }

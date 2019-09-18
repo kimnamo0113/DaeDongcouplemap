@@ -32,7 +32,7 @@
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                <h1 class="h4 text-gray-900 mb-4">Additional input!</h1>
               </div>
               <form class="user">
                 <div class="form-group row">
@@ -54,13 +54,24 @@
                     <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
                   </div>
                 </div>
-                <a href="login.html" class="btn btn-primary btn-user btn-block">
-                  Register Account
-                </a>
+                <div class="form-group row">
+	                <div class="col-sm-6 mb-3 mb-sm-0">
+	                	<a href="login.html" class="btn btn-primary btn-user btn-block">
+	                		Register Account
+                		</a>
+	                </div>
+                  	<div class="col-sm-6 mb-3 mb-sm-0">
+		                <a href="${pageContext.request.contextPath }" class="btn btn-primary btn-user btn-block">
+		                  Enter Next
+		                </a>
+		            </div>
+                </div>
                 <hr>
                 <a href="index.html" class="btn btn-google btn-user btn-block">
                   <i class="fab fa-google fa-fw"></i> Register with Google
                 </a>
+              
+              
                 <a href="index.html" class="btn btn-facebook btn-user btn-block">
                   <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                 </a>

@@ -1,5 +1,8 @@
 package com.ko.persistence;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +33,9 @@ public class GuestDaoImpl implements GuestDao{
 	}
 
 	@Override
-	public void insertJoinDefault(Guest guest) {
+	public void insertJoinDefault(Guest guest) throws Exception {
 		sqlSession.insert(namespace+".insertJoinDefault",guest);
+		send_mail(guest, "join");
 	}
 
 	@Override
@@ -55,15 +59,15 @@ public class GuestDaoImpl implements GuestDao{
 				
 				if(div.equals("join")) {
 					// 회원가입 메일 내용
-					subject = "Spring Homepage 회원가입 인증 메일입니다.";
+					subject = "대동연애지도 회원가입 인증 메일입니다.";
 					msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
 					msg += "<h3 style='color: blue;'>";
 					msg += guest.getgId() + "님 회원가입을 환영합니다.</h3>";
 					msg += "<div style='font-size: 130%'>";
 					msg += "하단의 인증 버튼 클릭 시 정상적으로 회원가입이 완료됩니다.</div><br/>";
-					msg += "<form method='post' action='http://localhost:8081/homepage/guest/approval_guest.do'>";
-					msg += "<input type='hidden' name='email' value='" + guest.getgEmail() + "'>";
-					msg += "<input type='hidden' name='approval_key' value='" + "뭐고이건" + "'>";
+					msg += "<form method='post' action='http://localhost:8080/daedong/member/loginCertification'>";
+					msg += "<input type='hidden' name='gEmail' value='" + guest.getgEmail() + "'>";
+					msg += "<input type='hidden' name='gCertification' value='"+guest.getgCertification()+"'>";
 					msg += "<input type='submit' value='인증'></form><br/></div>";
 				}else if(div.equals("find_pw")) {
 					subject = "Spring Homepage 임시 비밀번호 입니다.";
@@ -105,6 +109,22 @@ public class GuestDaoImpl implements GuestDao{
 	@Override
 	public Guest selectByEmail(String gEmail) throws Exception{
 		return sqlSession.selectOne(namespace+".selectByEmail",gEmail);
+	}
+
+	@Override
+	public Guest selectByEmailAndPassword(String gEmail, String gPassword) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("gEmail", gEmail);
+		map.put("gPassword", gPassword);
+		return sqlSession.selectOne(namespace+".selectByEmailAndPassword",map);
+	}
+
+	@Override
+	public void updateCertification(Guest guest, String check) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("guest", guest);
+		map.put("check", check);
+		sqlSession.update(namespace+".updateCertification",map);
 	}
 	
 

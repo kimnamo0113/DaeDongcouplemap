@@ -10,7 +10,7 @@ public interface GuestDao {
 	public int selectIdCheck(String gId);
 	public int selectEmailCheck(String gEmail);
 
-	public void insertJoinDefault(Guest guest);
+	public void insertJoinDefault(Guest guest) throws Exception;
 	public void updateJoinPlus(Guest guest);
 	
 	//비번찾기
@@ -19,5 +19,7 @@ public interface GuestDao {
 	//임시비밀번호
 	//발급받기
 	public void updateTempPassWord(Guest guest) throws Exception;
+	public Guest selectByEmailAndPassword(String gEmail, String gPassword);
+	public void updateCertification(Guest guest, String check);
 	
 }
