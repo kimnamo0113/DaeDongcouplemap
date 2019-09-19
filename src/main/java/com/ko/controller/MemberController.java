@@ -8,10 +8,14 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ko.domain.Guest;
 import com.ko.domain.Auth;
@@ -36,6 +40,7 @@ public class MemberController {
 		logger.info("-------------------login POST,"+guest);
 		
 		Guest dbguest = service.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
+		System.out.println(dbguest);
 		if(dbguest==null) {
 			logger.info("loginPOST...login fail,not member");
 			return;
@@ -44,7 +49,8 @@ public class MemberController {
 
 		Auth dto = new Auth();
 		dto.setUserid(dbguest.getgId());
-		dto.setUsername(dbguest.getgPassword());
+		dto.setUsername(dbguest.getgName());
+		dto.setUseremail(guest.getgEmail());
 		model.addAttribute("loginDTO",dto);
 	}
 	
@@ -77,9 +83,18 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="joinNext",method=RequestMethod.GET)
-	public String joinNextPost(Guest guest,Model model) throws Exception {
+	public String joinNextPost(Guest guest) throws Exception {
 		logger.info("-------------------joinNext");
 		return "member/joinNext";
+	}
+	@RequestMapping(value="joinNext",method=RequestMethod.POST)
+	public String joinNextPput(Guest guest, HttpSession session) throws Exception {
+		logger.info("-------------------joinNext PUT");
+		guest.setgCertification("true");
+		Auth auth = (Auth)session.getAttribute("Auth");
+		guest.setgNo(service.selectById(auth.getUserid()).getgNo());
+		service.updateJoinPlus(guest);
+		return "redirect:/";
 	}
 	
 	
@@ -98,14 +113,38 @@ public class MemberController {
 	
 	@RequestMapping(value="forgotPassWord",method=RequestMethod.GET)
 	public String forgotPassGet() {
+		logger.info("--------------------forgotPassGet");
 		return "member/forgotPassGet";
 	}
 	
 	
-	@RequestMapping(value="forgotPassWord",method=RequestMethod.PUT)
-	public String forgotPassPOST() {
+	
+	@RequestMapping(value="timeLine",method=RequestMethod.GET)
+	public void timeLineGET() {
+	}
+	
+	@RequestMapping(value="tempPassWord",method=RequestMethod.POST)
+	public String forgotPassPOST(Guest guest, Model model) {
+		logger.info("--------------------forgotPassPOST guest : "+guest);
 		
-		return "member/forgotPassGet";
+		Guest dbguest = service.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
+		System.out.println(dbguest);
+		if(dbguest==null) {
+			logger.info("loginPOST...login fail,not member");
+			return null;
+		}
+		model.addAttribute("guest",dbguest);
+		model.addAttribute("update",true);
+		Auth dto = new Auth();
+		dto.setUserid(dbguest.getgId());
+		dto.setUsername(dbguest.getgName());
+		dto.setUseremail(guest.getgEmail());
+		model.addAttribute("loginDTO",dto);
+		return "member/updatePassword";
 	}
+	@RequestMapping(value="updatePassword",method=RequestMethod.GET)
+	public void updatePasswordGET() {
+	}
+	
 	
 }

@@ -6,13 +6,13 @@ public class Guest {
 	private int gNo;
 	private String gId;
 	private String gPassword;
-	private String gTempPassword;
 	private String gName;
 	private int gTel;
 	private String gEmail;
 	private Date gBirth;
 	private Date gJoin;
 	private String gMemo;
+	private Boolean gGender;
 	private int gDelete;
 	private String gAddr;
 	private String gAddr2;
@@ -23,20 +23,20 @@ public class Guest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Guest(int gNo, String gId, String gPassword, String gTempPassword, String gName, int gTel, String gEmail,
-			Date gBirth, Date gJoin, String gMemo, int gDelete, String gAddr, String gAddr2, String gAddr3,
-			String gImage, String gCertification) {
+	public Guest(int gNo, String gId, String gPassword, String gName, int gTel, String gEmail, Date gBirth, Date gJoin,
+			String gMemo, Boolean gGender, int gDelete, String gAddr, String gAddr2, String gAddr3, String gImage,
+			String gCertification) {
 		super();
 		this.gNo = gNo;
 		this.gId = gId;
 		this.gPassword = gPassword;
-		this.gTempPassword = gTempPassword;
 		this.gName = gName;
 		this.gTel = gTel;
 		this.gEmail = gEmail;
 		this.gBirth = gBirth;
 		this.gJoin = gJoin;
 		this.gMemo = gMemo;
+		this.gGender = gGender;
 		this.gDelete = gDelete;
 		this.gAddr = gAddr;
 		this.gAddr2 = gAddr2;
@@ -61,12 +61,6 @@ public class Guest {
 	}
 	public void setgPassword(String gPassword) {
 		this.gPassword = gPassword;
-	}
-	public String getgTempPassword() {
-		return gTempPassword;
-	}
-	public void setgTempPassword(String gTempPassword) {
-		this.gTempPassword = gTempPassword;
 	}
 	public String getgName() {
 		return gName;
@@ -103,6 +97,12 @@ public class Guest {
 	}
 	public void setgMemo(String gMemo) {
 		this.gMemo = gMemo;
+	}
+	public Boolean getgGender() {
+		return gGender;
+	}
+	public void setgGender(Boolean gGender) {
+		this.gGender = gGender;
 	}
 	public int getgDelete() {
 		return gDelete;
@@ -142,10 +142,10 @@ public class Guest {
 	}
 	@Override
 	public String toString() {
-		return "Guest [gNo=" + gNo + ", gId=" + gId + ", gPassword=" + gPassword + ", gTempPassword=" + gTempPassword
-				+ ", gName=" + gName + ", gTel=" + gTel + ", gEmail=" + gEmail + ", gBirth=" + gBirth + ", gJoin="
-				+ gJoin + ", gMemo=" + gMemo + ", gDelete=" + gDelete + ", gAddr=" + gAddr + ", gAddr2=" + gAddr2
-				+ ", gAddr3=" + gAddr3 + ", gImage=" + gImage + ", gCertification=" + gCertification + "]";
+		return "Guest [gNo=" + gNo + ", gId=" + gId + ", gPassword=" + gPassword + ", gName=" + gName + ", gTel=" + gTel
+				+ ", gEmail=" + gEmail + ", gBirth=" + gBirth + ", gJoin=" + gJoin + ", gMemo=" + gMemo + ", gGender="
+				+ gGender + ", gDelete=" + gDelete + ", gAddr=" + gAddr + ", gAddr2=" + gAddr2 + ", gAddr3=" + gAddr3
+				+ ", gImage=" + gImage + ", gCertification=" + gCertification + "]";
 	}
 	
 	

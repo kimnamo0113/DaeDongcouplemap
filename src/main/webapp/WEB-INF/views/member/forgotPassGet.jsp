@@ -16,42 +16,48 @@
 
   <!-- Custom styles for this template-->
   <link href="${pageContext.request.contextPath }/resources/bootTemplate/css/sb-admin-2.min.css" rel="stylesheet">
+  <style>
+  	#gPassword{
+  		display: none;
+  	}
+  </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		$("#submitBtn").click(function() {
-			if($(this).text()=="Send Email"){
-				$("#f1").submit(function() {
-					var gEmail = $("#gEmail").val();
-					var json = {gEmail:gEmail};
-					var data = JSON.stringify(json)
-					
-					$.ajax({
-						url:"forgotPassWord",
-						type:"post",
-						data:data,
-						dataType:"text",
-						headers:{
-							"Content-Type":"application/json"
-						},
-						/* contentType : "application/json;charset=UTF-8", */
-						success:function(res){
-							console.log(res);
-							if(res==true){
-								alert("수정되었습니당.");
-								getListAll(currentPage);
-								$("#modifyModal").modal("hide");
-							}
+		var gEmail;
+		$("#f1").submit(function() {
+			if($("#submitBtn").text()=="Send Email"){
+				
+				gEmail = $("#gEmail").val();
+				var json = {gEmail:gEmail};
+				var data = JSON.stringify(json)
+				
+				$.ajax({
+					url:"forgotPassWord",
+					type:"put",
+					data:data,
+					dataType:"text",
+					headers:{
+						"Content-Type":"application/json"
+					},
+					/* contentType : "application/json;charset=UTF-8", */
+					success:function(res){
+						console.log(res);
+						if(res=='true'){
+							alert("이메일로 임시비밀번호가 전송되었습니다.");
+							$("#submitBtn").text("Send Login");
+							$("#gEmail").attr("readOnly","readOnly");
+							$("#gPassword").show();
+						}else{
+							alert("등록된 이메일이 없습니다.")
 						}
-						
-					})
+					}
 					
-					return false;
 				})
+				return false;
 			}
+			return true;
 		})
-		
-		
 	})
 </script>
 
@@ -77,10 +83,16 @@
                     <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
                     <p class="mb-4">We get it, stuff happens. Just enter your email address below and we'll send you a link to reset your password!</p>
                   </div>
-                  <form class="user" action="forgotPassWord" id="f1" method="post">
+                  <form class="user" action="tempPassWord" id="f1" method="post">
+                    
                     <div class="form-group">
                       <input type="email" name="gEmail" class="form-control form-control-user" id="gEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                     </div>
+                    <div class="form-group">
+                      <input type="password" name="gPassword" class="form-control form-control-user" id="gPassword" aria-describedby="emailHelp" placeholder="Enter Password...">
+                    </div>
+                    
+                    
                     <button id="submitBtn" class="btn btn-primary btn-user btn-block">Send Email</button>
                   </form>
                   <hr>
