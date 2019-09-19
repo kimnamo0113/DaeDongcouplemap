@@ -44,6 +44,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			Object dest = session.getAttribute("dest");
 			String path = (dest != null)?(String) dest:request.getContextPath();
 			
+			if(modelAndView.getModel().get("update")!=null) {
+				response.sendRedirect("updatePassword");
+				return;
+			}
+			
 			if(guest.getgCertification().equalsIgnoreCase("false")) {
 				response.sendRedirect("joinNext");
 				return;

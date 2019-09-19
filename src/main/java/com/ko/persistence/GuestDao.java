@@ -18,8 +18,9 @@ public interface GuestDao {
 	
 	//임시비밀번호
 	//발급받기
-	public void updateTempPassWord(Guest guest) throws Exception;
+	public void updatePassWord(Guest guest) throws Exception;
 	public Guest selectByEmailAndPassword(String gEmail, String gPassword);
 	public void updateCertification(Guest guest, String check);
 	
+	public void updateCertification(Guest guest) throws Exception;
 }

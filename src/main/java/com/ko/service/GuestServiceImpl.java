@@ -57,16 +57,13 @@ public class GuestServiceImpl implements GuestService {
 
 	// 비밀번호 찾기
 	@Override
-	public void find_pw(HttpServletResponse response, Guest guest) throws Exception {
+	public boolean find_pw(HttpServletResponse response, Guest guest) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		// PrintWriter out = response.getWriter();
 		// 아이디가 없으면
-		System.out.println(guest);
 		guest = dao.selectByEmail(guest.getgEmail());
-		System.out.println(guest);
-		if (guest.getgId() == null) {
-			// out.print("이메일이 존재하지 않습니다.");
-			// out.close();
+		if (guest == null) {
+			return false;
 		}
 		/*
 		 * // 가입에 사용한 이메일이 아니면 else
@@ -80,16 +77,17 @@ public class GuestServiceImpl implements GuestService {
 			for (int i = 0; i < 12; i++) {
 				pw += (char) ((Math.random() * 26) + 97);
 			}
-			guest.setgTempPassword(pw);
+			guest.setgPassword(pw);
 			System.out.println(guest);
 			// 비밀번호 변경
-			dao.updateTempPassWord(guest);
+			dao.updatePassWord(guest);
 			// 비밀번호 변경 메일 발송
 			dao.send_mail(guest, "find_pw");
 
 			// out.print("이메일로 임시 비밀번호를 발송하였습니다.");
 			// out.close();
 		}
+		return true;
 	}
 	
 	//로그인
@@ -104,5 +102,15 @@ public class GuestServiceImpl implements GuestService {
 		System.out.println(guest);
 		System.out.println(check);
 		dao.updateCertification(guest, check);
+	}
+
+	@Override
+	public void updateCertification(Guest guest) throws Exception {
+		dao.updateCertification(guest);
+	}
+
+	@Override
+	public void updatePassWord(Guest guest) throws Exception {
+		dao.updatePassWord(guest);
 	}
 }

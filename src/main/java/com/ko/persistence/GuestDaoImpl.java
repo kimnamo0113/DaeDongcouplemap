@@ -70,12 +70,12 @@ public class GuestDaoImpl implements GuestDao{
 					msg += "<input type='hidden' name='gCertification' value='"+guest.getgCertification()+"'>";
 					msg += "<input type='submit' value='인증'></form><br/></div>";
 				}else if(div.equals("find_pw")) {
-					subject = "Spring Homepage 임시 비밀번호 입니다.";
+					subject = "대동연애지도 임시 비밀번호 입니다.";
 					msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
 					msg += "<h3 style='color: blue;'>";
 					msg += guest.getgId() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
 					msg += "<p>임시 비밀번호 : ";
-					msg += guest.getgTempPassword() + "</p></div>";
+					msg += guest.getgPassword() + "</p></div>";
 				}
 				// 받는 사람 E-Mail 주소
 				String mail = guest.getgEmail();
@@ -100,10 +100,8 @@ public class GuestDaoImpl implements GuestDao{
 	}
 
 	@Override
-	public void updateTempPassWord(Guest guest) throws Exception {
-		System.out.println("IMPL");
-		System.out.println(guest);
-		sqlSession.update(namespace+".updateTempPassWord",guest);
+	public void updatePassWord(Guest guest) throws Exception {
+		sqlSession.update(namespace+".updatePassWord",guest);
 	}
 
 	@Override
@@ -125,6 +123,11 @@ public class GuestDaoImpl implements GuestDao{
 		map.put("guest", guest);
 		map.put("check", check);
 		sqlSession.update(namespace+".updateCertification",map);
+	}
+
+	@Override
+	public void updateCertification(Guest guest) throws Exception {
+		sqlSession.update(namespace+".updateCertification",guest);
 	}
 	
 

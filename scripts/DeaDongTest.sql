@@ -21,6 +21,6 @@ select * from guest where g_email = 'klnver@naver.com';
 
 
 
-
+select g_password,length(g_password) from guest;
 select password('TTTTT1'), length(password('1234'));
 

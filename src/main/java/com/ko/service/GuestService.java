@@ -15,11 +15,14 @@ public interface GuestService {
 	public void insertJoinDefault(Guest guest) throws Exception;
 	public void updateJoinPlus(Guest guest);
 	//비번찾기
-	public void find_pw(HttpServletResponse response, Guest guest) throws Exception;
+	public boolean find_pw(HttpServletResponse response, Guest guest) throws Exception;
 	
 	public Guest selectByEmailAndPassword(String gEmail,String gPassword);
 
 	String create_key();
 
 	public void updateCertification(Guest guest, String check);
+	public void updateCertification(Guest guest) throws Exception;
+	
+	public void updatePassWord(Guest guest) throws Exception;
 }
