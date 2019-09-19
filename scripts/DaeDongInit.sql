@@ -1,82 +1,255 @@
--- 내 스키마
-DROP SCHEMA IF EXISTS MY_SCHEMA;
+-- 대동연애지도
+DROP SCHEMA IF EXISTS `daedong`;
 
--- 내 스키마
-CREATE SCHEMA MY_SCHEMA;
+-- 대동연애지도
+CREATE SCHEMA `daedong`;
 
--- 첫번째 테이블
-CREATE TABLE MY_SCHEMA.FIRST_TABLE (
-	id   INTEGER     NOT NULL COMMENT '아이디 컬럼의 주석입니다.', -- 아이디
-	COL1 VARCHAR(10) NULL     COMMENT '컬럼1', -- 컬럼1
-	COL2 INTEGER     NULL     COMMENT '컬럼2' -- 컬럼2
+-- 댓글
+CREATE TABLE `daedong`.`Reply` (
+	`r_no`        INT      NOT NULL COMMENT '덧글번호', -- 덧글번호
+	`b_no`        INT      NULL     COMMENT '게시판번호', -- 게시판번호
+	`g_no`        INT      NULL     COMMENT '손님번호', -- 손님번호
+	`m_no`        INT      NULL     COMMENT '관리자번호', -- 관리자번호
+	`r_content`   TEXT     NULL     COMMENT '내용', -- 내용
+	`r_writetime` DATETIME NULL     COMMENT '작성일', -- 작성일
+	`r_delete`    BOOLEAN  NULL     COMMENT '삭제여부', -- 삭제여부
+	`r_good`      INT      NULL     COMMENT '좋아요' -- 좋아요
 )
-COMMENT '첫번째 테이블의 주석입니다.';
+COMMENT '댓글';
 
--- 첫번째 테이블
-ALTER TABLE MY_SCHEMA.FIRST_TABLE
-	ADD CONSTRAINT PK_FIRST_TABLE -- 첫번째 테이블 기본키
+-- 댓글
+ALTER TABLE `daedong`.`Reply`
+	ADD CONSTRAINT `PK_Reply` -- 댓글 기본키
 		PRIMARY KEY (
-			id -- 아이디
+			`r_no` -- 덧글번호
 		);
 
--- 첫번째 테이블
-ALTER TABLE MY_SCHEMA.FIRST_TABLE
-	ADD CONSTRAINT CK_FIRST_TABLE -- 첫번째 테이블 체크 제약
-		CHECK (col2 > 10);
+ALTER TABLE `daedong`.`Reply`
+	MODIFY COLUMN `r_no` INT NOT NULL AUTO_INCREMENT COMMENT '덧글번호';
 
--- 첫번째 테이블 유니크 제약사항 인덱스
-CREATE UNIQUE INDEX UCIX_FIRST_TABLE
-	ON MY_SCHEMA.FIRST_TABLE ( -- 첫번째 테이블
-	);
-
--- 첫번째 테이블 유니크 인덱스
-CREATE UNIQUE INDEX UIX_FIRST_TABLE
-	ON MY_SCHEMA.FIRST_TABLE ( -- 첫번째 테이블
-	);
-
--- 새 트리거
-CREATE TRIGGER MY_SCHEMA.TRIGGER
-BEFORE INSERT ON someTable
-FOR EACH ROW
-BEGIN
-CALL doSanityCheck(@resultBool, @resultMessage);
-IF @resultBool = 0 THEN
-UPDATE ThereWasAnError_Call_privilegeSanityCheck_ToViewTheError SET ThereWas='an error';
-END IF;
-END;
-
--- 두번째_테이블
-CREATE TABLE MY_SCHEMA.SECOND_TABLE (
-	id  INTEGER     NOT NULL COMMENT '아이디', -- 아이디
-	COL VARCHAR(10) NULL     COMMENT '컬럼' -- 컬럼
+-- 회원
+CREATE TABLE `daedong`.`Guest` (
+	`g_no`            INT          NOT NULL COMMENT '번호', -- 번호
+	`g_id`            VARCHAR(30)  NULL     COMMENT '아이디', -- 아이디
+	`g_password`      VARCHAR(50)  NULL     COMMENT '비밀번호', -- 비밀번호
+	`g_name`          VARCHAR(10)  NULL     COMMENT '이름', -- 이름
+	`g_tel`           VARCHAR(15)  NULL     COMMENT '연락처', -- 연락처
+	`g_email`         VARCHAR(50)  NULL     COMMENT '이메일', -- 이메일
+	`g_birth`         DATE         NULL     COMMENT '생일', -- 생일
+	`g_gender`        BOOLEAN      NULL     COMMENT '성별', -- 성별
+	`g_join`          DATETIME     NULL     COMMENT '가입일', -- 가입일
+	`g_memo`          VARCHAR(100) NULL     COMMENT '메모', -- 메모
+	`g_delete`        BOOLEAN      NULL     COMMENT '탈퇴여부', -- 탈퇴여부
+	`g_addr`          VARCHAR(10)  NULL     COMMENT '우편번호', -- 우편번호
+	`g_addr2`         VARCHAR(50)  NULL     COMMENT '주소', -- 주소
+	`g_addr3`         VARCHAR(50)  NULL     COMMENT '상세주소', -- 상세주소
+	`g_image`         VARCHAR(50)  NULL     COMMENT '사진', -- 사진
+	`g_certification` VARCHAR(20)  NULL     COMMENT '회원인증' -- 회원인증
 )
-COMMENT '두번째_테이블';
+COMMENT '회원';
 
--- 두번째_테이블
-ALTER TABLE MY_SCHEMA.SECOND_TABLE
-	ADD CONSTRAINT PK_SECOND_TABLE -- 두번째_테이블 기본키
+-- 회원
+ALTER TABLE `daedong`.`Guest`
+	ADD CONSTRAINT `PK_Guest` -- 회원 기본키
 		PRIMARY KEY (
-			id -- 아이디
+			`g_no` -- 번호
 		);
 
--- 두번째_테이블 인덱스
-CREATE INDEX IX_SECOND_TABLE
-	ON MY_SCHEMA.SECOND_TABLE( -- 두번째_테이블
-		COL DESC -- 컬럼
-	);
+ALTER TABLE `daedong`.`Guest`
+	MODIFY COLUMN `g_no` INT NOT NULL AUTO_INCREMENT COMMENT '번호';
 
--- 두번째_테이블
-ALTER TABLE MY_SCHEMA.SECOND_TABLE
-	ADD CONSTRAINT FK_FIRST_TABLE_TO_SECOND_TABLE -- 첫번째 테이블 -> 두번째_테이블
+-- 게시판
+CREATE TABLE `daedong`.`Board` (
+	`b_no`        INT          NOT NULL COMMENT '번호', -- 번호
+	`g_no`        INT          NULL     COMMENT '고객번호', -- 고객번호
+	`m_no`        INT          NULL     COMMENT '매니저번호', -- 매니저번호
+	`b_place`     VARCHAR(500) NULL     COMMENT '장소', -- 장소
+	`b_title`     VARCHAR(50)  NULL     COMMENT '제목', -- 제목
+	`b_content`   TEXT         NULL     COMMENT '내용', -- 내용
+	`b_writetime` DATETIME     NULL     COMMENT '작성일', -- 작성일
+	`b_delete`    BOOLEAN      NULL     COMMENT '삭제여부', -- 삭제여부
+	`b_flat`      INT          NULL     COMMENT '구분', -- 구분
+	`b_good`      INT          NULL     COMMENT '좋아요' -- 좋아요
+)
+COMMENT '게시판';
+
+-- 게시판
+ALTER TABLE `daedong`.`Board`
+	ADD CONSTRAINT `PK_Board` -- 게시판 기본키
+		PRIMARY KEY (
+			`b_no` -- 번호
+		);
+
+ALTER TABLE `daedong`.`Board`
+	MODIFY COLUMN `b_no` INT NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+-- 관리자
+CREATE TABLE `daedong`.`Manager` (
+	`m_no`       INT         NOT NULL COMMENT '번호', -- 번호
+	`m_id`       VARCHAR(30) NULL     COMMENT '아이디', -- 아이디
+	`m_password` VARCHAR(40) NULL     COMMENT '비밀번호', -- 비밀번호
+	`m_name`     VARCHAR(20) NULL     COMMENT '이름' -- 이름
+)
+COMMENT '관리자';
+
+-- 관리자
+ALTER TABLE `daedong`.`Manager`
+	ADD CONSTRAINT `PK_Manager` -- 관리자 기본키
+		PRIMARY KEY (
+			`m_no` -- 번호
+		);
+
+ALTER TABLE `daedong`.`Manager`
+	MODIFY COLUMN `m_no` INT NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+-- 친구목록
+CREATE TABLE `daedong`.`Friend` (
+	`f_no`   INT      NOT NULL COMMENT 'count', -- count
+	`g_no`   INT      NULL     COMMENT '본인', -- 본인
+	`g_no2`  INT      NULL     COMMENT '친구', -- 친구
+	`g_date` DATETIME NULL     COMMENT '친추날짜', -- 친추날짜
+	`g_flat` INT      NULL     COMMENT '1.팔로잉
+	2.서로로' -- 친구관계
+)
+COMMENT '친구목록';
+
+-- 친구목록
+ALTER TABLE `daedong`.`Friend`
+	ADD CONSTRAINT `PK_Friend` -- 친구목록 기본키
+		PRIMARY KEY (
+			`f_no` -- count
+		);
+
+ALTER TABLE `daedong`.`Friend`
+	MODIFY COLUMN `f_no` INT NOT NULL AUTO_INCREMENT COMMENT 'count';
+
+-- 메세지
+CREATE TABLE `daedong`.`Message` (
+	`ms_no`      INT          NOT NULL COMMENT '메신저번호', -- 메신저번호
+	`ms_content` VARCHAR(200) NULL     COMMENT '내용', -- 내용
+	`ms_date`    DATETIME     NULL     COMMENT '날짜', -- 날짜
+	`c_no`       INT          NULL     COMMENT '채팅방번호', -- 채팅방번호
+	`g_no`       INT          NULL     COMMENT '번호' -- 번호
+)
+COMMENT '메세지';
+
+-- 메세지
+ALTER TABLE `daedong`.`Message`
+	ADD CONSTRAINT `PK_Message` -- 메세지 기본키
+		PRIMARY KEY (
+			`ms_no` -- 메신저번호
+		);
+
+-- 채팅방
+CREATE TABLE `daedong`.`Chating` (
+	`c_no` INT NOT NULL COMMENT '채팅방번호', -- 채팅방번호
+	`g_no` INT NULL     COMMENT '번호' -- 번호
+)
+COMMENT '채팅방';
+
+-- 채팅방
+ALTER TABLE `daedong`.`Chating`
+	ADD CONSTRAINT `PK_Chating` -- 채팅방 기본키
+		PRIMARY KEY (
+			`c_no` -- 채팅방번호
+		);
+
+-- 댓글
+ALTER TABLE `daedong`.`Reply`
+	ADD CONSTRAINT `FK_Board_TO_Reply` -- 게시판 -> 댓글
 		FOREIGN KEY (
-			id -- 아이디
+			`b_no` -- 게시판번호
 		)
-		REFERENCES MY_SCHEMA.FIRST_TABLE ( -- 첫번째 테이블
-			id -- 아이디
-		),
-	ADD INDEX FK_FIRST_TABLE_TO_SECOND_TABLE (
-		id ASC -- 아이디
-	);
+		REFERENCES `daedong`.`Board` ( -- 게시판
+			`b_no` -- 번호
+		);
 
--- 첫번째_뷰
-CREATE VIEW MY_SCHEMA.FIRST_VIEW AS SELECT * FROM FIRST_TABLE
+-- 댓글
+ALTER TABLE `daedong`.`Reply`
+	ADD CONSTRAINT `FK_Manager_TO_Reply` -- 관리자 -> 댓글
+		FOREIGN KEY (
+			`m_no` -- 관리자번호
+		)
+		REFERENCES `daedong`.`Manager` ( -- 관리자
+			`m_no` -- 번호
+		);
+
+-- 댓글
+ALTER TABLE `daedong`.`Reply`
+	ADD CONSTRAINT `FK_Guest_TO_Reply` -- 회원 -> 댓글
+		FOREIGN KEY (
+			`g_no` -- 손님번호
+		)
+		REFERENCES `daedong`.`Guest` ( -- 회원
+			`g_no` -- 번호
+		);
+
+-- 게시판
+ALTER TABLE `daedong`.`Board`
+	ADD CONSTRAINT `FK_Guest_TO_Board` -- 회원 -> 게시판
+		FOREIGN KEY (
+			`g_no` -- 고객번호
+		)
+		REFERENCES `daedong`.`Guest` ( -- 회원
+			`g_no` -- 번호
+		);
+
+-- 게시판
+ALTER TABLE `daedong`.`Board`
+	ADD CONSTRAINT `FK_Manager_TO_Board` -- 관리자 -> 게시판
+		FOREIGN KEY (
+			`m_no` -- 매니저번호
+		)
+		REFERENCES `daedong`.`Manager` ( -- 관리자
+			`m_no` -- 번호
+		);
+
+-- 친구목록
+ALTER TABLE `daedong`.`Friend`
+	ADD CONSTRAINT `FK_Guest_TO_Friend` -- 회원 -> 친구목록
+		FOREIGN KEY (
+			`g_no` -- 본인
+		)
+		REFERENCES `daedong`.`Guest` ( -- 회원
+			`g_no` -- 번호
+		);
+
+-- 친구목록
+ALTER TABLE `daedong`.`Friend`
+	ADD CONSTRAINT `FK_Guest_TO_Friend2` -- 회원 -> 친구목록2
+		FOREIGN KEY (
+			`g_no2` -- 친구
+		)
+		REFERENCES `daedong`.`Guest` ( -- 회원
+			`g_no` -- 번호
+		);
+
+-- 메세지
+ALTER TABLE `daedong`.`Message`
+	ADD CONSTRAINT `FK_Chating_TO_Message` -- 채팅방 -> 메세지
+		FOREIGN KEY (
+			`c_no` -- 채팅방번호
+		)
+		REFERENCES `daedong`.`Chating` ( -- 채팅방
+			`c_no` -- 채팅방번호
+		);
+
+-- 메세지
+ALTER TABLE `daedong`.`Message`
+	ADD CONSTRAINT `FK_Guest_TO_Message` -- 회원 -> 메세지
+		FOREIGN KEY (
+			`g_no` -- 번호
+		)
+		REFERENCES `daedong`.`Guest` ( -- 회원
+			`g_no` -- 번호
+		);
+
+-- 채팅방
+ALTER TABLE `daedong`.`Chating`
+	ADD CONSTRAINT `FK_Guest_TO_Chating` -- 회원 -> 채팅방
+		FOREIGN KEY (
+			`g_no` -- 번호
+		)
+		REFERENCES `daedong`.`Guest` ( -- 회원
+			`g_no` -- 번호
+		);

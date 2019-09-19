@@ -99,15 +99,10 @@ public class GuestServiceImpl implements GuestService {
 
 	@Override
 	public void updateCertification(Guest guest, String check) {
-		System.out.println(guest);
-		System.out.println(check);
+		
 		dao.updateCertification(guest, check);
 	}
 
-	@Override
-	public void updateCertification(Guest guest) throws Exception {
-		dao.updateCertification(guest);
-	}
 
 	@Override
 	public void updatePassWord(Guest guest) throws Exception {

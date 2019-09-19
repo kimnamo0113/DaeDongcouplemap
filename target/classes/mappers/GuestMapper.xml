@@ -32,7 +32,7 @@
 		<!-- 인증 -->
 		<update id="updateCertification" parameterType="Guest">
 			update guest
-			SET g_tel=#{gTel}, g_birth=#{gBirth}, g_addr=#{gAddr}, g_addr2=#{gAddr2}, g_addr3=#{gAddr3}, g_gender=#{gGender} 
+			SET g_tel=#{gTel}, g_birth=#{gBirth}, g_addr=#{gAddr}, g_addr2=#{gAddr2}, g_addr3=#{gAddr3}, g_gender=#{gGender}, g_certification = #{check} 
 			where g_email = #{guest.gEmail} and g_certification = #{guest.gCertification}
 		</update>
 
