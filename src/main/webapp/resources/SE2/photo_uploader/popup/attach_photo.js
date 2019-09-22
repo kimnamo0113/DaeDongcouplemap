@@ -335,7 +335,7 @@
     		sUploadURL;
     	alert("777777")
     	
-    	sUploadURL= '/daedong/board/imgUpload'; 	//upload URL
+    	sUploadURL= '/daedong/upload/boardUpload'; 	//upload URL
     	
     	//파일을 하나씩 보내고, 결과를 받음.
     	for(var j=0, k=0; j < nImageInfoCnt; j++) {

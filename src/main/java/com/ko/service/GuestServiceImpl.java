@@ -108,4 +108,14 @@ public class GuestServiceImpl implements GuestService {
 	public void updatePassWord(Guest guest) throws Exception {
 		dao.updatePassWord(guest);
 	}
+
+	@Override
+	public void updateGuestImg(String savedName) {
+		dao.updateGuestImg(savedName);
+	}
+
+	@Override
+	public void updateAll(Guest guest) {
+		dao.updateAll(guest);
+	}
 }

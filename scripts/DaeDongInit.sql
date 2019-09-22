@@ -43,7 +43,7 @@ CREATE TABLE `daedong`.`Guest` (
 	`g_addr`          VARCHAR(10)  NULL     COMMENT '우편번호', -- 우편번호
 	`g_addr2`         VARCHAR(50)  NULL     COMMENT '주소', -- 주소
 	`g_addr3`         VARCHAR(50)  NULL     COMMENT '상세주소', -- 상세주소
-	`g_image`         VARCHAR(50)  NULL     COMMENT '사진', -- 사진
+	`g_image`         VARCHAR(200) NULL     COMMENT '사진', -- 사진
 	`g_certification` VARCHAR(20)  NULL     COMMENT '회원인증' -- 회원인증
 )
 COMMENT '회원';
@@ -60,12 +60,13 @@ ALTER TABLE `daedong`.`Guest`
 
 -- 게시판
 CREATE TABLE `daedong`.`Board` (
-	`b_no`        INT          NOT NULL COMMENT '번호', -- 번호
+	`b_no`        INT          NOT NULL COMMENT '게시판번호', -- 게시판번호
 	`g_no`        INT          NULL     COMMENT '고객번호', -- 고객번호
 	`m_no`        INT          NULL     COMMENT '매니저번호', -- 매니저번호
-	`b_place`     VARCHAR(500) NULL     COMMENT '장소', -- 장소
 	`b_title`     VARCHAR(50)  NULL     COMMENT '제목', -- 제목
-	`b_content`   TEXT         NULL     COMMENT '내용', -- 내용
+	`b_place`     VARCHAR(50)  NULL     COMMENT '장소', -- 장소
+	`b_hash`      VARCHAR(200) NULL     COMMENT '해시태그', -- 해시태그
+	`b_contents`  TEXT         NULL     COMMENT '내용', -- 내용
 	`b_writetime` DATETIME     NULL     COMMENT '작성일', -- 작성일
 	`b_delete`    BOOLEAN      NULL     COMMENT '삭제여부', -- 삭제여부
 	`b_flat`      INT          NULL     COMMENT '구분', -- 구분
@@ -77,11 +78,11 @@ COMMENT '게시판';
 ALTER TABLE `daedong`.`Board`
 	ADD CONSTRAINT `PK_Board` -- 게시판 기본키
 		PRIMARY KEY (
-			`b_no` -- 번호
+			`b_no` -- 게시판번호
 		);
 
 ALTER TABLE `daedong`.`Board`
-	MODIFY COLUMN `b_no` INT NOT NULL AUTO_INCREMENT COMMENT '번호';
+	MODIFY COLUMN `b_no` INT NOT NULL AUTO_INCREMENT COMMENT '게시판번호';
 
 -- 관리자
 CREATE TABLE `daedong`.`Manager` (
@@ -128,7 +129,7 @@ CREATE TABLE `daedong`.`Message` (
 	`ms_no`      INT          NOT NULL COMMENT '메신저번호', -- 메신저번호
 	`ms_content` VARCHAR(200) NULL     COMMENT '내용', -- 내용
 	`ms_date`    DATETIME     NULL     COMMENT '날짜', -- 날짜
-	`c_no`       INT          NULL     COMMENT '채팅방번호', -- 채팅방번호
+	`ch_no`      INT          NULL     COMMENT '채팅방번호', -- 채팅방번호
 	`g_no`       INT          NULL     COMMENT '번호' -- 번호
 )
 COMMENT '메세지';
@@ -142,8 +143,8 @@ ALTER TABLE `daedong`.`Message`
 
 -- 채팅방
 CREATE TABLE `daedong`.`Chating` (
-	`c_no` INT NOT NULL COMMENT '채팅방번호', -- 채팅방번호
-	`g_no` INT NULL     COMMENT '번호' -- 번호
+	`ch_no` INT NOT NULL COMMENT '채팅방번호', -- 채팅방번호
+	`g_no`  INT NULL     COMMENT '번호' -- 번호
 )
 COMMENT '채팅방';
 
@@ -151,7 +152,23 @@ COMMENT '채팅방';
 ALTER TABLE `daedong`.`Chating`
 	ADD CONSTRAINT `PK_Chating` -- 채팅방 기본키
 		PRIMARY KEY (
-			`c_no` -- 채팅방번호
+			`ch_no` -- 채팅방번호
+		);
+
+-- 게시판내용
+CREATE TABLE `daedong`.`Contents` (
+	`c_no`       INT          NOT NULL COMMENT '내용번호', -- 내용번호
+	`b_no`       INT          NULL     COMMENT '게시판번호', -- 게시판번호
+	`c_contents` VARCHAR(500) NULL     COMMENT '내용', -- 내용
+	`c_image`    VARCHAR(200) NULL     COMMENT '이미지' -- 이미지
+)
+COMMENT '게시판내용';
+
+-- 게시판내용
+ALTER TABLE `daedong`.`Contents`
+	ADD CONSTRAINT `PK_Contents` -- 게시판내용 기본키
+		PRIMARY KEY (
+			`c_no` -- 내용번호
 		);
 
 -- 댓글
@@ -161,7 +178,7 @@ ALTER TABLE `daedong`.`Reply`
 			`b_no` -- 게시판번호
 		)
 		REFERENCES `daedong`.`Board` ( -- 게시판
-			`b_no` -- 번호
+			`b_no` -- 게시판번호
 		);
 
 -- 댓글
@@ -228,10 +245,10 @@ ALTER TABLE `daedong`.`Friend`
 ALTER TABLE `daedong`.`Message`
 	ADD CONSTRAINT `FK_Chating_TO_Message` -- 채팅방 -> 메세지
 		FOREIGN KEY (
-			`c_no` -- 채팅방번호
+			`ch_no` -- 채팅방번호
 		)
 		REFERENCES `daedong`.`Chating` ( -- 채팅방
-			`c_no` -- 채팅방번호
+			`ch_no` -- 채팅방번호
 		);
 
 -- 메세지
@@ -252,4 +269,14 @@ ALTER TABLE `daedong`.`Chating`
 		)
 		REFERENCES `daedong`.`Guest` ( -- 회원
 			`g_no` -- 번호
+		);
+
+-- 게시판내용
+ALTER TABLE `daedong`.`Contents`
+	ADD CONSTRAINT `FK_Board_TO_Contents` -- 게시판 -> 게시판내용
+		FOREIGN KEY (
+			`b_no` -- 게시판번호
+		)
+		REFERENCES `daedong`.`Board` ( -- 게시판
+			`b_no` -- 게시판번호
 		);

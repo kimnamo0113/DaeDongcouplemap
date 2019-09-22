@@ -24,4 +24,8 @@ public interface GuestService {
 	public void updateCertification(Guest guest,String check) throws Exception;
 	
 	public void updatePassWord(Guest guest) throws Exception;
+
+	public void updateGuestImg(String savedName);
+
+	public void updateAll(Guest guest);
 }

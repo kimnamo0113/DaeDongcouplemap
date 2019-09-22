@@ -36,14 +36,16 @@
 		top:100px;
 		left: 100px;
 		display: none;
-		
-		
-		
+	}
+	.profileImg{
+		border-radius: 50% 50% 50% 50%;
+		border:1px solid #ccc;
 	}
 </style>
 
 <!-- Bootstrap core JavaScript-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
 <script type="text/javascript">
 	var test="";
 	
@@ -419,7 +421,15 @@
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-	                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+	                <c:if test="${Auth.userimage!='' }">
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename=${Auth.userimage}"  class="img-profile rounded-circle profileImg" data-toggle="modal" data-target="#myModal">
+					</c:if>
+					<c:if test="${Auth.userimage=='' }">
+				  		<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="img-profile rounded-circle profileImg" data-toggle="modal" data-target="#myModal">
+	                </c:if>
+	                
+	                
+	                
 	              </a>
 	              <!-- Dropdown - User Information -->
 	              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

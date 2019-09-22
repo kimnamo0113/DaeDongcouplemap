@@ -6,6 +6,7 @@ public class Board {
 	private int mNo;
 	private String bPlace;
 	private String bTitle;
+	private String bHash;
 	private String bContent;
 	private String bWritetime;
 	private String bDelete;
@@ -15,14 +16,15 @@ public class Board {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Board(int bNo, int gNo, int mNo, String bPlace, String bTitle, String bContent, String bWritetime,
-			String bDelete, String bFlat, int bGood) {
+	public Board(int bNo, int gNo, int mNo, String bPlace, String bTitle, String bHash, String bContent,
+			String bWritetime, String bDelete, String bFlat, int bGood) {
 		super();
 		this.bNo = bNo;
 		this.gNo = gNo;
 		this.mNo = mNo;
 		this.bPlace = bPlace;
 		this.bTitle = bTitle;
+		this.bHash = bHash;
 		this.bContent = bContent;
 		this.bWritetime = bWritetime;
 		this.bDelete = bDelete;
@@ -59,6 +61,12 @@ public class Board {
 	public void setbTitle(String bTitle) {
 		this.bTitle = bTitle;
 	}
+	public String getbHash() {
+		return bHash;
+	}
+	public void setbHash(String bHash) {
+		this.bHash = bHash;
+	}
 	public String getbContent() {
 		return bContent;
 	}
@@ -92,8 +100,8 @@ public class Board {
 	@Override
 	public String toString() {
 		return "Board [bNo=" + bNo + ", gNo=" + gNo + ", mNo=" + mNo + ", bPlace=" + bPlace + ", bTitle=" + bTitle
-				+ ", bContent=" + bContent + ", bWritetime=" + bWritetime + ", bDelete=" + bDelete + ", bFlat=" + bFlat
-				+ ", bGood=" + bGood + "]";
+				+ ", bHash=" + bHash + ", bContent=" + bContent + ", bWritetime=" + bWritetime + ", bDelete=" + bDelete
+				+ ", bFlat=" + bFlat + ", bGood=" + bGood + "]";
 	}
 	
 	

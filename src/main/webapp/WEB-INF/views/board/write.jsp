@@ -24,8 +24,6 @@
 		margin-left: 5px;
 	    width:10px;
 	    height: 10px;
-	    
-	    
 	}
 	input#hashTag{
 		padding-left: 10px;
@@ -105,7 +103,8 @@
 				data=xml;
 				console.log(data);
 				$(data).find("Area").each(function(){
-					var $option = $("<option>").append($(this).attr("label"));
+					var label=$(this).attr("label");
+					var $option = $("<option>").append(label).attr("value",label);
 					$("#area").append($option);
 					
 				})
@@ -129,7 +128,8 @@
 			if(provinceCheck==true){
 				$("#province").show();
 				$(area2).find("Province").each(function(){
-					var $option = $("<option>").append($(this).attr("label"));
+					var label=$(this).attr("label");
+					var $option = $("<option>").append(label).attr("value",label);
 					$("#province").append($option);
 					
 				});
@@ -137,7 +137,8 @@
 				$("#province").hide();
 				$("#gu").show();
 				$(area2).find("Gu").each(function(){
-					var $option = $("<option>").append($(this).attr("label"));
+					var label=$(this).attr("label");
+					var $option = $("<option>").append(label).attr("value",label);
 					$("#gu").append($option);
 					
 				});
@@ -158,7 +159,8 @@
 			$("#gu").append("<option>지역선택</option>");
 			$("#gu").show();
 			$(province2).find("Gu").each(function(){
-				var $option = $("<option>").append($(this).attr("label"));
+				var label=$(this).attr("label");
+				var $option = $("<option>").append(label).attr("value",label);
 				$("#gu").append($option);
 			});
 		})
@@ -177,7 +179,8 @@
 			if(dongCheck==true){
 				$("#dong").show();
 				$(gu2).find("Dong").each(function(){
-					var $option = $("<option>").append($(this).attr("label"));
+					var label=$(this).attr("label");
+					var $option = $("<option>").append(label).attr("value",label);
 					$("#dong").append($option);
 				});
 			}else{
@@ -193,12 +196,14 @@
 	
  
     <form action="${pageContext.request.contextPath }/board/insertBoard" method="post" id="insertBoardFrm" enctype="multipart/form-data">
-    	<select id="area" class="form-control col-sm-2">
+    	<select name="area" id="area" class="form-control col-sm-2">
     		<option>지역선택</option>
     	</select>
-    	<select id="province" class="form-control col-sm-2"></select>
-    	<select id="gu" class="form-control col-sm-2"></select>
-    	<select id="dong" class="form-control col-sm-2"></select>
+    	
+    	
+    	<select name="province" id="province" class="form-control col-sm-2"></select>
+    	<select name="gu" id="gu" class="form-control col-sm-2"></select>
+    	<select name="dong" id="dong" class="form-control col-sm-2"></select>
         <input type="text" id="bTtitle" name="bTitle" class="form-control" style="width:100%" placeholder="제목을 입력해주세요."/>
         <textarea name="editor" id="editor" style="width: 100%; height: 400px;"></textarea><br><br>
         <label>태그</label> : <input type="text" id="hashTag" placeholder="# 검색에 사용할 태그를 입력해주세요(최대 20개)" style="width:80%;"><button type="button" id="hashTagBtn">추가</button><br>

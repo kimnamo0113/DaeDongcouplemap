@@ -51,6 +51,8 @@ public class MemberController {
 		dto.setUserid(dbguest.getgId());
 		dto.setUsername(dbguest.getgName());
 		dto.setUseremail(guest.getgEmail());
+		dto.setUserimage(dbguest.getgImage());
+		dto.setUserno(dbguest.getgNo());
 		model.addAttribute("loginDTO",dto);
 	}
 	
@@ -120,8 +122,14 @@ public class MemberController {
 	
 	
 	@RequestMapping(value="timeLine",method=RequestMethod.GET)
-	public void timeLineGET() {
+	public void timeLineGET(Model model,HttpSession session) {
+		logger.info("-------------------- timeLine");
+		Auth dto = (Auth)session.getAttribute("Auth");
+		Guest guest = service.selectById(dto.getUserid());
+		model.addAttribute("guest",guest);
 	}
+	
+	
 	
 	@RequestMapping(value="tempPassWord",method=RequestMethod.POST)
 	public String forgotPassPOST(Guest guest, Model model) {
