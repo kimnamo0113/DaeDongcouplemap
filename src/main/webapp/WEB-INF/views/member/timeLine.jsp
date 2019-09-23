@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
  <!-- Begin Page Content -->
+ 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/writeBtn.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/writeBtn.css">
 <style>
 	#profileImg{
 		cursor: pointer;
@@ -9,14 +15,14 @@
 	#proFileUpdate label,#proFileUpdate li{
 		cursor: pointer;
 	}
-	.modal-content{
+	#modal-content{
 		height: 500px;
 	}
 </style>
 <script type="text/javascript">
 	
 	$(function() {
-		$("#imgFile").change(function(){
+		$("#uploadProfileImg").change(function(){
 			if($(this)[0].files[0]==null){
 				return;
 			};
@@ -44,12 +50,14 @@
 </script>
 
 <div class="container-fluid">
+
+
   <!-- Page Heading -->
   <div class="align-items-center justify-content-between mb-4">
   	<div class="form-group row">
   		<div class="col-sm-4">
 			<c:if test="${guest.gImage!='' }">
-				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal">
+				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal" width="200" height="200">
 			</c:if>  	
 		  	<c:if test="${guest.gImage=='' }">
 		  		<img id="profileImg" src="${pageContext.request.contextPath }/resources/images/boy.png" class="img-circle profileImg" data-toggle="modal" data-target="#myModal">
@@ -71,7 +79,7 @@
 	  		<h2 class="h5 mb-0 text-gray-800">${Auth.username}</h2>
 	  	</div>
 	  	<div class="d-none d-sm-inline-block">
-			<a href="${pageContext.request.contextPath }/board/write" class="btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i>글쓰기</a>
+			 <a href="#" id="write" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#writeModal"><i class="fas fa-download fa-sm text-white-50"></i>글쓰기</a>
 		</div>  	
 	</div>
     
@@ -83,7 +91,7 @@
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content">
+      <div class="modal-content" id="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">프로필 사진 수정</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -91,8 +99,8 @@
         <form enctype="multipart/form-data">
 	        <div id="proFileUpdate">
 	        	
-			  		<label for="imgFile" class="list-group-item">업로드</label>
-					<input type="file" name="file" id="imgFile" style="display:none">
+			  		<label for="uploadProfileImg" class="list-group-item">업로드</label>
+					<input type="file" name="file" id="uploadProfileImg" style="display:none">
 					<label class="list-group-item">사진 내리기</label>		  		
 			  	
 	        </div>
@@ -105,7 +113,40 @@
     </div>
   </div>
   
+<!-- Modal -->
+		  <div class="modal fade" id="writeModal" role="dialog">
 
+		    <div class="modal-dialog">
+		    
+		      <!-- Modal content-->
+		      <div class="modal-content">
+	
+			        <div>
+			        
+				        <div class="modal-header">
+				          <h4 class="modal-title">글쓰기</h4>
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        </div>
+		        
+		        
+		       		<form id="f1" action="insertBoard2" method="post" enctype="multipart/form-data">
+			        	  <div id="slideHidden"><div class="bxslider"></div></div>
+					  		<label for="imgFile" class="list-group-item">업로드</label>
+							<input type="file" name="file" id="imgFile" style="display:none" multiple="multiple">
+							<input type="text" class="form-control list-group-item" placeholder="친구 태그하기">
+					  		<input type="text" id="hashTag" class="form-control list-group-item" placeholder="검색 키워드">
+					  		<div id="hashResult" class="form-contorl"></div><br>
+			        </div>
+				    <div class="modal-footer">
+				   		<button type="button" id="test">test</button>
+			          	<button type="submit" class="btn btn-default" data-dismiss="modal">Write</button>
+			          	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        </div>
+		        </form>
+		      </div>
+		      
+		    </div>
+		  </div>
 
 
 
