@@ -5,6 +5,7 @@ public class Area {
 	private String province;
 	private String gu;
 	private String dong;
+	
 	public Area() {
 		super();
 		// TODO Auto-generated constructor stub
