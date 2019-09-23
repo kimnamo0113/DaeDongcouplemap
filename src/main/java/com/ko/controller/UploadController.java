@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +23,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ko.domain.Area;
 import com.ko.domain.Auth;
 import com.ko.domain.Board;
+import com.ko.domain.Content;
 import com.ko.domain.Guest;
 import com.ko.service.GuestService;
 import com.ko.util.UploadFileUtils;
@@ -180,14 +180,21 @@ public class UploadController {
 		}
 	}
 	@RequestMapping(value = "insertBoard2", method = RequestMethod.POST)
-	public String insertBoard2(
+	public @ResponseBody ResponseEntity<String> insertBoard2(
 			List<MultipartFile> files,
-			Board board, String hash, 
+			Board board, String hash, @RequestParam("cContents") List<String> cContents,
 			Area area,
 			HttpSession session) throws IOException, Exception {
-		logger.info("------------------insertBoard");
+		logger.info("------------------insertBoard2");
+		
+		ResponseEntity<String> entity=null;
 		
 		ArrayList<String> list = new ArrayList<>();
+		System.out.println(board);
+		for(String content:cContents) {
+			System.out.println(content);
+		}
+		
 		
 		for(MultipartFile file : files) {
 			String savedName = UploadFileUtils.uploadFile(
@@ -200,9 +207,9 @@ public class UploadController {
 			list.add(savedName);
 		}
 		for(String test : list) {
-			System.out.println(test);
+			System.out.println("board ImgName:"+test);
 		}
-		
-		return "redirect:/";
+		entity=new ResponseEntity<String>("good",HttpStatus.OK);
+		return entity;
 	}
 }

@@ -5,8 +5,19 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/writeBtn.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/areaChoice.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/writeBtn.css">
+<style>
+	.user-up1{
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+</style>
 <script>
+$(function(){
+
+})
+
   </script>
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -37,19 +48,27 @@
 				          <h4 class="modal-title">글쓰기</h4>
 				          <button type="button" class="close" data-dismiss="modal">&times;</button>
 				        </div>
+				        <div class="row user-up1">
+					        <select name="area" id="area" class="form-control">
+					    		<option>지역선택</option>
+					    	</select>
+					    	<select name="province" id="province" class="form-control"></select>
+					    	<select name="gu" id="gu" class="form-control"></select>
+					    	<select name="dong" id="dong" class="form-control"></select>
+				    	</div>
 		        </div>
 		        
-		       	<form id="f1" action="insertBoard2" method="post" enctype="multipart/form-data">
+		       	<form id="writeForm" action="insertBoard2" method="post" enctype="multipart/form-data">
 			        <div id="slideHidden"><div class="bxslider"></div></div>
 					  		<label for="imgFile" class="list-group-item">업로드</label>
 							<input type="file" name="file" id="imgFile" style="display:none" multiple="multiple">
 							<input type="text" class="form-control list-group-item" placeholder="친구 태그하기">
 					  		<input type="text" id="hashTag" class="form-control list-group-item" placeholder="검색 키워드">
 					  		<div id="hashResult" class="form-contorl"></div><br>
-			        
+			        		<input type="hidden" name="userno" value="${Auth.userno }">
 				    <div class="modal-footer">
 				   		<button type="button" id="test">test</button>
-			          	<button type="submit" class="btn btn-default" data-dismiss="modal">Write</button>
+			          	<input type="submit" class="btn btn-default" value="Write">
 			          	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			        </div>
 		        </form>

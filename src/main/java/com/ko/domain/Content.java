@@ -1,15 +1,15 @@
 package com.ko.domain;
 
-public class Contents {
+public class Content {
 	private int cNo;
 	private int bNo;
 	private String cContents;
 	private String cImage;
-	public Contents() {
+	public Content() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Contents(int cNo, int bNo, String cContents, String cImage) {
+	public Content(int cNo, int bNo, String cContents, String cImage) {
 		super();
 		this.cNo = cNo;
 		this.bNo = bNo;
@@ -42,8 +42,8 @@ public class Contents {
 	}
 	@Override
 	public String toString() {
-		return "Contents [cNo=" + cNo + ", bNo=" + bNo + ", cContents=" + cContents + ", cImage=" + cImage + "]";
+		return "Content [cNo=" + cNo + ", bNo=" + bNo + ", cContents=" + cContents + ", cImage=" + cImage + "]";
 	}
-	
+
 	
 }

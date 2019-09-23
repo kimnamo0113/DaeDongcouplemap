@@ -1,7 +1,9 @@
 $(function(){
 var data;
+
+
 	$.ajax({
-		url:"../map/Samples/MapDataBaseXml/SouthKoreaDrillDownMetroDongRegion.xml",
+		url:"/daedong/resources/map/Samples/MapDataBaseXml/SouthKoreaDrillDownMetroDongRegion.xml",
 		type:"get",
 		dataType:"xml",
 		success:function(xml){
@@ -15,6 +17,8 @@ var data;
 			})
 		}
 	})
+	
+	
 	
 	$("#province").hide();
 	$("#gu").hide();
