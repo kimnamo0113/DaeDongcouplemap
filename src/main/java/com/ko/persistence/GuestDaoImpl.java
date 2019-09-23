@@ -129,6 +129,16 @@ public class GuestDaoImpl implements GuestDao{
 	public void updateCertification(Guest guest) throws Exception {
 		sqlSession.update(namespace+".updateCertification",guest);
 	}
+
+	@Override
+	public void updateGuestImg(String savedName) {
+		sqlSession.update(namespace+".updateGuestImg",savedName);
+	}
+
+	@Override
+	public void updateAll(Guest guest) {
+		sqlSession.update(namespace+".updateAll",guest);
+	}
 	
 
 }

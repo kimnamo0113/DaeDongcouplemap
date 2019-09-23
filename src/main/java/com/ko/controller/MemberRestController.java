@@ -1,27 +1,29 @@
 package com.ko.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.mail.HtmlEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ko.domain.Auth;
 import com.ko.domain.Guest;
 import com.ko.service.GuestService;
+import com.ko.util.UploadFileUtils;
 
 @RestController
 @RequestMapping("/member/*")
@@ -30,7 +32,7 @@ public class MemberRestController {
 
 	@Autowired
 	private GuestService service;
-
+	
 	// 중복체크용
 	@RequestMapping(value = "join/id", method = RequestMethod.POST)
 	public ResponseEntity<Integer> id(@RequestParam("gId") String gId) {
@@ -91,5 +93,7 @@ public class MemberRestController {
 		
 		
 	}
+
+	
 
 }

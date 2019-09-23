@@ -17,19 +17,17 @@ import org.springframework.util.FileCopyUtils;
 
 public class UploadFileUtils {
 
-	public static String uploadFile(String uploadPath, String originalName, byte[] fileData) throws Exception {
-		String path = calcPath(uploadPath);
-
+	public static String uploadFile(String uploadPath, String originalName, byte[] fileData,String flatSrc) throws Exception {
+		String path = calcPath(uploadPath+"/"+flatSrc);
 		UUID uid = UUID.randomUUID();
 		String savedName = uid + "_" + originalName;
 
-		File target = new File(uploadPath + path, savedName); // outUploadPath경로가 반드시 존재한다는 가정하게 처리됨
+		File target = new File(uploadPath+"/"+flatSrc + path, savedName); // outUploadPath경로가 반드시 존재한다는 가정하게 처리됨
 		FileCopyUtils.copy(fileData, target);
 		
 		String thumbFile = null;
-		thumbFile = makeThumbnail(uploadPath, path, savedName);
-		System.out.println("아니엇자나:"+thumbFile);
-		return thumbFile; //
+		thumbFile = makeThumbnail(uploadPath+"/"+flatSrc, path, savedName);
+		return flatSrc+thumbFile; //
 	}
 
 	private static String calcPath(String uploadPath) {
@@ -77,7 +75,7 @@ public class UploadFileUtils {
 					sourceImg, 
 					Scalr.Method.AUTOMATIC, 
 					Scalr.Mode.FIT_TO_HEIGHT, 
-					100);
+					150);
 			
 			//작은 이미지 경로. 파일명에 s_가 붙도록 한다.
 			thumbnailName = uploadPath+path+"/s_"+fileName;

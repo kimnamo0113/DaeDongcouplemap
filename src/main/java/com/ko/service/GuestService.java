@@ -19,10 +19,13 @@ public interface GuestService {
 	
 	public Guest selectByEmailAndPassword(String gEmail,String gPassword);
 
-	String create_key();
+	public String create_key();
 
-	public void updateCertification(Guest guest, String check);
-	public void updateCertification(Guest guest) throws Exception;
+	public void updateCertification(Guest guest,String check) throws Exception;
 	
 	public void updatePassWord(Guest guest) throws Exception;
+
+	public void updateGuestImg(String savedName);
+
+	public void updateAll(Guest guest);
 }

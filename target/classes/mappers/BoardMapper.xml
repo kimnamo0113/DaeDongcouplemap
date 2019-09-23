@@ -3,7 +3,7 @@
 <mapper namespace="com.ko.mapper.BoardMapper">
 	<insert id="insertBoard" parameterType="Board">
 		INSERT INTO daedong.board
-		(g_no, b_place, b_title, b_content, b_writetime, b_delete, b_flat, b_good)
-		VALUES(#{gNo}, #{bPlace}, #{bTitle}, #{bContent}, now(), 0, 0, 0);
+		(g_no, b_place, b_title, b_hash, b_content, b_writetime, b_delete, b_flat, b_good)
+		VALUES(#{gNo}, #{bPlace}, #{bHash}, #{bTitle}, #{bContent}, now(), 0, 0, 0);
 	</insert>
 </mapper>
