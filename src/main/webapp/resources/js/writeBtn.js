@@ -2,7 +2,6 @@
 	var formData = new FormData();
 //Img bx슬라이드 옵션 정보 담는곳	
 	var mySlider;
-	
 $(function(){
     	
     	
@@ -18,7 +17,13 @@ $(function(){
     	
 /* 글쓰기에서 이미지 업로드시 */    	
     	$("#imgFile").change(function(){
-        	console.log($(this))
+        	
+        	
+        	if(formData.getAll("files").length+$(this)[0].files.length >10){
+        		alert("이미지 파일을 10개 이하로만 올려주세요.");
+        		return ;
+        	};
+        	
 			$($(this)[0].files).each(function(i,obj){
 				var reader = new FileReader();
 				reader.onload = function(e){
@@ -27,16 +32,14 @@ $(function(){
 					
 					var $img =$("<img>").attr("src",e.target.result);
 					var $divText = $("<div>").addClass("divText");
-					var $textArea =$("<textarea>").addClass("form-control imgTextAreaContents");
+					var $textArea =$("<textarea>").addClass("form-control imgTextAreaContents").attr("placeholder","세부 내용");
 					
 					$divImg.append($img);
 					$divText.append($textArea);
 					
 					$div.append($divImg).append($divText);
 					$(".bxslider").append($div);
-					console.log($div)
 					formData.append("files",obj);
-					console.log(i);
 				}
 				reader.readAsDataURL(obj);
 				
@@ -59,9 +62,11 @@ $(function(){
     	}
     	
     	
+    	
+    	
+    	
 /* bx슬라이드 좌우 태그 show/hide */ 
-         $(document).on({
-       	    mouseenter: function () {
+         /*$(document).on({	    mouseenter: function () {
        	    	 $(".bx-next").stop().fadeIn(500);
            		 $(".bx-prev").stop().fadeIn(500);
        	    },
@@ -69,11 +74,22 @@ $(function(){
        	    	 $(".bx-next").stop().fadeOut(500);
             	 $(".bx-prev").stop().fadeOut(500);
        	    }
-       	}, ".bx-viewport"); 
+       	}, ".bx-viewport");*/ 
+    	
+    	
+    	
+         $(document).on({mouseenter: function () {
+        	 $(this).next().find(".bx-next").stop().fadeIn(500);
+        	 $(this).next().find(".bx-prev").stop().fadeIn(500);
+         },
+         mouseleave: function () {
+        	 $(this).next().find(".bx-next").stop().fadeOut(500);
+        	 $(this).next().find(".bx-prev").stop().fadeOut(500);
+         }
+         }, ".bx-viewport"); 
          
          $(document).on("mouseover",".bx-next, .bx-prev",function(){
-        	 $(".bx-next").stop().fadeIn(500);
-       		 $(".bx-prev").stop().fadeIn(500);
+        	 $(this).stop().fadeIn(500);
          })
 /*  */         
          
@@ -121,10 +137,24 @@ $(function(){
 		})		
 		
 		$("#writeForm").submit(function(e){
-		e.preventDefault();
-		/*formData.append("gNo",$("input[name='userno']").val());*/
-		formData.append("gNo",1);//test용
-		
+			e.preventDefault();
+			/*formData.append("gNo",$("input[name='userno']").val());*/
+			formData.append("gNo",1);//test용
+			var hashResult=$("#hashResult").text();
+			var bContents=$("#bContents").val();
+			var bTitle=$("#bTitle").val();
+			
+			var area = "area:"+$("#area").val();
+			var province = "province:"+$("#province").val();
+			var gu = "gu:"+$("#gu").val();
+			var dong = "dong:"+$("#dong").val();
+			
+			
+			formData.append("bHash",hashResult);
+			formData.append("bContents",bContents);
+			formData.append("bTitle",bTitle);
+			formData.append("bPlace",area+","+province+","+gu+","+dong);
+			
 			for(var i=1; i<$(".imgTextAreaContents").length-1; i++){
 				var textArea=$(".imgTextAreaContents").eq(i);
 				formData.append("cContents",textArea.val());
@@ -144,3 +174,9 @@ $(function(){
 			})
 		})
     });
+
+
+
+
+
+

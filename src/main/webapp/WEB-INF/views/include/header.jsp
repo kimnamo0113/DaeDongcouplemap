@@ -9,15 +9,21 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+
   <title>SB Admin 2 - Dashboard</title>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <!-- Custom fonts for this template-->
   <link href="${pageContext.request.contextPath }/resources/bootTemplate/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
+  
   <link href="${pageContext.request.contextPath }/resources/bootTemplate/css/sb-admin-2.min.css" rel="stylesheet">
-	
+<script src="${pageContext.request.contextPath }/resources/js/writeBtn.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/areaChoice.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/writeBtn.css">
 <style type="text/css">
 	#hanbandoImg{
 		width:50px;
@@ -44,7 +50,6 @@
 </style>
 
 <!-- Bootstrap core JavaScript-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <script type="text/javascript">
 	var test="";
@@ -209,7 +214,7 @@
           </button>
 			
 			<img src="${pageContext.request.contextPath }/resources/images/hanbando.png" id="hanbandoImg">	
-			<button id="test">ㅎㅎ</button>
+			<button id="test">ㅎ</button>
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
@@ -239,15 +244,32 @@
 	              <!-- Dropdown - Alerts -->
 	            </li>
 	          </ul>
+	          
           </c:if>
           <c:if test="${Auth!=null }">
+          <!-- class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" -->
+          	<div class="input-group-append d-none d-sm-inline-block form-inline mr-auto">
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#writeModal">
+                  <i class="fas fa-pen fa-sm"></i> 글쓰기
+                </button>
+              </div>
+          
 	          <ul class="navbar-nav ml-auto">
-	
+	          	<li class="nav-item dropdown no-arrow d-sm-none">
+					<a href="#" id="write" class="nav-link" data-toggle="modal" data-target="#writeModal" aria-haspopup="true" aria-expanded="false">
+			          	<i class="fas fa-pen fa-fw">
+			          	</i>
+		          	</a>
+		         </li>
 	            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
 	            <li class="nav-item dropdown no-arrow d-sm-none">
+	            
 	              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-search fa-fw"></i>
 	              </a>
+	              
+	              
+	              
 	              <!-- Dropdown - Messages -->
 	              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
 	                <form class="form-inline mr-auto w-100 navbar-search">
@@ -262,7 +284,53 @@
 	                </form>
 	              </div>
 	            </li>
-	
+				
+				<!-- Modal -->
+				  <div class="modal fade" id="writeModal" role="dialog">
+		
+					    <div class="modal-dialog">
+					    
+					      <!-- Modal content-->
+					      <div class="modal-content">
+				
+						        <div>
+						        
+							        <div class="modal-header">
+							          <h4 class="modal-title">글쓰기</h4>
+							          <button type="button" class="close" data-dismiss="modal">&times;</button>
+							        </div>
+							        <div class="row user-up1">
+								        <select name="area" id="area" class="form-control">
+								    		<option>지역선택</option>
+								    	</select>
+								    	<select name="province" id="province" class="form-control"></select>
+								    	<select name="gu" id="gu" class="form-control"></select>
+								    	<select name="dong" id="dong" class="form-control"></select>
+							    	</div>
+					        </div>
+			       
+			       	<form id="writeForm" action="insertBoard2" method="post" enctype="multipart/form-data">
+				        <div id="slideHidden"><div class="bxslider"></div></div>
+				        		<input type="text" id="bTitle" class="form-control list-group-item" placeholder="제목">
+						  		<label for="imgFile" class="list-group-item">업로드 <span>(10개)</span></label>
+								<input type="file" name="file" id="imgFile" style="display:none" multiple="multiple">
+								<textarea id="bContents" class="form-control list-group-item" placeholder="내용"></textarea>
+								<input type="text" class="form-control list-group-item" placeholder="친구 태그하기">
+						  		<input type="text" id="hashTag" class="form-control list-group-item" placeholder="검색 키워드">
+						  		
+						  		<div id="hashResult" class="form-contorl"></div><br>
+				        		<input type="hidden" name="userno" value="${Auth.userno }">
+					    <div class="modal-footer">
+					   		<button type="button" id="test">test</button>
+				          	<input type="submit" class="btn btn-default" value="Write">
+				          	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        </div>
+			        </form>
+			      </div>
+			      
+			    </div>
+			  </div>
+			   <!--  -->
 	            <!-- Nav Item - Alerts -->
 	            <li class="nav-item dropdown no-arrow mx-1">
 	              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -420,7 +488,7 @@
 	            <!-- Nav Item - User Information -->
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${Auth.username }</span>
 	                <c:if test="${Auth.userimage!='' }">
 						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename=${Auth.userimage}"  class="img-profile rounded-circle profileImg" data-toggle="modal" data-target="#myModal">
 					</c:if>
@@ -454,6 +522,7 @@
 	            </li>
 	
 	          </ul>
+	          
 	          </c:if>
         </nav>
         

@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -23,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +38,7 @@ import com.ko.domain.Auth;
 import com.ko.domain.Board;
 import com.ko.domain.Content;
 import com.ko.domain.Guest;
+import com.ko.service.BoardService;
 import com.ko.service.GuestService;
 import com.ko.util.UploadFileUtils;
 import com.ko.util.UploadServerFileUrl;
@@ -54,7 +58,8 @@ public class UploadController {
 	
 	@Autowired
 	private GuestService gService;
-	
+	@Autowired
+	private BoardService bService;
 	
 	@RequestMapping(value="/displayFile",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<byte[]> displayFile(String filename){
@@ -179,24 +184,23 @@ public class UploadController {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
 	@RequestMapping(value = "insertBoard2", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<String> insertBoard2(
 			List<MultipartFile> files,
-			Board board, String hash, @RequestParam("cContents") List<String> cContents,
+			Board board,
+			@RequestParam("cContents") List<String> cContents,
 			Area area,
 			HttpSession session) throws IOException, Exception {
 		logger.info("------------------insertBoard2");
 		
 		ResponseEntity<String> entity=null;
 		
-		ArrayList<String> list = new ArrayList<>();
-		System.out.println(board);
-		for(String content:cContents) {
-			System.out.println(content);
-		}
-		
-		
-		for(MultipartFile file : files) {
+		ArrayList<Map<String, String>> imgNameList = new ArrayList<>();
+				
+		for(int i=0; i<files.size(); i++) {
+			MultipartFile file = files.get(i);
 			String savedName = UploadFileUtils.uploadFile(
 					outUploadPath, 
 					file.getOriginalFilename(), 
@@ -204,11 +208,17 @@ public class UploadController {
 					"boardImg"
 					);
 			System.out.println(savedName);
-			list.add(savedName);
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("content", cContents.get(i));
+			map.put("file", savedName);
+			imgNameList.add(map);
 		}
-		for(String test : list) {
-			System.out.println("board ImgName:"+test);
-		}
+		
+		bService.insertBoard(board,imgNameList);
+		
+			
+		
+		
 		entity=new ResponseEntity<String>("good",HttpStatus.OK);
 		return entity;
 	}

@@ -45,11 +45,11 @@ public class BoardController {
 	BoardService service;
 	
 	
-	@RequestMapping(value="write",method=RequestMethod.GET)
+/*	@RequestMapping(value="write",method=RequestMethod.GET)
 	public void writeGET() {
 		logger.info("--------------------board/write");
 	}
-	
+*/	
 	
 	@RequestMapping(value = "coding")
 	public String coding() {
@@ -63,13 +63,22 @@ public class BoardController {
 		
 		Auth auth=(Auth)session.getAttribute("Auth");
         
-        board.setbContent(editor);
+        board.setbContents(editor);
         board.setbPlace(area.getStrChange());
         board.setgNo(auth.getUserno());
-        service.insertBoard(board);
+        /*service.insertBoard(board);*/
         return "redirect:/";
     }
 	
+	@RequestMapping(value="list",method=RequestMethod.GET)
+	public void list(Model model) {
+		logger.info("---------------- list");
+		List<Board> boards = service.selectAll();
+		for(Board board : boards) {
+			System.out.println(board);
+		}
+		model.addAttribute("boards",boards);
+	}
 
  
 	

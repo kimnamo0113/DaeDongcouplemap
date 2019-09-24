@@ -24,3 +24,9 @@ select * from guest where g_email = 'klnver@naver.com';
 select g_password,length(g_password) from guest;
 select password('TTTTT1'), length(password('1234'));
 
+
+
+select b.b_no, g_no, m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good
+from board b
+left join content c
+on c.b_no = b.b_no

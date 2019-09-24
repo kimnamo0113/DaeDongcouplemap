@@ -1,6 +1,13 @@
+	
+	.user-up1{
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+	
 	#slideHidden{
 		display: none;
 	}
+	
 	.bx-next, .bx-prev{
 		display: none;
 	}

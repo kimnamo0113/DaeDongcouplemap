@@ -6,8 +6,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-<script src="${pageContext.request.contextPath }/resources/js/writeBtn.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/writeBtn.css">
+
 <style>
 	#profileImg{
 		cursor: pointer;
@@ -78,9 +77,7 @@
 	  		</div>
 	  		<h2 class="h5 mb-0 text-gray-800">${Auth.username}</h2>
 	  	</div>
-	  	<div class="d-none d-sm-inline-block">
-			 <a href="#" id="write" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#writeModal"><i class="fas fa-download fa-sm text-white-50"></i>글쓰기</a>
-		</div>  	
+	  	  	
 	</div>
     
     
