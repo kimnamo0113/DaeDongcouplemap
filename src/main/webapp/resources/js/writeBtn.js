@@ -3,7 +3,7 @@
 //Img bx슬라이드 옵션 정보 담는곳	
 	var mySlider;
 	
-    $(function(){
+$(function(){
     	
     	
     	mySlider=$('.bxslider').bxSlider({
@@ -13,6 +13,7 @@
     		  pager: true,
     		  pagerType : 'short',
     		  slideWidth: 600,
+    		  touchEnabled:false
     		});
     	
 /* 글쓰기에서 이미지 업로드시 */    	
@@ -26,7 +27,7 @@
 					
 					var $img =$("<img>").attr("src",e.target.result);
 					var $divText = $("<div>").addClass("divText");
-					var $textArea =$("<textarea>").addClass("form-control");
+					var $textArea =$("<textarea>").addClass("form-control imgTextAreaContents");
 					
 					$divImg.append($img);
 					$divText.append($textArea);
@@ -35,6 +36,7 @@
 					$(".bxslider").append($div);
 					console.log($div)
 					formData.append("files",obj);
+					console.log(i);
 				}
 				reader.readAsDataURL(obj);
 				
@@ -78,7 +80,7 @@
 /* 해시태그 이벤트 */
          function hashPut(){
          	var text=$("#hashTag").val();
-         	var $span = $("<span>").html("<img src='${pageContext.request.contextPath}/resources/images/x.png'>");
+         	var $span = $("<span>").html("<img src='resources/images/x.png'>");
          	var $p = $("<p>").text("#"+text);
          	
          	
@@ -117,12 +119,20 @@
 			  console.log(item[1]); // key, value를 각각 출력
 			}
 		})		
- 		$("#f1").submit(function(){
- 			e.preventDefault(); //ajax로 처리하므로, submit 안되게 막음
- 			alert("hi")
-			formData.append("userid",$("input[name='userid']").val());
+		
+		$("#writeForm").submit(function(e){
+		e.preventDefault();
+		/*formData.append("gNo",$("input[name='userno']").val());*/
+		formData.append("gNo",1);//test용
+		
+			for(var i=1; i<$(".imgTextAreaContents").length-1; i++){
+				var textArea=$(".imgTextAreaContents").eq(i);
+				formData.append("cContents",textArea.val());
+				console.log(textArea.val());
+			}
+			
 			$.ajax({
-				url:"insertBoard2",
+				url:"/daedong/upload/insertBoard2",
 				type:"post",
 				data:formData,
 				processData:false, //FormData 를 보낼 경우 processData:false, contentType:false처리 필요
@@ -130,9 +140,7 @@
 				success:function(res){
 					console.log(res);
 					formData = new FormData();
-					
 				}
 			})
- 			
- 		})
+		})
     });

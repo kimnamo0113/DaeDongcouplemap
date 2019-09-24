@@ -156,7 +156,7 @@ ALTER TABLE `daedong`.`Chating`
 		);
 
 -- 게시판내용
-CREATE TABLE `daedong`.`Contents` (
+CREATE TABLE `daedong`.`Content` (
 	`c_no`       INT          NOT NULL COMMENT '내용번호', -- 내용번호
 	`b_no`       INT          NULL     COMMENT '게시판번호', -- 게시판번호
 	`c_contents` VARCHAR(500) NULL     COMMENT '내용', -- 내용
@@ -165,8 +165,8 @@ CREATE TABLE `daedong`.`Contents` (
 COMMENT '게시판내용';
 
 -- 게시판내용
-ALTER TABLE `daedong`.`Contents`
-	ADD CONSTRAINT `PK_Contents` -- 게시판내용 기본키
+ALTER TABLE `daedong`.`Content`
+	ADD CONSTRAINT `PK_Content` -- 게시판내용 기본키
 		PRIMARY KEY (
 			`c_no` -- 내용번호
 		);
@@ -272,8 +272,8 @@ ALTER TABLE `daedong`.`Chating`
 		);
 
 -- 게시판내용
-ALTER TABLE `daedong`.`Contents`
-	ADD CONSTRAINT `FK_Board_TO_Contents` -- 게시판 -> 게시판내용
+ALTER TABLE `daedong`.`Content`
+	ADD CONSTRAINT `FK_Board_TO_Content` -- 게시판 -> 게시판내용
 		FOREIGN KEY (
 			`b_no` -- 게시판번호
 		)

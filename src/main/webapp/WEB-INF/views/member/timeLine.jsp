@@ -57,7 +57,7 @@
   	<div class="form-group row">
   		<div class="col-sm-4">
 			<c:if test="${guest.gImage!='' }">
-				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal" width="200" height="200">
+				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal" width="150" height="150">
 			</c:if>  	
 		  	<c:if test="${guest.gImage=='' }">
 		  		<img id="profileImg" src="${pageContext.request.contextPath }/resources/images/boy.png" class="img-circle profileImg" data-toggle="modal" data-target="#myModal">
