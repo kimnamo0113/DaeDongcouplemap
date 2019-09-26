@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -73,13 +75,21 @@ public class BoardController {
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	public void list(Model model) {
 		logger.info("---------------- list");
-		List<Board> boards = service.selectAll();
-		for(Board board : boards) {
-			System.out.println(board);
-		}
+		List<Board> boards = service.selectLimit10(0);
 		model.addAttribute("boards",boards);
 	}
-
- 
+	
+	@ResponseBody
+	@RequestMapping(value="listAdd",method=RequestMethod.GET)
+	public ResponseEntity<List<Board>> listAdd(int startPage) {
+		logger.info("---------------- list");
+		
+		List<Board> boards = service.selectLimit10(startPage);
+		ResponseEntity<List<Board>> entity = null;
+		
+		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
+		
+		return entity;
+	}
 	
 }

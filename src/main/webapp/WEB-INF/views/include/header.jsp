@@ -11,9 +11,11 @@
 
 
   <title>SB Admin 2 - Dashboard</title>
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+
+
   <!-- Custom fonts for this template-->
   <link href="${pageContext.request.contextPath }/resources/bootTemplate/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -220,12 +222,16 @@
             <div class="input-group">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" id="writeBtn">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
             </div>
           </form>
+          
+          
+          
+          
           
 
           <!-- Topbar Navbar -->
@@ -249,7 +255,7 @@
           <c:if test="${Auth!=null }">
           <!-- class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" -->
           	<div class="input-group-append d-none d-sm-inline-block form-inline mr-auto">
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#writeModal">
+                <button class="btn btn-primary" type="button" id="writeBtn" data-toggle="modal" data-target="#writeModal">
                   <i class="fas fa-pen fa-sm"></i> 글쓰기
                 </button>
               </div>
@@ -489,10 +495,10 @@
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${Auth.username }</span>
-	                <c:if test="${Auth.userimage!='' }">
+	                <c:if test="${Auth.userimage!=null }">
 						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename=${Auth.userimage}"  class="img-profile rounded-circle profileImg" data-toggle="modal" data-target="#myModal">
 					</c:if>
-					<c:if test="${Auth.userimage=='' }">
+					<c:if test="${Auth.userimage==null }">
 				  		<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="img-profile rounded-circle profileImg" data-toggle="modal" data-target="#myModal">
 	                </c:if>
 	                

@@ -35,6 +35,12 @@ public class BoardDaoImpl implements BoardDao{
 	public List<Board> selectAll() {
 		return sqlSession.selectList(namespace+".selectAll");
 	}
+
+
+	@Override
+	public List<Board> selectLimit10(int i) {
+		return sqlSession.selectList(namespace+".selectLimit10",i);
+	}
 	
 	
 }

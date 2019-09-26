@@ -3,8 +3,6 @@
 //Img bx슬라이드 옵션 정보 담는곳	
 	var mySlider;
 $(function(){
-    	
-    	
     	mySlider=$('.bxslider').bxSlider({
     		  auto: false,
     		  autoControls: false,
@@ -42,8 +40,6 @@ $(function(){
 					formData.append("files",obj);
 				}
 				reader.readAsDataURL(obj);
-				
-				
 			});
         	imgLoading();
     	})
@@ -52,16 +48,16 @@ $(function(){
     	var lodingTime;
 
     	function imgLoading() {
-    		lodingTime= setInterval(alertFunc, 2000);
+    		lodingTime= setInterval(alertFunc, 500);
     	}
+    	
+    	
 
     	function alertFunc() {
     		$("#slideHidden").show();
             mySlider.reloadSlider();
             clearInterval(lodingTime);
     	}
-    	
-    	
     	
     	
     	
@@ -172,7 +168,13 @@ $(function(){
 					formData = new FormData();
 				}
 			})
+			$(".close").click();
 		})
+		
+		function clearTf(){
+			
+		}
+		
     });
 
 
