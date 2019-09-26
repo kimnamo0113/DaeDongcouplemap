@@ -316,8 +316,9 @@
 					        </div>
 			       
 			       	<form id="writeForm" action="insertBoard2" method="post" enctype="multipart/form-data">
+			       				<input type="text" id="bTitle" class="form-control list-group-item" placeholder="제목">
 				        <div id="slideHidden"><div class="bxslider"></div></div>
-				        		<input type="text" id="bTitle" class="form-control list-group-item" placeholder="제목">
+				        		
 						  		<label for="imgFile" class="list-group-item">업로드 <span>(10개)</span></label>
 								<input type="file" name="file" id="imgFile" style="display:none" multiple="multiple">
 								<textarea id="bContents" class="form-control list-group-item" placeholder="내용"></textarea>

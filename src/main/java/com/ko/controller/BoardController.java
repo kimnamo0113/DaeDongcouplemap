@@ -83,6 +83,11 @@ public class BoardController {
 	public void list(Model model) {
 		logger.info("---------------- list");
 		List<Board> boards = bService.selectLimit10(0);
+		
+		for(Board board : boards) {
+			System.out.println(board.getContents());
+			System.out.println(board.getReplys());
+		}
 		model.addAttribute("boards",boards);
 	}
 	
@@ -99,9 +104,9 @@ public class BoardController {
 		return entity;
 	}
 	
-	@ResponseBody
 	@RequestMapping(value="insertReply",method=RequestMethod.POST)
-	public ResponseEntity<Reply> insertReply(Reply reply){
+	public ResponseEntity<Reply> insertReply(@RequestBody Reply reply){
+		logger.info("--------------- insertReply reply : "+reply);
 		ResponseEntity<Reply> entity=null;
 		rService.insertReply(reply);
 		return entity;

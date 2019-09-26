@@ -2,6 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ko.mapper.GuestMapper">
 	
+	<resultMap type="Guest" id="GuestBasic">
+		<result property="gNo" column="g_no" />
+		<result property="gId" column="g_id" />
+		<result property="gPassword" column="g_password" />
+		<result property="gName" column="g_name" />
+		<result property="gTel" column="g_tel" />
+		<result property="gEmail" column="g_email" />
+		<result property="gBirth" column="g_birth" />
+		<result property="gJoin" column="g_join" />
+		<result property="gMemo" column="g_memo" />
+		<result property="gGender" column="g_gender" />
+		<result property="gDelete" column="g_delete" />
+		<result property="gAddr" column="g_addr" />
+		<result property="gAddr2" column="g_addr2" />
+		<result property="gAddr3" column="g_addr3" />
+		<result property="gImage" column="g_image" />
+		<result property="gCertification" column="g_certification" />
+	</resultMap>
+	
+	
 	<select id="selectById" resultType="Guest" parameterType="Guest">
 		select * from guest where g_id = #{gId}
 	</select>

@@ -2,9 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ko.mapper.ReplyMapper">
 
+	<resultMap type="Reply" id="ReplyBasic">
+		<result property="rNo" column="r_no" />
+		<result property="rContent" column="r_content" />
+		<result property="rWritetime" column="r_writetime" />
+		<result property="rDelete" column="r_delete" />
+		<result property="rGood" column="r_good" />
+		
+		<association property="rBNo" resultMap="com.ko.mapper.BoardMapper.BoardBasic"/>
+		<association property="rGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic"/>
+	</resultMap>
+
+
 	<insert id="insertReply" parameterType="Reply">
 		INSERT INTO daedong.reply
 		(b_no, g_no, m_no, r_content, r_writetime, r_delete, r_good)
-		VALUES(#{bNo}, #{gNo}, #{mNo}, #{rContent}, now(), 0, 0);
+		VALUES(#{rBNo.bNo}, #{rGNo.gNo}, #{rMNo.mNo}, #{rContent}, now(), 0, 0);
 	</insert>
 </mapper>

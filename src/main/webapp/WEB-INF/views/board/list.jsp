@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>    
 <%@ include file="../include/header.jsp" %>
 
 
@@ -67,6 +67,7 @@ $(function(){
 	$(window).scroll(
 			function() { // 스크롤 이벤트가 발생할 때마다 인식
 				if ( $(window).scrollTop() == $(document).height() - $(window).height() ) {
+					alert("???")
 					startPage+=10;
 					$.ajax({
 						url:"${pageContext.request.contextPath}/board/listAdd",
@@ -128,9 +129,28 @@ $(function(){
 			});
 	
 	$(document).on("click",".reply-addBtn",function(){
-		var str=$(this).prev().val();
+		var rContent=$(this).prev().val();
+		var bNo=$(this).prev().attr("data-bno");
+		
+		var json = {
+				rContent:rContent,
+				rBNo:{bNo:bNo},
+				rGNo:{gNo:"${Auth.userno}"}
+			};
+		var data = JSON.stringify(json)
+		
 		$.ajax({
-			url:"${pageContext.request.contextPath}/board/insert"
+			url:"${pageContext.request.contextPath}/board/insertReply",
+			type:"post",
+			data:data,
+			dataType:"json",
+			headers:{
+				"Content-Type":"application/json"
+			},
+			success:function(res){
+				console.log(res);
+			}
+			
 		})
 	})
 	
@@ -188,7 +208,10 @@ $(function(){
 					<p id="bContents">${board.bContents }</p>
 					<p id="bHash">${board.bHash }</p>
 					<p id="replys">
-						
+						<c:forEach var="r" items="${board.replys }">
+							${r}
+							<p>${r.rGNo.gId } : ${r.rContent } <span><fmt:formatDate value="${r.rWritetime }" pattern="yy-MM-dd hh:mm"/> </span></p>
+						</c:forEach>
 					</p>
 	                </div>
                 	<div class="reply-text row">
