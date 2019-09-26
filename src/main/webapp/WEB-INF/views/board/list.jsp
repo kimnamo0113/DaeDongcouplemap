@@ -39,7 +39,7 @@ $(function(){
 			  stopAutoOnClick: false,
 			  pager: true,
 			  pagerType : 'short',
-			  slideWidth: 720,
+			  slideWidth: 850,
 			  touchEnabled:false,
 	
 			});
@@ -111,7 +111,7 @@ $(function(){
 									  stopAutoOnClick: false,
 									  pager: true,
 									  pagerType : 'short',
-									  slideWidth: 720,
+									  slideWidth: 850,
 									  touchEnabled:false,
 							
 									});
@@ -126,6 +126,20 @@ $(function(){
 			    }
 
 			});
+	
+	$(document).on("click",".reply-addBtn",function(){
+		var str=$(this).prev().val();
+		$.ajax({
+			url:"${pageContext.request.contextPath}/board/insert"
+		})
+	})
+	
+	
+	$(document).on("keydown",".reply-textArea",function(key){
+		if (key.keyCode == 13) {
+     		$(this).next().click();
+     	}
+	})
 })
 </script>
         <!-- Begin Page Content -->
@@ -138,7 +152,7 @@ $(function(){
             
           </div>
 		  
-          <div class="row col-lg-6" id="mainScroll">
+          <div class="row col-lg-8" id="mainScroll">
 
             <!-- Content Column -->
             
@@ -178,8 +192,8 @@ $(function(){
 					</p>
 	                </div>
                 	<div class="reply-text row">
-                		<textarea rows="2" cols="" class="form-control col-sm-10"></textarea>
-                		<button type="button" class="btn btn-default active col-sm-1">게시</button>
+                		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bno="${board.bNo }"></textarea>
+                		<button type="button" class="reply-addBtn btn btn-default active col-sm-1">게시</button>
                 	</div>
 	              </div>
 	

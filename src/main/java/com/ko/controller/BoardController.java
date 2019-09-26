@@ -32,7 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ko.domain.Area;
 import com.ko.domain.Auth;
 import com.ko.domain.Board;
+import com.ko.domain.Reply;
 import com.ko.service.BoardService;
+import com.ko.service.ReplyService;
 import com.ko.util.UploadFileUtils;
 import com.ko.util.UploadServerFileUrl;
 
@@ -44,8 +46,10 @@ public class BoardController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Autowired
-	BoardService service;
+	private BoardService bService;
 	
+	@Autowired
+	private ReplyService rService;
 	
 /*	@RequestMapping(value="write",method=RequestMethod.GET)
 	public void writeGET() {
@@ -75,7 +79,7 @@ public class BoardController {
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	public void list(Model model) {
 		logger.info("---------------- list");
-		List<Board> boards = service.selectLimit10(0);
+		List<Board> boards = bService.selectLimit10(0);
 		model.addAttribute("boards",boards);
 	}
 	
@@ -84,11 +88,19 @@ public class BoardController {
 	public ResponseEntity<List<Board>> listAdd(int startPage) {
 		logger.info("---------------- list");
 		
-		List<Board> boards = service.selectLimit10(startPage);
+		List<Board> boards = bService.selectLimit10(startPage);
 		ResponseEntity<List<Board>> entity = null;
 		
 		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
 		
+		return entity;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="insertReply",method=RequestMethod.POST)
+	public ResponseEntity<Reply> insertReply(Reply reply){
+		ResponseEntity<Reply> entity=null;
+		rService.insertReply(reply);
 		return entity;
 	}
 	
