@@ -69,27 +69,47 @@ public class UploadFileUtils {
 			e.printStackTrace();
 		}
 		//원본 이미지를 활용하여 메모리에 사이즈 변경한 새 이미지 만들기. 높이 100으로 고정하여 가로 비율은 자동 조절
-		String thumbnailName = null;
+		String thumbnailNameS = null;
+		String thumbnailNameM = null;
 		try {
-			BufferedImage destImg = Scalr.resize(
+			BufferedImage destImgS = Scalr.resize(
 					sourceImg, 
 					Scalr.Method.AUTOMATIC, 
 					Scalr.Mode.FIT_TO_HEIGHT, 
 					150);
 			
 			//작은 이미지 경로. 파일명에 s_가 붙도록 한다.
-			thumbnailName = uploadPath+path+"/s_"+fileName;
+			thumbnailNameS = uploadPath+path+"/s_"+fileName;
 			
-			File newFile = new File(thumbnailName);
+			File newFileS = new File(thumbnailNameS);
 			//파일 확장자 찾기
-			String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
+			String formatNameS = fileName.substring(fileName.lastIndexOf(".")+1);
 			//메모리에 담긴 작은 이미지를 파일로 옮김. 
-			ImageIO.write(destImg, formatName.toUpperCase(), newFile); //작은 파일이 생성됨
+			ImageIO.write(destImgS, formatNameS.toUpperCase(), newFileS); //작은 파일이 생성됨
 			//c:/zzz/upload를 뺀 나머지 경로를 리턴함
+			
+			
+			BufferedImage destImgM = Scalr.resize(
+					sourceImg, 
+					Scalr.Method.AUTOMATIC, 
+					Scalr.Mode.FIT_TO_WIDTH, 
+					7100);
+			
+			//작은 이미지 경로. 파일명에 s_가 붙도록 한다.
+			thumbnailNameM = uploadPath+path+"/m_"+fileName;
+			
+			File newFileM = new File(thumbnailNameM);
+			//파일 확장자 찾기
+			String formatNameM = fileName.substring(fileName.lastIndexOf(".")+1);
+			//메모리에 담긴 작은 이미지를 파일로 옮김. 
+			ImageIO.write(destImgM, formatNameM.toUpperCase(), newFileM); //작은 파일이 생성됨
+			//c:/zzz/upload를 뺀 나머지 경로를 리턴함
+			
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	
-		return thumbnailName.substring(uploadPath.length());
+		return thumbnailNameM.substring(uploadPath.length());
 	}
 }

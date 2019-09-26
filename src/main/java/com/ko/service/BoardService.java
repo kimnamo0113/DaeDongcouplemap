@@ -12,4 +12,5 @@ public interface BoardService {
 
 	public void insertBoard(Board board, ArrayList<Map<String, String>> imgNameList);
 	public List<Board> selectAll();
+	public List<Board> selectLimit10(int i);
 }

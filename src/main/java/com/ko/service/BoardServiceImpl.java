@@ -33,5 +33,11 @@ public class BoardServiceImpl implements BoardService{
 	public List<Board> selectAll() {
 		return dao.selectAll();
 	}
+
+	@Override
+	public List<Board> selectLimit10(int i) {
+		return dao.selectLimit10(i);
+	}
+
 	
 }

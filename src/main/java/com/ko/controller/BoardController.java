@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,7 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ko.domain.Area;
 import com.ko.domain.Auth;
 import com.ko.domain.Board;
+import com.ko.domain.Reply;
 import com.ko.service.BoardService;
+import com.ko.service.ReplyService;
 import com.ko.util.UploadFileUtils;
 import com.ko.util.UploadServerFileUrl;
 
@@ -45,8 +49,10 @@ public class BoardController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Autowired
-	BoardService service;
+	private BoardService bService;
 	
+	@Autowired
+	private ReplyService rService;
 	
 /*	@RequestMapping(value="write",method=RequestMethod.GET)
 	public void writeGET() {
@@ -76,13 +82,29 @@ public class BoardController {
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	public void list(Model model) {
 		logger.info("---------------- list");
-		List<Board> boards = service.selectAll();
-		for(Board board : boards) {
-			System.out.println(board);
-		}
+		List<Board> boards = bService.selectLimit10(0);
 		model.addAttribute("boards",boards);
 	}
-
- 
+	
+	@ResponseBody
+	@RequestMapping(value="listAdd",method=RequestMethod.GET)
+	public ResponseEntity<List<Board>> listAdd(int startPage) {
+		logger.info("---------------- list");
+		
+		List<Board> boards = bService.selectLimit10(startPage);
+		ResponseEntity<List<Board>> entity = null;
+		
+		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="insertReply",method=RequestMethod.POST)
+	public ResponseEntity<Reply> insertReply(Reply reply){
+		ResponseEntity<Reply> entity=null;
+		rService.insertReply(reply);
+		return entity;
+	}
 	
 }

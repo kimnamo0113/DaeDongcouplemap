@@ -7,4 +7,5 @@ import com.ko.domain.Board;
 public interface BoardDao {
 	public void insertBoard(Board board);
 	public List<Board> selectAll();
+	public List<Board> selectLimit10(int i);
 }

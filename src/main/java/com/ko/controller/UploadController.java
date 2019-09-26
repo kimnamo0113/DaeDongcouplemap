@@ -62,7 +62,7 @@ public class UploadController {
 	private BoardService bService;
 	
 	@RequestMapping(value="/displayFile",method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<byte[]> displayFile(String filename){
+	public @ResponseBody ResponseEntity<byte[]> displayFile(String filename,String org){
 		logger.info("----------displayFile,filename="+filename);
 		
 		String formatName = filename.substring(filename.lastIndexOf(".")+1);//확장자만 뽑아냄

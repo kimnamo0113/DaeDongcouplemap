@@ -25,8 +25,14 @@ select g_password,length(g_password) from guest;
 select password('TTTTT1'), length(password('1234'));
 
 
+select b.b_no, g_no, m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good from 
+(select * from board limit 0,10) as b left join content c on c.b_no = b.b_no;
+
 
 select b.b_no, g_no, m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good
-from board b
-left join content c
-on c.b_no = b.b_no
+		from board b
+		limit 0,10
+		;
+	
+select count(*) from board b left join content c on c.b_no = b.b_no;
+		
