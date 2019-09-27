@@ -8,15 +8,43 @@
 		<result property="rWritetime" column="r_writetime" />
 		<result property="rDelete" column="r_delete" />
 		<result property="rGood" column="r_good" />
-		
-		<association property="rBNo" resultMap="com.ko.mapper.BoardMapper.BoardBasic"/>
-		<association property="rGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic"/>
 	</resultMap>
-
+	
+	<resultMap type="Reply" id="ReplyDetail" extends="ReplyBasic">
+		<association property="rGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic" />
+	</resultMap>
 
 	<insert id="insertReply" parameterType="Reply">
 		INSERT INTO daedong.reply
 		(b_no, g_no, m_no, r_content, r_writetime, r_delete, r_good)
 		VALUES(#{rBNo.bNo}, #{rGNo.gNo}, #{rMNo.mNo}, #{rContent}, now(), 0, 0);
 	</insert>
+	
+	<select id="selectBoardLimit10" resultMap="ReplyDetail">
+		SELECT r_no, b_no, r.g_no, m_no, r_content, r_writetime, r_delete, r_good, r.g_no, g_name, g_id
+		FROM reply r
+		join guest g
+		on g.g_no=r.g_no
+		where b_no=#{bNo}
+		order by r_no desc
+		limit 0,5;
+	</select>
+	
+	<select id="selectReplyCount" resultType="int">
+		select count(r_no)
+		FROM reply r
+		where b_no=#{bNo}
+	</select>
+	
+	<select id="selectPageByBNoPage" resultMap="ReplyDetail">
+		select r_no, b_no, r.g_no, m_no, r_content, r_writetime, r_delete, r_good, r.g_no, g_name, g_id 
+		from reply r 
+		join guest g
+		on g.g_no = r.g_no
+		where b_no = #{bNo}
+		order by r_no desc
+		limit #{cri.pageStart},#{cri.perPageNum}
+	</select>
+	
+	
 </mapper>

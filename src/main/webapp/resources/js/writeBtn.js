@@ -156,7 +156,7 @@ $(function(){
 				formData.append("cContents",textArea.val());
 				console.log(textArea.val());
 			}
-			
+			formData.append("cContents","List로 보내기위해서");
 			$.ajax({
 				url:"/daedong/upload/insertBoard2",
 				type:"post",
@@ -166,10 +166,15 @@ $(function(){
 				success:function(res){
 					console.log(res);
 					formData = new FormData();
+					$(".close").click();
+					
+					location.href="/daedong/board/list";
 				}
 			})
-			$(".close").click();
+			
 		})
+		
+		
 		
 		function clearTf(){
 			

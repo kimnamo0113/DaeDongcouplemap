@@ -14,7 +14,7 @@ public class Board {
 	private String bDelete;
 	private String bFlat;
 	private int bGood;
-	
+	private int replyCount; 
 	private List<Content> contents;
 	private List<Reply> replys;
 	public Board() {
@@ -22,7 +22,8 @@ public class Board {
 		// TODO Auto-generated constructor stub
 	}
 	public Board(int bNo, int gNo, int mNo, String bPlace, String bTitle, String bHash, String bContents,
-			String bWritetime, String bDelete, String bFlat, int bGood, List<Content> contents, List<Reply> replys) {
+			String bWritetime, String bDelete, String bFlat, int bGood, int replyCount, List<Content> contents,
+			List<Reply> replys) {
 		super();
 		this.bNo = bNo;
 		this.gNo = gNo;
@@ -35,6 +36,7 @@ public class Board {
 		this.bDelete = bDelete;
 		this.bFlat = bFlat;
 		this.bGood = bGood;
+		this.replyCount = replyCount;
 		this.contents = contents;
 		this.replys = replys;
 	}
@@ -104,6 +106,12 @@ public class Board {
 	public void setbGood(int bGood) {
 		this.bGood = bGood;
 	}
+	public int getReplyCount() {
+		return replyCount;
+	}
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
+	}
 	public List<Content> getContents() {
 		return contents;
 	}
@@ -120,10 +128,9 @@ public class Board {
 	public String toString() {
 		return "Board [bNo=" + bNo + ", gNo=" + gNo + ", mNo=" + mNo + ", bPlace=" + bPlace + ", bTitle=" + bTitle
 				+ ", bHash=" + bHash + ", bContents=" + bContents + ", bWritetime=" + bWritetime + ", bDelete="
-				+ bDelete + ", bFlat=" + bFlat + ", bGood=" + bGood + ", contents=" + contents + ", replys=" + replys
-				+ "]";
+				+ bDelete + ", bFlat=" + bFlat + ", bGood=" + bGood + ", replyCount=" + replyCount + ", contents="
+				+ contents + ", replys=" + replys + "]";
 	}
-	
 	
 	
 }

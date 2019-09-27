@@ -56,12 +56,43 @@ select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime
 	
 select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good,
 			c.c_no, c.c_contents, c.c_image,
-			r.r_no , r.b_no as r_b_no, r.g_no as r_g_no, r.m_no as r_m_no, r.r_content, r.r_good,r.r_writetime 
-		from (select * from board order by b_no desc limit 11,10) as b 
+			r.r_no , r.b_no as r_b_no, r.g_no as r_g_no, r.m_no as r_m_no, r.r_content, r.r_good,r.r_writetime,
+			g.g_id
+		from (select * from board order by b_no desc limit 0,10) as b 
 		left join content c
 			on c.b_no = b.b_no
 		left join reply r
 			on r.b_no = b.b_no
+		left join guest g
+			on g.g_no=r.g_no
+		order by b.b_no desc,r_no desc;
+	
+select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good,
+			c.c_no, c.c_contents, c.c_image
+		from (select * from board order by b_no desc limit 0,10) as b 
+		left join content c
+			on c.b_no = b.b_no
+		order by b.b_no desc;
+	
+	
+	
+	SELECT r_no, b_no, r.g_no, m_no, r_content, r_writetime, r_delete, r_good
+		FROM reply r
+		join guest g
+		on g.g_no=r.g_no
+		where b_no=32
+		order by r_no desc
+		limit 0,5;
+	
+	select count(r_no)
+		FROM reply r
+		where b_no=32
+		order by r_no desc
 		
 		
+select * from reply 
+where b_no = 32
+order by r_no desc
+limit #{cri.pageStart},#{cri.perPageNum}
+;
 		

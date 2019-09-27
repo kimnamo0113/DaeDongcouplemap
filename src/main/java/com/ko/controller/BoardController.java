@@ -1,18 +1,8 @@
 package com.ko.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,26 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ko.domain.Area;
-import com.ko.domain.Auth;
 import com.ko.domain.Board;
+import com.ko.domain.Criteria;
+import com.ko.domain.PageMaker;
 import com.ko.domain.Reply;
 import com.ko.service.BoardService;
 import com.ko.service.ReplyService;
-import com.ko.util.UploadFileUtils;
-import com.ko.util.UploadServerFileUrl;
-
-
-
-
 
 
 @Controller
@@ -66,7 +47,7 @@ public class BoardController {
 	    return "index";
 	 }
 	
-	@RequestMapping(value = "insertBoard", method = RequestMethod.POST)
+	/*@RequestMapping(value = "insertBoard", method = RequestMethod.POST)
     public String insertBoard(String editor,Board board,String hash, Area area,HttpSession session) {
 		logger.info("------------------insertBoard");
 		
@@ -75,19 +56,15 @@ public class BoardController {
         board.setbContents(editor);
         board.setbPlace(area.getStrChange());
         board.setgNo(auth.getUserno());
-        /*service.insertBoard(board);*/
+        service.insertBoard(board);
         return "redirect:/";
-    }
+    }*/
 	
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	public void list(Model model) {
 		logger.info("---------------- list");
 		List<Board> boards = bService.selectLimit10(0);
 		
-		for(Board board : boards) {
-			System.out.println(board.getContents());
-			System.out.println(board.getReplys());
-		}
 		model.addAttribute("boards",boards);
 	}
 	
@@ -112,4 +89,38 @@ public class BoardController {
 		return entity;
 	}
 	
+	@RequestMapping(value="selectReply",method=RequestMethod.POST)
+	public ResponseEntity<Map<String,Object>> selectReply(int bNo,int page){
+		logger.info("--------------------- selectReply");
+		ResponseEntity<Map<String,Object>> entity = null;
+		System.out.println(bNo);
+		System.out.println(page);
+		
+		Criteria cri = new Criteria();
+		cri.setPage(page);
+		
+		try {
+			List<Reply> replys = rService.selectPageByBNoPage(bNo,cri);
+			
+			System.out.println(replys.size());
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			
+			pageMaker.setTotalCount(rService.selectReplyCount(bNo));
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("replys", replys);
+			map.put("pageMaker", pageMaker);
+			
+			entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<Map<String,Object>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		
+		return entity;
+	}
 }

@@ -11,9 +11,13 @@
 
 
   <title>SB Admin 2 - Dashboard</title>
+  
+    
+  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+
 
 
   <!-- Custom fonts for this template-->
@@ -48,6 +52,16 @@
 	.profileImg{
 		border-radius: 50% 50% 50% 50%;
 		border:1px solid #ccc;
+	}
+	
+	nav.navbar{
+		position: fixed;
+		top:0;
+		z-index:10000;
+	}
+	ul.sidebar{
+		z-index:10001;
+		
 	}
 </style>
 
@@ -208,7 +222,8 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <div class="row">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow col-sm-10">
 
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -532,7 +547,7 @@
 	          
 	          </c:if>
         </nav>
-        
+        </div>
         <!-- End of Topbar -->
         <div id="map">
         </div>

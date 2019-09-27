@@ -1,10 +1,10 @@
 package com.ko.domain;
 
-public class Creiteria {
+public class Criteria {
 	private int page; //페이지 번호
 	private int perPageNum; //페이지당 보일 게시글 갯수
 	
-	public Creiteria() {
+	public Criteria() {
 		page=1;
 		perPageNum=10;
 	}

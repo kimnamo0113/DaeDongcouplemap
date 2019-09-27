@@ -63,7 +63,7 @@ public class UploadController {
 	
 	@RequestMapping(value="/displayFile",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<byte[]> displayFile(String filename,String org){
-		logger.info("----------displayFile,filename="+filename);
+		/*logger.info("----------displayFile,filename="+filename);*/
 		
 		String formatName = filename.substring(filename.lastIndexOf(".")+1);//확장자만 뽑아냄
 		MediaType mType = null;
@@ -198,7 +198,7 @@ public class UploadController {
 		ResponseEntity<String> entity=null;
 		
 		ArrayList<Map<String, String>> imgNameList = new ArrayList<>();
-				
+		
 		for(int i=0; i<files.size(); i++) {
 			MultipartFile file = files.get(i);
 			String savedName = UploadFileUtils.uploadFile(
@@ -207,7 +207,6 @@ public class UploadController {
 					file.getBytes(),
 					"boardImg"
 					);
-			System.out.println(savedName);
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("content", cContents.get(i));
 			map.put("file", savedName);

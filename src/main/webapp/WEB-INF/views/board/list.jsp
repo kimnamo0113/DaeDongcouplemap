@@ -26,6 +26,25 @@
 		margin-right: 10px;
 		border:1px solid #d1d3e2
 	}
+	div.replys div.reply{
+		display: block;
+		clear: both;
+	}
+	div.replys div.reply label.id{
+		display:inline-block;
+		width:80px;
+		float: left;
+	}
+	div.replys div.reply span.text{
+		display:inline-block;
+		width:80%;
+		float: left;
+	}
+	div.replys div.divAddReply{
+		clear: both;
+		display: block;
+	}
+	
 </style>
 <script>
 var mySlider2 = [];
@@ -39,7 +58,7 @@ $(function(){
 			  stopAutoOnClick: false,
 			  pager: true,
 			  pagerType : 'short',
-			  slideWidth: 850,
+			  slideWidth: 980,
 			  touchEnabled:false,
 	
 			});
@@ -147,6 +166,7 @@ $(function(){
 			headers:{
 				"Content-Type":"application/json"
 			},
+			jsonp: false,
 			success:function(res){
 				console.log(res);
 			}
@@ -160,7 +180,70 @@ $(function(){
      		$(this).next().click();
      	}
 	})
+	
+	
+	
+		
+	$(document).on("click",".addReply",function(){
+		$(this).hide();
+		var ulObj=$(this).parent().parent().parent().find(".pagination");
+		
+		var bNo=$(this).attr("data-bNo");
+		var page=1;
+		
+		getReplyListAll(bNo,page,ulObj);
+		
+	})
+	
+	function getReplyListAll(bNo,page,ulObj){
+		console.log(ulObj);
+		$.ajax({
+			url:"${pageContext.request.contextPath}/board/selectReply",
+			type:"post",
+			data:{bNo:bNo,page:page},
+			dataType:"json",
+			success:function(res){
+				console.log(res);
+				$(ulObj).parent().find(".replysList").empty();
+				
+				$(res.replys).each(function(i,obj){
+					
+				})
+				printPaging(res,ulObj);
+			}
+		})
+	}
+	
+	function printPaging(res,ulObj){
+		$(ulObj).empty();
+		console.log(ulObj);
+		for(var i=res.pageMaker.startPage; i<=res.pageMaker.endPage; i++){
+			var $li = $("<li>").addClass("page-item");
+			var $a = $("<a>").text(i).addClass("page-link");
+			
+			if(res.pageMaker.cri.page == i){
+				$li.addClass("active");
+			}
+			
+			$li.append($a);
+			$(ulObj).append($li);
+		}
+	}
+	
+	
+	
+
+	$(document).on("click", ".pagination a", function(e){
+		e.preventDefault();
+		var page = $(this).text();
+		var ulObj=$(this).parent().parent();
+		var bNo=$(ulObj).attr("data-bNo");
+		
+		getReplyListAll(bNo,page,ulObj);
+	})
 })
+
+
 </script>
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -205,19 +288,35 @@ $(function(){
 	                  </div>
 					<p id="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
 					??님 외 ?명이 좋아합니다.
-					<p id="bContents">${board.bContents }</p>
-					<p id="bHash">${board.bHash }</p>
-					<p id="replys">
-						<c:forEach var="r" items="${board.replys }">
-							${r}
-							<p>${r.rGNo.gId } : ${r.rContent } <span><fmt:formatDate value="${r.rWritetime }" pattern="yy-MM-dd hh:mm"/> </span></p>
-						</c:forEach>
-					</p>
+					<p class="bContents">${board.bContents }</p>
+					<p class="bHash">${board.bHash }</p>
+					<div class="replys">
+						<div class="replysList">
+							<c:if test="${board.replys[0].rNo!=0 }">
+								<c:forEach var="r" items="${board.replys }" step="1" begin="0" end="4">
+									<div class="reply">
+										<label class="id">${r.rGNo.gId } :</label><span class="text">${r.rContent } <span><fmt:formatDate value="${r.rWritetime }" pattern="yy-MM-dd hh:mm"/></span></span><br>
+									</div>
+								</c:forEach>
+								<c:if test="${board.replyCount>5}">
+								<div class="divAddReply">
+									<a class="addReply" data-bNo="${board.bNo}">더보기...</a>
+								</div>
+								</c:if>
+							</c:if>
+						</div>	
+						<ul class="pagination justify-content-center" data-bNo="${board.bNo }">
+							
+						</ul>
+						
+					</div>
 	                </div>
-                	<div class="reply-text row">
-                		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bno="${board.bNo }"></textarea>
-                		<button type="button" class="reply-addBtn btn btn-default active col-sm-1">게시</button>
-                	</div>
+	                <c:if test="${Auth!=null }">
+	                	<div class="reply-text row">
+	                		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bno="${board.bNo }"></textarea>
+	                		<button type="button" class="reply-addBtn btn btn-default active col-sm-1">게시</button>
+	                	</div>
+                	</c:if>
 	              </div>
 	
 	            </div>

@@ -1,6 +1,6 @@
 package com.ko.domain;
 
-public class SearchCriteria extends Creiteria{
+public class SearchCriteria extends Criteria{
 	private String searchType;
 	private String keyword;
 	

@@ -7,7 +7,7 @@ public class PageMaker {
 	private boolean prev; //이전 10개 존재 여부
 	private boolean next; //이전 10개 존재 여부
 	private int displayPageNum = 10; //보이는 페이지번호 갯수
-	private Creiteria cri;
+	private Criteria cri;
 	
 	private void calcData() {
 		//혀재 페이지의 끝 번호를 구한다.
@@ -83,10 +83,10 @@ public class PageMaker {
 	public void setDisplayPageNum(int displayPageNum) {
 		this.displayPageNum = displayPageNum;
 	}
-	public Creiteria getCri() {
+	public Criteria getCri() {
 		return cri;
 	}
-	public void setCri(Creiteria cri) {
+	public void setCri(Criteria cri) {
 		this.cri = cri;
 	}
 	
