@@ -74,6 +74,7 @@ public class BoardController {
 		logger.info("---------------- list");
 		
 		List<Board> boards = bService.selectLimit10(startPage);
+		
 		ResponseEntity<List<Board>> entity = null;
 		
 		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
@@ -82,10 +83,17 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="insertReply",method=RequestMethod.POST)
-	public ResponseEntity<Reply> insertReply(@RequestBody Reply reply){
+	public ResponseEntity<Boolean> insertReply(@RequestBody Reply reply){
 		logger.info("--------------- insertReply reply : "+reply);
-		ResponseEntity<Reply> entity=null;
-		rService.insertReply(reply);
+		ResponseEntity<Boolean> entity=null;
+		try {
+			rService.insertReply(reply);
+			entity=new ResponseEntity<>(true,HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();
+			entity=new ResponseEntity<>(true,HttpStatus.BAD_REQUEST);
+		}
+		
 		return entity;
 	}
 	

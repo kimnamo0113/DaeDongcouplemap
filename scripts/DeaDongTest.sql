@@ -95,4 +95,7 @@ where b_no = 32
 order by r_no desc
 limit #{cri.pageStart},#{cri.perPageNum}
 ;
+
+SELECT * FROM guest;
+select * from guest where g_id='test' or g_email='dasd' and g_password='1234';
 		

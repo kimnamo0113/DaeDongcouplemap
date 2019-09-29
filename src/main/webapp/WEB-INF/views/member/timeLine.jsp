@@ -17,6 +17,9 @@
 	#modal-content{
 		height: 500px;
 	}
+	div.container-fluid{
+		margin-top:120px;
+	}
 </style>
 <script type="text/javascript">
 	

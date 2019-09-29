@@ -27,6 +27,8 @@
   <!-- Custom styles for this template-->
   
   <link href="${pageContext.request.contextPath }/resources/bootTemplate/css/sb-admin-2.min.css" rel="stylesheet">
+  
+  
 <script src="${pageContext.request.contextPath }/resources/js/writeBtn.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/areaChoice.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/writeBtn.css">
@@ -62,6 +64,9 @@
 	ul.sidebar{
 		z-index:10001;
 		
+	}
+	.topbar .nav-item .nav-link{
+		padding:0.5rem;
 	}
 </style>
 

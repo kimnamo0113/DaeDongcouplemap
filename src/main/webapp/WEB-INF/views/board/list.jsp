@@ -44,8 +44,20 @@
 		clear: both;
 		display: block;
 	}
+	div.container-fluid{
+		margin-top:120px;
+	}
+	ul.pagination{
+		clear: both;
+	}
+	div.pagination a{
+		cursor: pointer;
+	}
+	
 	
 </style>
+
+
 <script>
 var mySlider2 = [];
 var startPage=0;
@@ -83,76 +95,14 @@ $(function(){
         clearInterval(lodingTime);
 	}
 	
-	$(window).scroll(
-			function() { // 스크롤 이벤트가 발생할 때마다 인식
-				if ( $(window).scrollTop() == $(document).height() - $(window).height() ) {
-					alert("???")
-					startPage+=10;
-					$.ajax({
-						url:"${pageContext.request.contextPath}/board/listAdd",
-						type:"get",
-						data: {startPage:startPage},
-						dataType:"json",
-						success:function(res){
-							$(res).each(function(i,obj){
-								
-								var $divBxSlider2=$("<div>").addClass("bxslider2");
-								$(obj.contents).each(function(j,content){
-									console.log(content.cImage)			
-									var $divImg=$("<div>").addClass("divImg").css({"float":"left","list-style":"none","position":"relative","width":"710px"});
-									var $img = $("<img>").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+content.cImage);
-									$divImg.append($img);
-									$divBxSlider2.append($divImg);
-								})
-								
-							
-													
-								/* .attr("aria-live","polite").css({"width":"100%","height":"300px","overflow":"hidden","position":"relative"}). */
-								var $divBxViewPort=$("<div>").addClass("bx-viewport").attr("aria-live","polite").css({"width":"100%","overflow":"hidden","position":"relative"}).append($divBxSlider2);
-								var $divBxWrapper=$("<div>").addClass("bx-wrapper").css("max-width","720px").append($divBxViewPort);
-								var $divSlideHidden2=$("<div>").addClass("slideHidden2").append($divBxWrapper);
-								var $divTextCenter=$("<div>").addClass("text-center").append($divSlideHidden2);
-								var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter);
-								
-								var $h6Title=$("<h6>").addClass("m-0 font-weight-bold text-primary").append(obj.bTitle);
-								var $divCardHeader=$("<div>").addClass("card-header py-3").append($h6Title);
-								
-								var $divCard=$("<div>").addClass("card shadow mb-4").append($divCardHeader).append($divCardBody);
-								
-								var $divCol=$("<div>").addClass("col-lg-12 mb-4").append($divCard);
-								
-								
-								$("#mainScroll").append($divCol);
-								
-								
-								var bx = $($divBxSlider2).bxSlider({
-									  auto: false,
-									  autoControls: false,
-									  stopAutoOnClick: false,
-									  pager: true,
-									  pagerType : 'short',
-									  slideWidth: 850,
-									  touchEnabled:false,
-							
-									});
-								mySlider2.push(bx);
-							})
-							
-							imgLoading();
-						}
-						
-					})
-					
-			    }
-
-			});
+	
 	
 	$(document).on("click",".reply-addBtn",function(){
-		var rContent=$(this).prev().val();
+		var rContent=$(this).prev();
 		var bNo=$(this).prev().attr("data-bno");
 		
 		var json = {
-				rContent:rContent,
+				rContent:rContent.val(),
 				rBNo:{bNo:bNo},
 				rGNo:{gNo:"${Auth.userno}"}
 			};
@@ -169,6 +119,10 @@ $(function(){
 			jsonp: false,
 			success:function(res){
 				console.log(res);
+				var ulObj=$(rContent).parent().prev().find("ul.pagination");
+				console.log(ulObj);
+				var page=1;
+				getReplyListAll(bNo,page,ulObj);
 			}
 			
 		})
@@ -180,23 +134,22 @@ $(function(){
      		$(this).next().click();
      	}
 	})
-	
-	
-	
 		
 	$(document).on("click",".addReply",function(){
-		$(this).hide();
+		
 		var ulObj=$(this).parent().parent().parent().find(".pagination");
 		
 		var bNo=$(this).attr("data-bNo");
 		var page=1;
-		
+		$(this).hide();
 		getReplyListAll(bNo,page,ulObj);
 		
 	})
 	
 	function getReplyListAll(bNo,page,ulObj){
 		console.log(ulObj);
+		var addDivreplysList=$(ulObj).parent().find(".replysList");
+		$(addDivreplysList).empty();
 		$.ajax({
 			url:"${pageContext.request.contextPath}/board/selectReply",
 			type:"post",
@@ -204,10 +157,19 @@ $(function(){
 			dataType:"json",
 			success:function(res){
 				console.log(res);
-				$(ulObj).parent().find(".replysList").empty();
+				
 				
 				$(res.replys).each(function(i,obj){
+					var $labelId = $("<label>").addClass("id").append(obj.rGNo.gId);
 					
+					var $spanText = $("<span>").addClass("text").append(obj.rContent);
+					
+					var $spanTime = $("<span>").append(obj.rWritetime);
+					$spanText.append($spanTime);
+					
+					var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
+					$(addDivreplysList).append($divReply);
+					console.log(addDivreplysList.text())
 				})
 				printPaging(res,ulObj);
 			}
@@ -241,6 +203,77 @@ $(function(){
 		
 		getReplyListAll(bNo,page,ulObj);
 	})
+	
+	
+	
+	
+	
+	$(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
+		/* 오차떄문에 올림을 해줌 오차발생 모르겟음 */		
+		console.log(Math.ceil($(window).scrollTop()))
+		console.log($(document).height() - $(window).height())
+				
+		if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height() || $(window).scrollTop() == $(document).height() - $(window).height()) {
+			alert("???");
+			startPage+=10;
+			$.ajax({
+				url:"${pageContext.request.contextPath}/board/listAdd",
+				type:"get",
+				data: {startPage:startPage},
+				dataType:"json",
+				success:function(res){
+					$(res).each(function(i,obj){
+						
+						var $divBxSlider2=$("<div>").addClass("bxslider2");
+						$(obj.contents).each(function(j,content){
+							console.log(content.cImage)			
+							var $divImg=$("<div>").addClass("divImg").css({"float":"left","list-style":"none","position":"relative","width":"710px"});
+							var $img = $("<img>").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+content.cImage);
+							$divImg.append($img);
+							$divBxSlider2.append($divImg);
+						})
+						
+					
+											
+						/* .attr("aria-live","polite").css({"width":"100%","height":"300px","overflow":"hidden","position":"relative"}). */
+						var $divBxViewPort=$("<div>").addClass("bx-viewport").attr("aria-live","polite").css({"width":"100%","overflow":"hidden","position":"relative"}).append($divBxSlider2);
+						var $divBxWrapper=$("<div>").addClass("bx-wrapper").css("max-width","720px").append($divBxViewPort);
+						var $divSlideHidden2=$("<div>").addClass("slideHidden2").append($divBxWrapper);
+						var $divTextCenter=$("<div>").addClass("text-center").append($divSlideHidden2);
+						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter);
+						
+						var $h6Title=$("<h6>").addClass("m-0 font-weight-bold text-primary").append(obj.bTitle);
+						var $divCardHeader=$("<div>").addClass("card-header py-3").append($h6Title);
+						
+						var $divCard=$("<div>").addClass("card shadow mb-4").append($divCardHeader).append($divCardBody);
+						
+						var $divCol=$("<div>").addClass("col-lg-12 mb-4").append($divCard);
+						
+						
+						$("#mainScroll").append($divCol);
+						
+						
+						var bx = $($divBxSlider2).bxSlider({
+							  auto: false,
+							  autoControls: false,
+							  stopAutoOnClick: false,
+							  pager: true,
+							  pagerType : 'short',
+							  slideWidth: 850,
+							  touchEnabled:false,
+					
+							});
+						mySlider2.push(bx);
+					})
+					
+					imgLoading();
+				}
+				
+			})
+			
+	    }
+
+	});
 })
 
 
@@ -295,7 +328,7 @@ $(function(){
 							<c:if test="${board.replys[0].rNo!=0 }">
 								<c:forEach var="r" items="${board.replys }" step="1" begin="0" end="4">
 									<div class="reply">
-										<label class="id">${r.rGNo.gId } :</label><span class="text">${r.rContent } <span><fmt:formatDate value="${r.rWritetime }" pattern="yy-MM-dd hh:mm"/></span></span><br>
+										<label class="id">${r.rGNo.gId } :</label><span class="text">${r.rContent } <span><fmt:formatDate value="${r.rWritetime }" pattern="yy-MM-dd hh:mm"/></span></span>
 									</div>
 								</c:forEach>
 								<c:if test="${board.replyCount>5}">
