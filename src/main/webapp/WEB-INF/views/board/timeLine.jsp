@@ -20,6 +20,15 @@
 	div.container-fluid{
 		margin-top:120px;
 	}
+	.boardList img{
+		width:180px;
+		height: 180px;
+	}
+	#header{
+		width: 600px;
+	    text-align: center;
+	    margin: 0 auto;
+	}
 </style>
 <script type="text/javascript">
 	
@@ -56,7 +65,7 @@
 
   <!-- Page Heading -->
   <div class="align-items-center justify-content-between mb-4">
-  	<div class="form-group row">
+  	<div class="form-group row" id="header">
   		<div class="col-sm-4">
 			<c:if test="${guest.gImage!='' }">
 				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal" width="150" height="150">
@@ -78,7 +87,17 @@
 	  			<label>팔로우</label><br>
 	  		</div>
 	  		</div>
-	  		<h2 class="h5 mb-0 text-gray-800">${Auth.username}</h2>
+	  		<div class="row">
+	  		<div class="col-sm-4">
+	  			<label>${bCount }</label><br>
+	  		</div>
+	  		<div class="col-sm-4">
+	  			<label>팔로워</label><br>
+	  		</div>
+	  		<div class="col-sm-4">
+	  			<label>팔로우</label><br>
+	  		</div>
+	  		</div>
 	  	</div>
 	  	  	
 	</div>
@@ -150,23 +169,6 @@
 
 
 
-  <!-- Content Row -->
-  <div class="row">
-
-    <!-- Earnings (Monthly) Card Example -->
-    
-
-    <!-- Earnings (Monthly) Card Example -->
-    
-
-    <!-- Earnings (Monthly) Card Example -->
-    
-
-    <!-- Pending Requests Card Example -->
-    
-  </div>
-
-  <!-- Content Row -->
 
   <div class="row">
 
@@ -190,32 +192,11 @@
 
 
     <div class="col-lg-6 mb-4">
-
-      <!-- Illustrations -->
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-        </div>
-        <div class="card-body">
-          <div class="text-center">
-            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="${pageContext.request.contextPath}/resources/bootTemplate/img/undraw_posting_photo.svg" alt="">
-          </div>
-          <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a constantly updated collection of beautiful svg images that you can use completely free and without attribution!</p>
-          <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on unDraw &rarr;</a>
-        </div>
-      </div>
-
-      <!-- Approach -->
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-        </div>
-        <div class="card-body">
-          <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-          <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
-        </div>
-      </div>
-
+    	<div class="boardList">
+	    	<c:forEach var="board" items="${boards}">
+	    	   <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${board.contents[0].cImage}">
+	    	</c:forEach>
+		</div>
     </div>
   </div>
 

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>    
 <%@ include file="../include/header.jsp" %>
 
 
@@ -14,7 +13,7 @@
 		height:auto;
 		width:100%;
 	}
-	#icons i{
+	.icons i{
 		font-size:1.5rem;
 		margin-right: 10px;
 	}
@@ -88,7 +87,6 @@ $(function(){
 	}
 
 	function alertFunc() {
-		console.log(mySlider2.length);
         for(var i = 0; i<mySlider2.length; i++){
    			mySlider2[i].reloadSlider();	
    		}
@@ -96,7 +94,7 @@ $(function(){
 	}
 	
 	
-	
+	/* 댓글달기 */
 	$(document).on("click",".reply-addBtn",function(){
 		var rContent=$(this).prev();
 		var bNo=$(this).prev().attr("data-bno");
@@ -107,7 +105,7 @@ $(function(){
 				rGNo:{gNo:"${Auth.userno}"}
 			};
 		var data = JSON.stringify(json)
-		
+		rContent.val("");
 		$.ajax({
 			url:"${pageContext.request.contextPath}/board/insertReply",
 			type:"post",
@@ -118,17 +116,14 @@ $(function(){
 			},
 			jsonp: false,
 			success:function(res){
-				console.log(res);
 				var ulObj=$(rContent).parent().prev().find("ul.pagination");
-				console.log(ulObj);
 				var page=1;
 				getReplyListAll(bNo,page,ulObj);
 			}
 			
 		})
 	})
-	
-	
+	/* 댓글달기에서 enter key */	
 	$(document).on("keydown",".reply-textArea",function(key){
 		if (key.keyCode == 13) {
      		$(this).next().click();
@@ -147,7 +142,6 @@ $(function(){
 	})
 	
 	function getReplyListAll(bNo,page,ulObj){
-		console.log(ulObj);
 		var addDivreplysList=$(ulObj).parent().find(".replysList");
 		$(addDivreplysList).empty();
 		$.ajax({
@@ -156,8 +150,6 @@ $(function(){
 			data:{bNo:bNo,page:page},
 			dataType:"json",
 			success:function(res){
-				console.log(res);
-				
 				
 				$(res.replys).each(function(i,obj){
 					var $labelId = $("<label>").addClass("id").append(obj.rGNo.gId);
@@ -169,7 +161,6 @@ $(function(){
 					
 					var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
 					$(addDivreplysList).append($divReply);
-					console.log(addDivreplysList.text())
 				})
 				printPaging(res,ulObj);
 			}
@@ -178,7 +169,6 @@ $(function(){
 	
 	function printPaging(res,ulObj){
 		$(ulObj).empty();
-		console.log(ulObj);
 		for(var i=res.pageMaker.startPage; i<=res.pageMaker.endPage; i++){
 			var $li = $("<li>").addClass("page-item");
 			var $a = $("<a>").text(i).addClass("page-link");
@@ -210,11 +200,10 @@ $(function(){
 	
 	$(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
 		/* 오차떄문에 올림을 해줌 오차발생 모르겟음 */		
-		console.log(Math.ceil($(window).scrollTop()))
+/* 		console.log(Math.ceil($(window).scrollTop()))
 		console.log($(document).height() - $(window).height())
-				
+ */				
 		if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height() || $(window).scrollTop() == $(document).height() - $(window).height()) {
-			alert("???");
 			startPage+=10;
 			$.ajax({
 				url:"${pageContext.request.contextPath}/board/listAdd",
@@ -226,26 +215,62 @@ $(function(){
 						
 						var $divBxSlider2=$("<div>").addClass("bxslider2");
 						$(obj.contents).each(function(j,content){
-							console.log(content.cImage)			
 							var $divImg=$("<div>").addClass("divImg").css({"float":"left","list-style":"none","position":"relative","width":"710px"});
 							var $img = $("<img>").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+content.cImage);
-							$divImg.append($img);
+							var $pContents = $("<p>").addClass("form-control").append(content.cContents); 
+							var $divText = $("<div>").addClass("divText").append($pContents);
+							$divImg.append($img).append($divText);
 							$divBxSlider2.append($divImg);
 						})
-						
-					
 											
 						/* .attr("aria-live","polite").css({"width":"100%","height":"300px","overflow":"hidden","position":"relative"}). */
 						var $divBxViewPort=$("<div>").addClass("bx-viewport").attr("aria-live","polite").css({"width":"100%","overflow":"hidden","position":"relative"}).append($divBxSlider2);
 						var $divBxWrapper=$("<div>").addClass("bx-wrapper").css("max-width","720px").append($divBxViewPort);
 						var $divSlideHidden2=$("<div>").addClass("slideHidden2").append($divBxWrapper);
 						var $divTextCenter=$("<div>").addClass("text-center").append($divSlideHidden2);
-						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter);
+							var iHeart = $("<i>").addClass("fas fa-heart");
+							var iHeart2 = $("<i>").addClass("far fa-heart");
+							var iComment = $("<i>").addClass("far fa-comment");
+							var iShare = $("<i>").addClass("far fa-share-square");
+						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 ?명이 좋아합니다.");
+						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iHeart2).append(iComment).append(iShare);
+						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
+						var $pHash = $("<p>").addClass("bHash").append(obj.bHash);
+						
+						var $divReplysList=$("<div>").addClass("replysList");
+						
+						$(obj.replys).each(function(i,r){
+							console.log(r)
+							var $labelId = $("<label>").addClass("id").append(r.rGNo.gId+":");
+							var $spanWritetime = $("<span>").append(r.rWritetime)
+							var $spanText = $("<span>").addClass("text").append(r.rContent).append($spanWritetime);		
+							var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
+							$divReplysList.append($divReply);
+						})
+						if(obj.replyCount>5){
+							var $aAddReply = $("<a>").addClass("addReply").attr("data-bNo",obj.bNo).append("더보기...");
+							var $divAddReply = $("<div>").addClass("divAddReply").append($aAddReply);
+							$divReplysList.append($divAddReply);
+						}
+						var $ulPagination = $("<ul>").addClass("pagination justify-content-center").attr("data-bNo",obj.bNo);
+						var $divReplys = $("<div>").addClass("replys").append($divReplysList).append($ulPagination);
+						
+						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($pIcons).append($pWhoLike).append($pContents).append($pHash).append($divReplys);
 						
 						var $h6Title=$("<h6>").addClass("m-0 font-weight-bold text-primary").append(obj.bTitle);
 						var $divCardHeader=$("<div>").addClass("card-header py-3").append($h6Title);
 						
-						var $divCard=$("<div>").addClass("card shadow mb-4").append($divCardHeader).append($divCardBody);
+						var $divCard = $("<div>");
+						
+						if('${Auth.userid}'!=null){
+							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-sm-10").attr("data-bno",obj.bNo);
+							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-sm-1").append("게시").attr("type","button");
+							var $divReplyText = $("<div>").addClass("reply-text row").append($textAreaReply).append($buttonReply);
+							
+							$divCard.addClass("card shadow mb-4").append($divCardHeader).append($divCardBody).append($divReplyText);
+						}else{
+							$divCard.addClass("card shadow mb-4").append($divCardHeader).append($divCardBody);	
+						}
 						
 						var $divCol=$("<div>").addClass("col-lg-12 mb-4").append($divCard);
 						
@@ -319,8 +344,8 @@ $(function(){
 			              </div>
 		                </div>
 	                  </div>
-					<p id="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
-					??님 외 ?명이 좋아합니다.
+					<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
+					<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
 					<p class="bContents">${board.bContents }</p>
 					<p class="bHash">${board.bHash }</p>
 					<div class="replys">

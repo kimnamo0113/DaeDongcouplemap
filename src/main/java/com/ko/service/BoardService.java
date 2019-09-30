@@ -10,7 +10,9 @@ import com.ko.domain.Board;
 public interface BoardService {
 	/*public void insertBoard(Board board, ArrayList<String> imgNameList, List<String> cContents);*/
 
+	public int selectBygNoBoardCount(int gNo);
 	public void insertBoard(Board board, ArrayList<Map<String, String>> imgNameList);
 	public List<Board> selectAll();
 	public List<Board> selectLimit10(int i);
+	public List<Board> selectBygNoLimit24(int page, int gNo);
 }

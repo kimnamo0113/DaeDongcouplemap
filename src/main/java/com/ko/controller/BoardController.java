@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ko.domain.Auth;
 import com.ko.domain.Board;
 import com.ko.domain.Criteria;
+import com.ko.domain.Guest;
 import com.ko.domain.PageMaker;
 import com.ko.domain.Reply;
 import com.ko.service.BoardService;
+import com.ko.service.GuestService;
 import com.ko.service.ReplyService;
 
 
@@ -34,6 +39,10 @@ public class BoardController {
 	
 	@Autowired
 	private ReplyService rService;
+	
+	
+	@Autowired
+	GuestService gService;
 	
 /*	@RequestMapping(value="write",method=RequestMethod.GET)
 	public void writeGET() {
@@ -101,8 +110,6 @@ public class BoardController {
 	public ResponseEntity<Map<String,Object>> selectReply(int bNo,int page){
 		logger.info("--------------------- selectReply");
 		ResponseEntity<Map<String,Object>> entity = null;
-		System.out.println(bNo);
-		System.out.println(page);
 		
 		Criteria cri = new Criteria();
 		cri.setPage(page);
@@ -130,5 +137,17 @@ public class BoardController {
 		
 		
 		return entity;
+	}
+	
+	@RequestMapping(value="timeLine",method=RequestMethod.GET)
+	public void timeLineGET(Model model,HttpSession session) {
+		logger.info("-------------------- timeLine");
+		Auth dto = (Auth)session.getAttribute("Auth");
+		Guest guest = gService.selectById(dto.getUserid());
+		
+		model.addAttribute("guest",guest);
+		List<Board> boards=bService.selectBygNoLimit24(0,guest.getgNo());
+		model.addAttribute("boards",boards);
+		model.addAttribute("bCount",bService.selectBygNoBoardCount(guest.getgNo()));
 	}
 }

@@ -24,7 +24,7 @@ public class ReplyDaoImpl implements ReplyDao{
 	}
 
 	@Override
-	public List<Reply> selectBoardLimit10(int bNo) {
+	public List<Reply> selectReplyLimit5(int bNo) {
 		return sqlSession.selectList(namespace+".selectBoardLimit10",bNo);
 	}
 

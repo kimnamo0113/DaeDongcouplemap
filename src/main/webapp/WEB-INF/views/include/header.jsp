@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -67,6 +67,13 @@
 	}
 	.topbar .nav-item .nav-link{
 		padding:0.5rem;
+	}
+	#searchFor{
+		max-width: 130px !importants;
+	}
+	#right{
+		width:400px;
+		float: right;
 	}
 </style>
 
@@ -236,7 +243,6 @@
           </button>
 			
 			<img src="${pageContext.request.contextPath }/resources/images/hanbando.png" id="hanbandoImg">	
-			<button id="test">ㅎ</button>
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
@@ -270,7 +276,6 @@
 	              <!-- Dropdown - Alerts -->
 	            </li>
 	          </ul>
-	          
           </c:if>
           <c:if test="${Auth!=null }">
           <!-- class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" -->
@@ -279,7 +284,7 @@
                   <i class="fas fa-pen fa-sm"></i> 글쓰기
                 </button>
               </div>
-          
+          	<div id="right">
 	          <ul class="navbar-nav ml-auto">
 	          	<li class="nav-item dropdown no-arrow d-sm-none">
 					<a href="#" id="write" class="nav-link" data-toggle="modal" data-target="#writeModal" aria-haspopup="true" aria-expanded="false">
@@ -300,7 +305,9 @@
 	              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
 	                <form class="form-inline mr-auto w-100 navbar-search">
 	                  <div class="input-group">
-	                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+	                  <!-- max width 수정 -->
+	                    <input id="searchFor" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+	                    
 	                    <div class="input-group-append">
 	                      <button class="btn btn-primary" type="button">
 	                        <i class="fas fa-search fa-sm"></i>
@@ -528,7 +535,7 @@
 	              </a>
 	              <!-- Dropdown - User Information -->
 	              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-	                <a class="dropdown-item" href="${pageContext.request.contextPath }/member/timeLine">
+	                <a class="dropdown-item" href="${pageContext.request.contextPath }/board/timeLine">
 	                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  Time Line
 	                </a>
@@ -549,7 +556,7 @@
 	            </li>
 	
 	          </ul>
-	          
+	          </div>
 	          </c:if>
         </nav>
         </div>

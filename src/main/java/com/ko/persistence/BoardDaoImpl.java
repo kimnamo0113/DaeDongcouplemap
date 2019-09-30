@@ -1,6 +1,8 @@
 package com.ko.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,23 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public List<Board> selectLimit10(int i) {
-		return sqlSession.selectList(namespace+".selectLimit10",i);
+	public List<Board> selectLimit10(int page) {
+		return sqlSession.selectList(namespace+".selectLimit10",page);
+	}
+
+
+	@Override
+	public List<Board> selectBygNoLimit24(int page, int gNo) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("page", page);
+		map.put("gNo", gNo);
+		return sqlSession.selectList(namespace+".selectBygNoLimit24",map);
+	}
+
+
+	@Override
+	public int selectBygNoBoardCount(int gNo) {
+		return sqlSession.selectOne(namespace+".selectBygNoBoardCount",gNo);
 	}
 	
 	

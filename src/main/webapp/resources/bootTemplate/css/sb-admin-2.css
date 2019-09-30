@@ -2487,8 +2487,12 @@ textarea.form-control {
 .form-inline .form-check {
   width: 100%;
 }
-
 @media (min-width: 576px) {
+   .form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
   .form-inline label {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2517,11 +2521,7 @@ textarea.form-control {
     align-items: center;
     margin-bottom: 0;
   }
-  .form-inline .form-control {
-    display: inline-block;
-    width: auto;
-    vertical-align: middle;
-  }
+ 
   .form-inline .form-control-plaintext {
     display: inline-block;
   }
@@ -7167,14 +7167,16 @@ button.bg-dark:focus {
   display: -ms-inline-flexbox !important;
   display: inline-flex !important;
 }
-
-@media (min-width: 576px) {
-  .d-sm-none {
+@media (min-width:768px){
+.d-sm-none {
     display: none !important;
   }
   .d-sm-inline {
     display: inline !important;
   }
+}
+@media (min-width: 576px) {
+
   .d-sm-inline-block {
     display: inline-block !important;
   }

@@ -98,4 +98,12 @@ limit #{cri.pageStart},#{cri.perPageNum}
 
 SELECT * FROM guest;
 select * from guest where g_id='test' or g_email='dasd' and g_password='1234';
-		
+
+select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good,
+			c.c_no, c.c_contents, c.c_image
+		from (select * from board order by b_no desc limit 1,24) as b 
+		left join content c
+			on c.b_no = b.b_no
+		where g_no=1
+		order by b.b_no desc;
+

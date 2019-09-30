@@ -120,17 +120,6 @@ public class MemberController {
 	}
 	
 	
-	
-	@RequestMapping(value="timeLine",method=RequestMethod.GET)
-	public void timeLineGET(Model model,HttpSession session) {
-		logger.info("-------------------- timeLine");
-		Auth dto = (Auth)session.getAttribute("Auth");
-		Guest guest = service.selectById(dto.getUserid());
-		model.addAttribute("guest",guest);
-	}
-	
-	
-	
 	@RequestMapping(value="tempPassWord",method=RequestMethod.POST)
 	public String forgotPassPOST(Guest guest, Model model) {
 		logger.info("--------------------forgotPassPOST guest : "+guest);

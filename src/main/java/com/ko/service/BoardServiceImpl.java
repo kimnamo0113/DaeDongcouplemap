@@ -30,7 +30,6 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void insertBoard(Board board, ArrayList<Map<String, String>> imgNameList) {
 		dao.insertBoard(board);
-		System.out.println(board);
 		cDao.insertContent(board,imgNameList);
 	}
 
@@ -41,16 +40,32 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Transactional
 	@Override
-	public List<Board> selectLimit10(int i) {
-		List<Board> boards = dao.selectLimit10(i);
+	public List<Board> selectLimit10(int page) {
+		List<Board> boards = dao.selectLimit10(page);
 		
-		for(int j=0; j<boards.size(); j++) {
-			int bNo=boards.get(j).getbNo();
-			boards.get(j).setReplys(rDao.selectBoardLimit10(bNo));
-			boards.get(j).setReplyCount(rDao.selectReplyCount(bNo));
+		for(int i=0; i<boards.size(); i++) {
+			int bNo=boards.get(i).getbNo();
+			boards.get(i).setReplys(rDao.selectReplyLimit5(bNo));
+			boards.get(i).setReplyCount(rDao.selectReplyCount(bNo));
 		}
 		
 		return boards;
+	}
+
+	@Override
+	public List<Board> selectBygNoLimit24(int page, int gNo) {
+		List<Board> boards = dao.selectBygNoLimit24(page,gNo);
+		for(int i=0; i<boards.size(); i++) {
+			int bNo=boards.get(i).getbNo();
+			boards.get(i).setReplyCount(rDao.selectReplyCount(bNo));
+		}
+		
+		return boards;
+	}
+
+	@Override
+	public int selectBygNoBoardCount(int gNo) {
+		return dao.selectBygNoBoardCount(gNo);
 	}
 
 	
