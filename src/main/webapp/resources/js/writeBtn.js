@@ -9,18 +9,17 @@ $(function(){
     		  stopAutoOnClick: false,
     		  pager: true,
     		  pagerType : 'short',
-    		  slideWidth: 600,
+    		  slideWidth: 700,
     		  touchEnabled:false
     		});
     	
 /* 글쓰기에서 이미지 업로드시 */    	
     	$("#imgFile").change(function(){
-        	
-        	
         	if(formData.getAll("files").length+$(this)[0].files.length >10){
         		alert("이미지 파일을 10개 이하로만 올려주세요.");
         		return ;
         	};
+        	$("#boardUploadSpinner").addClass("spinner-border text-primary");
         	
 			$($(this)[0].files).each(function(i,obj){
 				var reader = new FileReader();
@@ -40,8 +39,10 @@ $(function(){
 					formData.append("files",obj);
 				}
 				reader.readAsDataURL(obj);
+				
 			});
         	imgLoading();
+        	
     	})
     	
     	
@@ -57,6 +58,7 @@ $(function(){
     		$("#slideHidden").show();
             mySlider.reloadSlider();
             clearInterval(lodingTime);
+            $("#boardUploadSpinner").removeClass("spinner-border text-primary");
     	}
     	
     	

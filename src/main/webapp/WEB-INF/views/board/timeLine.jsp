@@ -22,6 +22,16 @@
 		height: 180px;
 		margin: 10px;
 	}
+	@media (max-width: 768px) {
+	    .boardList img{
+			width:150px;
+			height: 150px;
+			margin: 10px;
+		}
+	}
+	figure{
+		cursor: pointer;
+	}
 	#header{
 		width: 600px;
 	    text-align: center;
@@ -42,8 +52,6 @@ figure.snip1384 {
   font-family: 'Raleway', Arial, sans-serif;
   position: relative;
   overflow: hidden;
-  margin: 10px;
-  width: 200px;
   color: #ffffff;
   text-align: left;
   float:left;
@@ -103,20 +111,21 @@ figure.snip1384 p {
 }
 figure.snip1384 i {
   position: absolute;
- 
   padding: 20px 25px;
-  font-size: 24px;
+  width:10px;
+  text-align:center;
+  font-size: 20px;
   opacity: 0;
   -webkit-transform: translateX(-10px);
   transform: translateX(-10px);
 }
 figure.snip1384 i.fa-heart{
  bottom: 10px;
-  right: 100px;
+ left: 20px;
 }
 figure.snip1384 i.fa-comment{
- bottom: 10px;
-  right: 40px;
+  bottom: 10px;
+  right: 50px;
 }
 figure.snip1384 a {
   position: absolute;
@@ -161,6 +170,10 @@ var startPage=0;
 			if($(this)[0].files[0]==null){
 				return;
 			};
+			$("#proFileSpinner").addClass("spinner-border text-primary");
+			
+			
+			
 			var formData = new FormData();//서버로 보낼 데이터를 담을 공간
 			formData.append("file",$(this)[0].files[0]);
 			
@@ -175,6 +188,7 @@ var startPage=0;
 					console.log(res);
 					$(".profileImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+res);
 					$("button.close").click();
+					$("#proFileSpinner").removeClass("spinner-border text-primary");
 				}
 			})
 			
@@ -185,6 +199,23 @@ var startPage=0;
 		$(".hover").mouseleave(function () {
 		    $(this).removeClass("hover");
 		});	
+		
+		
+		$("figcaption").click(function(){
+			var bNo=$(this).attr("data-bNo");
+			$.ajax({
+				url:"${pageContext.request.contextPath}/board/boardDetail",
+				type:"post",
+				data: {bNo:bNo},
+				dataType:"json",
+				success:function(res){
+					console.log(res);
+				}
+				
+			})
+		})
+		
+		
 	})
 	
 	$(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
@@ -213,6 +244,8 @@ var startPage=0;
 			
 	    }
 
+	
+	
 	});
 </script>
 
@@ -269,12 +302,13 @@ var startPage=0;
       <div class="modal-content" id="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">프로필 사진 수정</h4>
+          
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <form enctype="multipart/form-data">
 	        <div id="proFileUpdate">
 	        	
-			  		<label for="uploadProfileImg" class="list-group-item">업로드</label>
+			  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
 					<input type="file" name="file" id="uploadProfileImg" style="display:none">
 					<label class="list-group-item">사진 내리기</label>		  		
 			  	
@@ -305,14 +339,14 @@ var startPage=0;
 	    <div>
 	    	<div class="boardList">
 		    	<c:forEach var="board" items="${boards}">
-		    		<figure class="snip1384">
+		    		<figure class="snip1384" data-toggle="modal" data-target="#myModal3">
 		    		<c:set var="img" value="${board.contents[0].cImage }"/>
 		    		<c:set var="imglength" value="${fn:length(img) }"/>
 		    	  	 <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(img,0,20)}s_${fn:substring(img,22,imglength) }" >
-		    	   		<figcaption>
+		    	   		<figcaption data-bNo="${board.bNo }">
 					    <h3>${board.bTitle }</h3>
 						<p>${board.bPlace }</p><!-- <i class="ion-ios-arrow-right"></i> -->
-						<i class="fas fa-heart"> ${board.replyCount }</i><i class="fas fa-comment"> ${board.bGood }</i>
+						<i class="fas fa-heart"> ${board.bGood }</i><i class="fas fa-comment"> ${board.replyCount }</i>
 						<p></p>
 					  </figcaption>
 					</figure>
@@ -321,7 +355,36 @@ var startPage=0;
 	    </div>
 	 </div>
   </div>
-
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content" id="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="bPlace"></h4><br>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+         <div class="modal-body">
+          <h5 id="bTitle"></h5>
+        </div>
+        
+        <form enctype="multipart/form-data">
+	        <div id="proFileUpdate">
+	        	
+			  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
+					<input type="file" name="file" id="uploadProfileImg" style="display:none">
+					<label class="list-group-item">사진 내리기</label>		  		
+			  	
+	        </div>
+		    <div class="modal-footer">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
 </div>
 <!-- /.container-fluid -->
 

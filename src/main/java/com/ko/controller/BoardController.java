@@ -142,10 +142,10 @@ public class BoardController {
 	public ResponseEntity<Map<String,Object>> selectReply(int bNo,int page){
 		logger.info("--------------------- selectReply");
 		ResponseEntity<Map<String,Object>> entity = null;
-		
+		System.out.println(page);
 		Criteria cri = new Criteria();
 		cri.setPage(page);
-		
+		System.out.println(cri);
 		try {
 			List<Reply> replys = rService.selectPageByBNoPage(bNo,cri);
 			
@@ -155,7 +155,7 @@ public class BoardController {
 			pageMaker.setCri(cri);
 			
 			pageMaker.setTotalCount(rService.selectReplyCount(bNo));
-			
+			System.out.println(pageMaker);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("replys", replys);
 			map.put("pageMaker", pageMaker);

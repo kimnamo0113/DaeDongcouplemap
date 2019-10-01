@@ -74,7 +74,7 @@ $(function(){
 			  stopAutoOnClick: false,
 			  pager: true,
 			  pagerType : 'short',
-			  slideWidth: 980,
+			  slideWidth: 900,
 			  touchEnabled:false,
 	
 			});
@@ -155,13 +155,14 @@ $(function(){
 			data:{bNo:bNo,page:page},
 			dataType:"json",
 			success:function(res){
-				
+				console.log(res)
 				$(res.replys).each(function(i,obj){
 					var $labelId = $("<label>").addClass("id").append(obj.rGNo.gId);
 					
 					var $spanText = $("<span>").addClass("text").append(obj.rContent);
-					
-					var $spanTime = $("<span>").append(obj.rWritetime);
+					var time = new Date(obj.rWritetime);
+					var $spanTime = $("<span>").append(time);
+					/* yy-MM-dd hh:mm */
 					$spanText.append($spanTime);
 					
 					var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
@@ -231,7 +232,7 @@ $(function(){
 											
 						/* .attr("aria-live","polite").css({"width":"100%","height":"300px","overflow":"hidden","position":"relative"}). */
 						var $divBxViewPort=$("<div>").addClass("bx-viewport").attr("aria-live","polite").css({"width":"100%","overflow":"hidden","position":"relative"}).append($divBxSlider2);
-						var $divBxWrapper=$("<div>").addClass("bx-wrapper").css("max-width","720px").append($divBxViewPort);
+						var $divBxWrapper=$("<div>").addClass("bx-wrapper").append($divBxViewPort);
 						var $divSlideHidden2=$("<div>").addClass("slideHidden2").append($divBxWrapper);
 						var $divTextCenter=$("<div>").addClass("text-center").append($divSlideHidden2);
 							var iHeart = $("<i>").addClass("fas fa-heart");
@@ -290,7 +291,7 @@ $(function(){
 							  stopAutoOnClick: false,
 							  pager: true,
 							  pagerType : 'short',
-							  slideWidth: 850,
+							  slideWidth: 900,
 							  touchEnabled:false,
 					
 							});
@@ -314,7 +315,6 @@ $(function(){
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4" id="header">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <%-- <a href="${pageContext.request.contextPath }/board/write" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i>스마트에디터글쓰기</a> --%>
             
           </div>

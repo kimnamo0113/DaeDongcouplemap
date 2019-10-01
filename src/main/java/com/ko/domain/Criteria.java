@@ -10,7 +10,7 @@ public class Criteria {
 	}
 
 	public int getPage() {
-		return (this.page-1)*perPageNum;
+		return page;
 	}
 
 	public void setPage(int page) {
@@ -24,16 +24,15 @@ public class Criteria {
 	public void setPerPageNum(int perPageNum) {
 		this.perPageNum = perPageNum;
 	}
-	
+
 	public int getPageStart() {
 		return (this.page-1)*perPageNum;
 	}
-
 	
 	@Override
 	public String toString() {
-		return "Creiteria [page=" + page + ", perPageNum=" + perPageNum + "]";
+		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + "]";
 	}
-	
+
 	
 }

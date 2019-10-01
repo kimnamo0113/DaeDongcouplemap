@@ -69,7 +69,7 @@
 	.topbar .nav-item .nav-link{
 		padding:0.5rem;
 	}
-	#searchFor{
+	#searchText2{
 		max-width: 130px !importants;
 	}
 	#right{
@@ -121,6 +121,23 @@
 
 	      	if (key.keyCode == 13) {
 	      		searchFunc();
+	       	}
+
+	    });
+		function searchFunc2(){
+			var select = $("select[name='searchType2']").val();
+			var keyword=$("#searchText2").val();
+			location.href="list?page=1&searchType="+select+"&keyword="+keyword;
+		}
+		
+		$("#searchBtn2").click(function(){
+			searchFunc2()
+		})
+		
+		$("#searchText2").keydown(function(key) {
+
+	      	if (key.keyCode == 13) {
+	      		searchFunc2();
 	       	}
 
 	    });
@@ -334,13 +351,18 @@
 	                <form class="form-inline mr-auto w-100 navbar-search">
 	                  <div class="input-group">
 	                  <!-- max width 수정 -->
-	                  	<select>
-	                  		<option></option>
-	                  	</select>
-	                    <input id="searchFor" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+	                  	<select class="form-control" name="searchType2" id="searchType2">
+		               		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
+		               		<option value="aera" ${cri.searchType=='aera'?'selected':'' }>Area</option>
+		               		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
+		               		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
+		               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
+		               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
+		               	</select>
+	                    <input id="searchText2" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
 	                    
 	                    <div class="input-group-append">
-	                      <button class="btn btn-primary" type="button">
+	                      <button class="btn btn-primary" type="button" id="searchBtn2">
 	                        <i class="fas fa-search fa-sm"></i>
 	                      </button>
 	                    </div>
@@ -350,34 +372,32 @@
 	            </li>
 				
 				<!-- Modal -->
-				  <div class="modal fade" id="writeModal" role="dialog">
+			<div class="modal fade" id="writeModal" role="dialog">
+			    <div class="modal-dialog">
+			    
+			      <!-- Modal content-->
+			      <div class="modal-content">
 		
-					    <div class="modal-dialog">
-					    
-					      <!-- Modal content-->
-					      <div class="modal-content">
-				
-						        <div>
-						        
-							        <div class="modal-header">
-							          <h4 class="modal-title">글쓰기</h4>
-							          <button type="button" class="close" data-dismiss="modal">&times;</button>
-							        </div>
-							        <div class="row user-up1">
-								        <select name="area" id="area" class="form-control">
-								    		<option>지역선택</option>
-								    	</select>
-								    	<select name="province" id="province" class="form-control"></select>
-								    	<select name="gu" id="gu" class="form-control"></select>
-								    	<select name="dong" id="dong" class="form-control"></select>
-							    	</div>
+				     <div>
+					        <div class="modal-header">
+					          <h4 class="modal-title">글쓰기</h4>
+					          <button type="button" class="close" data-dismiss="modal">&times;</button>
 					        </div>
+					        <div class="row user-up1">
+						        <select name="area" id="area" class="form-control">
+						    		<option>지역선택</option>
+						    	</select>
+						    	<select name="province" id="province" class="form-control"></select>
+						    	<select name="gu" id="gu" class="form-control"></select>
+						    	<select name="dong" id="dong" class="form-control"></select>
+					    	</div>
+			        </div>
 			       
 			       	<form id="writeForm" action="insertBoard2" method="post" enctype="multipart/form-data">
 			       				<input type="text" id="bTitle" class="form-control list-group-item" placeholder="제목">
 				        <div id="slideHidden"><div class="bxslider"></div></div>
 				        		
-						  		<label for="imgFile" class="list-group-item">업로드 <span>(10개)</span></label>
+						  		<label for="imgFile" class="list-group-item">업로드 <span>(10개)</span><span id="boardUploadSpinner"></span></label>
 								<input type="file" name="file" id="imgFile" style="display:none" multiple="multiple">
 								<textarea id="bContents" class="form-control list-group-item" placeholder="내용"></textarea>
 								<input type="text" class="form-control list-group-item" placeholder="친구 태그하기">
