@@ -10,7 +10,7 @@ public class Criteria {
 	}
 
 	public int getPage() {
-		return page;
+		return (this.page-1)*perPageNum;
 	}
 
 	public void setPage(int page) {

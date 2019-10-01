@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Board {
 	private int bNo;
-	private int gNo;
+	private Guest bGNo;
 	private int mNo;
 	private String bPlace;
 	private String bTitle;
@@ -14,19 +14,21 @@ public class Board {
 	private String bDelete;
 	private String bFlat;
 	private int bGood;
-	private int replyCount; 
+	private int replyCount;
+	
 	private List<Content> contents;
 	private List<Reply> replys;
+	private List<Like> likes;
 	public Board() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Board(int bNo, int gNo, int mNo, String bPlace, String bTitle, String bHash, String bContents,
+	public Board(int bNo, Guest bGNo, int mNo, String bPlace, String bTitle, String bHash, String bContents,
 			String bWritetime, String bDelete, String bFlat, int bGood, int replyCount, List<Content> contents,
-			List<Reply> replys) {
+			List<Reply> replys, List<Like> likes) {
 		super();
 		this.bNo = bNo;
-		this.gNo = gNo;
+		this.bGNo = bGNo;
 		this.mNo = mNo;
 		this.bPlace = bPlace;
 		this.bTitle = bTitle;
@@ -39,6 +41,7 @@ public class Board {
 		this.replyCount = replyCount;
 		this.contents = contents;
 		this.replys = replys;
+		this.likes = likes;
 	}
 	public int getbNo() {
 		return bNo;
@@ -46,11 +49,11 @@ public class Board {
 	public void setbNo(int bNo) {
 		this.bNo = bNo;
 	}
-	public int getgNo() {
-		return gNo;
+	public Guest getbGNo() {
+		return bGNo;
 	}
-	public void setgNo(int gNo) {
-		this.gNo = gNo;
+	public void setbGNo(Guest bGNo) {
+		this.bGNo = bGNo;
 	}
 	public int getmNo() {
 		return mNo;
@@ -124,13 +127,20 @@ public class Board {
 	public void setReplys(List<Reply> replys) {
 		this.replys = replys;
 	}
+	public List<Like> getLikes() {
+		return likes;
+	}
+	public void setLikes(List<Like> likes) {
+		this.likes = likes;
+	}
 	@Override
 	public String toString() {
-		return "Board [bNo=" + bNo + ", gNo=" + gNo + ", mNo=" + mNo + ", bPlace=" + bPlace + ", bTitle=" + bTitle
+		return "Board [bNo=" + bNo + ", bGNo=" + bGNo + ", mNo=" + mNo + ", bPlace=" + bPlace + ", bTitle=" + bTitle
 				+ ", bHash=" + bHash + ", bContents=" + bContents + ", bWritetime=" + bWritetime + ", bDelete="
 				+ bDelete + ", bFlat=" + bFlat + ", bGood=" + bGood + ", replyCount=" + replyCount + ", contents="
-				+ contents + ", replys=" + replys + "]";
+				+ contents + ", replys=" + replys + ", likes=" + likes + "]";
 	}
+
 	
 	
 }

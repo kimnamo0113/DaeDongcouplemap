@@ -4,12 +4,11 @@
 	<insert id="insertBoard" parameterType="Board" useGeneratedKeys="true" keyProperty="bNo">
 		INSERT INTO daedong.board
 		(g_no, b_place, b_title, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good)
-		VALUES(#{gNo}, #{bPlace}, #{bTitle},#{bHash},#{bContents}, now(), 0, 0, 0);
+		VALUES(#{bGNo.gNo}, #{bPlace}, #{bTitle},#{bHash},#{bContents}, now(), 0, 0, 0);
 		
 	</insert>
 	<resultMap type="Board" id="BoardBasic">
 		<result property="bNo" column="b_no" />
-		<result property="gNo" column="g_no" />
 		<result property="mNo" column="m_no" />
 		<result property="bPlace" column="b_place" />
 		<result property="bTitle" column="b_title" />
@@ -19,9 +18,11 @@
 		<result property="bDelete" column="b_delete" />
 		<result property="bFlat" column="b_flat" />
 		<result property="bGood" column="b_good" />
+		<association property="bGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic"></association>
 	</resultMap>
 	
 	<resultMap type="Board" id="BoardDetail" extends="BoardBasic">
+		
 		<collection property="contents" resultMap="com.ko.mapper.ContentMapper.contentBasic"/>
 		<collection property="replys" resultMap="com.ko.mapper.ReplyMapper.ReplyBasic"/>
 	</resultMap>
@@ -37,18 +38,49 @@
 		select b.b_no, g_no, m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good, c_no, c_contents, c_image
 		from (select * from board order by b_no desc limit #{i},10) as b left join content c on c.b_no = b.b_no;
 	</select> -->
+	
+	<sql id="search">
+		<if test="searchType=='all'.toString()">
+			where b_place like CONCAT('%',#{keyword},'%') 
+			OR b_title like CONCAT('%',#{keyword},'%') 
+			OR b_contents like CONCAT('%',#{keyword},'%') 
+			OR g_no like CONCAT('%',#{keyword},'%') 
+			OR b_hash like CONCAT('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='area'.toString()">
+			where b_place like CONCAT('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='title'.toString()">
+			where b_title like CONCAT('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='contents'.toString()">
+			where b_contents like CONCAT('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='friend'.toString()">
+			where g_no like CONCAT('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='hash'.toString()">
+			where b_hash like CONCAT('%',#{keyword},'%') 
+		</if>
+	</sql>
+	
+	
 	<select id="selectLimit10" resultType="Board" resultMap="BoardDetail">
 		select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good,
 			c.c_no, c.c_contents, c.c_image
-		from (select * from board order by b_no desc limit #{page},10) as b 
+		from (select * from board order by b_no desc limit #{pageStart},#{perPageNum}) as b
 		left join content c
 			on c.b_no = b.b_no
+		<include refid="search"></include> 
 		order by b.b_no desc;
 	</select>
+	
+	
+	
 	<select id="selectBygNoLimit24" resultType="Board" resultMap="BoardDetail">
 		select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good,
 			c.c_no, c.c_contents, c.c_image
-		from (select * from board order by b_no desc limit #{page},24) as b 
+		from (select * from board order by b_no desc limit #{page},24) as b
 		left join content c
 			on c.b_no = b.b_no
 			where g_no=#{gNo}

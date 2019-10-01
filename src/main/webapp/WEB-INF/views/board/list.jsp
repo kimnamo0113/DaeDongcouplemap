@@ -52,6 +52,11 @@
 	div.pagination a{
 		cursor: pointer;
 	}
+	div#includeMap{
+		position: fixed;
+		right: 0;
+		top:200px;
+	}
 	
 	
 </style>
@@ -59,7 +64,7 @@
 
 <script>
 var mySlider2 = [];
-var startPage=0;
+var startPage=1;
 
 $(function(){
 	$('.bxslider2').each(function(i, obj){
@@ -204,13 +209,14 @@ $(function(){
 		console.log($(document).height() - $(window).height())
  */				
 		if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height() || $(window).scrollTop() == $(document).height() - $(window).height()) {
-			startPage+=10;
+			startPage+=1;
 			$.ajax({
 				url:"${pageContext.request.contextPath}/board/listAdd",
 				type:"get",
-				data: {startPage:startPage},
+				data: {page:startPage},
 				dataType:"json",
 				success:function(res){
+					console.log(res);
 					$(res).each(function(i,obj){
 						
 						var $divBxSlider2=$("<div>").addClass("bxslider2");
@@ -312,8 +318,8 @@ $(function(){
             <%-- <a href="${pageContext.request.contextPath }/board/write" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i>스마트에디터글쓰기</a> --%>
             
           </div>
-		  
-          <div class="row col-lg-8" id="mainScroll">
+		  <div class="row ">
+          <div class="col-lg-7" id="mainScroll">
 
             <!-- Content Column -->
             
@@ -321,6 +327,18 @@ $(function(){
 	            <div class="col-lg-12 mb-4">
 	              <!-- Illustrations -->
 	              <div class="card shadow mb-4">
+	                <div class="card-header py-3">
+	               <%--    <c:set var="place" value="${board.bPlace }"/>
+	                  <c:set var="place" value="${board.bPlace }"/>
+	                  <c:set var="place" value="${board.bPlace }"/>
+	                  <c:set var="place" value="${board.bPlace }"/>
+	                  <c:set var="place" value="${board.bPlace }"/>
+	                  ${fn:replace(place,"area:","") } <br>
+	                  ${fn:replace(place,"province:","") } <br>
+	                  ${fn:replace(place,"gu:","") } <br>
+	                  ${fn:replace(place,"dong:","") } <br> --%>
+	                  <h6 class="m-0 font-weight-bold text-primary">${board.bPlace }</h6>
+	                </div>
 	                <div class="card-header py-3">
 	                  <h6 class="m-0 font-weight-bold text-primary">${board.bTitle }</h6>
 	                </div>
@@ -380,7 +398,10 @@ $(function(){
 	            </div>
 	         </c:forEach>
           </div>
-
+			  <%-- <div id="includeMap">
+			  	<%@ include file="../../../resources/SouthKoreaDrillDownMetroDongRegion.jsp" %>
+			  </div> --%>
+		  </div>
         </div>
         <!-- /.container-fluid -->
 

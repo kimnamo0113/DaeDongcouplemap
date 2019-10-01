@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ko.mapper.LikeMapper">
+	<select id="selectLikeCount" resultType="int">
+		select count(l_no) from `like` where b_no = #{bNo}
+	</select>
+	
+	<insert id="insertLike" parameterType="Board">
+		INSERT INTO daedong.`like`
+		(b_no, g_no)
+		VALUES(#{bNo}, #{gNo});
+	</insert>
+</mapper>

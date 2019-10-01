@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ko.domain.Board;
+import com.ko.domain.SearchCriteria;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -40,8 +41,8 @@ public class BoardDaoImpl implements BoardDao{
 
 
 	@Override
-	public List<Board> selectLimit10(int page) {
-		return sqlSession.selectList(namespace+".selectLimit10",page);
+	public List<Board> selectLimit10(SearchCriteria cri) {
+		return sqlSession.selectList(namespace+".selectLimit10",cri);
 	}
 
 

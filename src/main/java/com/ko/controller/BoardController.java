@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import com.ko.domain.Criteria;
 import com.ko.domain.Guest;
 import com.ko.domain.PageMaker;
 import com.ko.domain.Reply;
+import com.ko.domain.SearchCriteria;
 import com.ko.service.BoardService;
 import com.ko.service.GuestService;
 import com.ko.service.ReplyService;
@@ -70,20 +72,50 @@ public class BoardController {
     }*/
 	
 	@RequestMapping(value="list",method=RequestMethod.GET)
-	public void list(Model model) {
+	public void list(Model model,@ModelAttribute("cri") SearchCriteria cri) {
 		logger.info("---------------- list");
-		List<Board> boards = bService.selectLimit10(0);
+		List<Board> boards = bService.selectLimit10(cri);
 		
 		model.addAttribute("boards",boards);
+	}
+	@RequestMapping(value="selectlist",method=RequestMethod.GET)
+	public void selectlist(Model model) {
+		logger.info("---------------- list");
+		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="listAdd",method=RequestMethod.GET)
-	public ResponseEntity<List<Board>> listAdd(int startPage) {
+	public ResponseEntity<List<Board>> listAdd(SearchCriteria cri) {
 		logger.info("---------------- list");
+		System.out.println(cri);
+		List<Board> boards = bService.selectLimit10(cri);
 		
-		List<Board> boards = bService.selectLimit10(startPage);
+		ResponseEntity<List<Board>> entity = null;
 		
+		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="timeLine",method=RequestMethod.GET)
+	public void timeLineGET(Model model,HttpSession session) {
+		logger.info("-------------------- timeLine");
+		Auth dto = (Auth)session.getAttribute("Auth");
+		Guest guest = gService.selectById(dto.getUserid());
+		
+		model.addAttribute("guest",guest);
+		List<Board> boards=bService.selectBygNoLimit24(0,guest.getgNo());
+		model.addAttribute("boards",boards);
+		model.addAttribute("bCount",bService.selectBygNoBoardCount(guest.getgNo()));
+	}
+	
+	@RequestMapping(value="timelineListAdd",method=RequestMethod.GET)
+	public ResponseEntity<List<Board>> timelineListAdd(int page, int gNo) {
+		logger.info("---------------- timelineListAdd");
+		
+		List<Board> boards = bService.selectBygNoLimit24(page, gNo);
+		System.out.println(boards.size());
 		ResponseEntity<List<Board>> entity = null;
 		
 		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
@@ -139,15 +171,5 @@ public class BoardController {
 		return entity;
 	}
 	
-	@RequestMapping(value="timeLine",method=RequestMethod.GET)
-	public void timeLineGET(Model model,HttpSession session) {
-		logger.info("-------------------- timeLine");
-		Auth dto = (Auth)session.getAttribute("Auth");
-		Guest guest = gService.selectById(dto.getUserid());
-		
-		model.addAttribute("guest",guest);
-		List<Board> boards=bService.selectBygNoLimit24(0,guest.getgNo());
-		model.addAttribute("boards",boards);
-		model.addAttribute("bCount",bService.selectBygNoBoardCount(guest.getgNo()));
-	}
+	
 }

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +27,7 @@
 
   <!-- Custom styles for this template-->
   
-  <link href="${pageContext.request.contextPath }/resources/bootTemplate/css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath }/resources/bootTemplate/css/sb-admin-2.css" rel="stylesheet">
   
   
 <script src="${pageContext.request.contextPath }/resources/js/writeBtn.js"></script>
@@ -75,6 +76,10 @@
 		width:400px;
 		float: right;
 	}
+	#searchType{
+		flex:0.3 0.3 auto;
+		margin-right:2px;
+	}
 </style>
 
 <!-- Bootstrap core JavaScript-->
@@ -100,7 +105,25 @@
 		$("#test").click(function(){
 			alert(test);
 		})
+
 		
+		function searchFunc(){
+			var select = $("select[name='searchType']").val();
+			var keyword=$("#searchText").val();
+			location.href="list?page=1&searchType="+select+"&keyword="+keyword;
+		}
+		
+		$("#searchBtn").click(function(){
+			searchFunc()
+		})
+		
+		$("#searchText").keydown(function(key) {
+
+	      	if (key.keyCode == 13) {
+	      		searchFunc();
+	       	}
+
+	    });
 	})
 	
 
@@ -246,18 +269,23 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+           		<select class="form-control" name="searchType" id="searchType">
+               		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
+               		<option value="aera" ${cri.searchType=='aera'?'selected':'' }>Area</option>
+               		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
+               		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
+               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
+               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
+               	</select>
+               	
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="searchText">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="writeBtn">
+                <button class="btn btn-primary" type="button" id="searchBtn">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
             </div>
           </form>
-          
-          
-          
-          
           
 
           <!-- Topbar Navbar -->
@@ -306,6 +334,9 @@
 	                <form class="form-inline mr-auto w-100 navbar-search">
 	                  <div class="input-group">
 	                  <!-- max width 수정 -->
+	                  	<select>
+	                  		<option></option>
+	                  	</select>
 	                    <input id="searchFor" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
 	                    
 	                    <div class="input-group-append">
@@ -353,6 +384,7 @@
 						  		<input type="text" id="hashTag" class="form-control list-group-item" placeholder="검색 키워드">
 						  		
 						  		<div id="hashResult" class="form-contorl"></div><br>
+						  		
 				        		<input type="hidden" name="userno" value="${Auth.userno }">
 					    <div class="modal-footer">
 					   		<button type="button" id="test">test</button>

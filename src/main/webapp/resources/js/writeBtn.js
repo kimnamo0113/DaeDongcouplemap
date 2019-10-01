@@ -1,6 +1,6 @@
-//서버로 보낼 데이터를 담을 공간
+	//서버로 보낼 데이터를 담을 공간
 	var formData = new FormData();
-//Img bx슬라이드 옵션 정보 담는곳	
+	//Img bx슬라이드 옵션 정보 담는곳	
 	var mySlider;
 $(function(){
     	mySlider=$('.bxslider').bxSlider({
@@ -92,7 +92,7 @@ $(function(){
 /* 해시태그 이벤트 */
          function hashPut(){
          	var text=$("#hashTag").val();
-         	var $span = $("<span>").html("<img src='resources/images/x.png'>");
+         	var $span = $("<span>").html("<img src='/daedong/resources/images/x.png'>");
          	var $p = $("<p>").text("#"+text);
          	
          	
@@ -134,22 +134,35 @@ $(function(){
 		
 		$("#writeForm").submit(function(e){
 			e.preventDefault();
-			/*formData.append("gNo",$("input[name='userno']").val());*/
-			formData.append("gNo",1);//test용
-			var hashResult=$("#hashResult").text();
+			formData.append("gNo",$("input[name='userno']").val());
+			/*formData.append("bGNo.gNo",1);//test용
+*/			var hashResult=$("#hashResult").text();
 			var bContents=$("#bContents").val();
 			var bTitle=$("#bTitle").val();
 			
-			var area = "area:"+$("#area").val();
-			var province = "province:"+$("#province").val();
-			var gu = "gu:"+$("#gu").val();
-			var dong = "dong:"+$("#dong").val();
+			var area = $("#area").val();
+			var province = $("#province").val();
+			var gu = $("#gu").val();
+			var dong = $("#dong").val();
+			
+			if(area=='지역선택'||area==null){
+				area="";
+			}
+			if(province=='지역선택'||province==null){
+				province="";
+			}
+			if(gu=='지역선택'||gu==null){
+				gu="";
+			}
+			if(dong=='지역선택'||dong==null){
+				dong="";
+			}
 			
 			
 			formData.append("bHash",hashResult);
 			formData.append("bContents",bContents);
 			formData.append("bTitle",bTitle);
-			formData.append("bPlace",area+","+province+","+gu+","+dong);
+			formData.append("bPlace",area+" "+province+" "+gu+" "+dong);
 			
 			for(var i=1; i<$(".imgTextAreaContents").length-1; i++){
 				var textArea=$(".imgTextAreaContents").eq(i);
