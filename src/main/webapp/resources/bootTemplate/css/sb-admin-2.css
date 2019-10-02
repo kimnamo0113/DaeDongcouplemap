@@ -6194,24 +6194,88 @@ a.close.disabled {
   content: none;
 }
 
-.modal-content {
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  margin-left:50px;
-  pointer-events: auto;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  outline: 0;
+@media(max-width:766px){
+		.modal-content {
+	  position: relative;
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+	  -webkit-box-orient: vertical;
+	  -webkit-box-direction: normal;
+	  -ms-flex-direction: column;
+	  flex-direction: column;
+	  width: 70%;
+	  margin-left:120px;
+	  pointer-events: auto;
+	  background-color: #fff;
+	  background-clip: padding-box;
+	  border: 1px solid rgba(0, 0, 0, 0.2);
+	  border-radius: 0.3rem;
+	  outline: 0;
+	}
 }
+@media(min-width:767px){
+		.modal-content {
+	  position: relative;
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+	  -webkit-box-orient: vertical;
+	  -webkit-box-direction: normal;
+	  -ms-flex-direction: column;
+	  flex-direction: column;
+	  width: 80%;
+	  margin-left:190px;
+	  pointer-events: auto;
+	  background-color: #fff;
+	  background-clip: padding-box;
+	  border: 1px solid rgba(0, 0, 0, 0.2);
+	  border-radius: 0.3rem;
+	  outline: 0;
+	}
+}
+@media(min-width:940px){
+		.modal-content {
+	  position: relative;
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+	  -webkit-box-orient: vertical;
+	  -webkit-box-direction: normal;
+	  -ms-flex-direction: column;
+	  flex-direction: column;
+	  width: 100%;
+	  margin-left:120px;
+	  pointer-events: auto;
+	  background-color: #fff;
+	  background-clip: padding-box;
+	  border: 1px solid rgba(0, 0, 0, 0.2);
+	  border-radius: 0.3rem;
+	  outline: 0;
+	}
+}
+@media(min-width:1300px){
+	.modal-content {
+	  position: relative;
+	  display: -webkit-box;
+	  display: -ms-flexbox;
+	  display: flex;
+	  -webkit-box-orient: vertical;
+	  -webkit-box-direction: normal;
+	  -ms-flex-direction: column;
+	  flex-direction: column;
+	  width: 150%;
+	  margin-left:-50px;
+	  pointer-events: auto;
+	  background-color: #fff;
+	  background-clip: padding-box;
+	  border: 1px solid rgba(0, 0, 0, 0.2);
+	  border-radius: 0.3rem;
+	  outline: 0;
+	}
+}
+
+
 
 .modal-backdrop {
   position: fixed;

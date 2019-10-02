@@ -30,7 +30,7 @@ import com.ko.service.BoardService;
 import com.ko.service.GuestService;
 import com.ko.service.ReplyService;
 
-
+ 
 @Controller
 @RequestMapping("/board/*")
 public class BoardController {
@@ -99,10 +99,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="timeLine",method=RequestMethod.GET)
-	public void timeLineGET(Model model,HttpSession session) {
+	public void timeLineGET(Model model,Guest guest) {
 		logger.info("-------------------- timeLine");
-		Auth dto = (Auth)session.getAttribute("Auth");
-		Guest guest = gService.selectById(dto.getUserid());
+		guest = gService.selectByGNo(guest.getgNo());
 		
 		model.addAttribute("guest",guest);
 		List<Board> boards=bService.selectBygNoLimit24(0,guest.getgNo());
@@ -168,6 +167,19 @@ public class BoardController {
 		
 		
 		
+		return entity;
+	}
+	@RequestMapping(value="boardDetail",method=RequestMethod.POST)
+	public ResponseEntity<Board> boardDetail(int bNo,Criteria cri){
+		ResponseEntity<Board> entity = null;
+		System.out.println(cri);
+		try {
+			Board board = bService.selectBNoReplyLimit10(bNo,cri);
+			entity = new ResponseEntity<Board>(board,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<Board>(HttpStatus.BAD_REQUEST);
+		}
 		return entity;
 	}
 	

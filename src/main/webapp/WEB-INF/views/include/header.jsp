@@ -141,6 +141,10 @@
 	       	}
 
 	    });
+		
+		
+		
+		
 	})
 	
 
@@ -587,7 +591,7 @@
 	              </a>
 	              <!-- Dropdown - User Information -->
 	              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-	                <a class="dropdown-item" href="${pageContext.request.contextPath }/board/timeLine">
+	                <a class="dropdown-item" href="${pageContext.request.contextPath }/board/timeLine?gNo=${Auth.userno}">
 	                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  Time Line
 	                </a>

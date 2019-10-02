@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ko.domain.Area;
 import com.ko.domain.Board;
+import com.ko.domain.Criteria;
 import com.ko.domain.Reply;
 import com.ko.domain.SearchCriteria;
 import com.ko.persistence.BoardDao;
@@ -76,6 +77,16 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int selectBygNoBoardCount(int gNo) {
 		return dao.selectBygNoBoardCount(gNo);
+	}
+
+
+	@Transactional
+	@Override
+	public Board selectBNoReplyLimit10(int bNo, Criteria cri) {
+		Board board=dao.selectByBNo(bNo);
+		board.setReplyCount(rDao.selectReplyCount(bNo));
+		board.setReplys(rDao.selectPageByBNoPage(bNo,cri));
+		return board;
 	}
 
 	

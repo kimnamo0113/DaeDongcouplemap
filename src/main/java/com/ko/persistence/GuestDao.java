@@ -25,4 +25,6 @@ public interface GuestDao {
 	public void updateCertification(Guest guest) throws Exception;
 	public void updateGuestImg(String savedName);
 	public void updateAll(Guest guest);
+	public Guest selectByGNo();
+	public Guest selectByGNo(int gNo);
 }

@@ -31,7 +31,7 @@
 	}
 	div.replys div.reply label.id{
 		display:inline-block;
-		width:80px;
+		width:auto;
 		float: left;
 	}
 	div.replys div.reply span.text{
@@ -57,10 +57,13 @@
 		right: 0;
 		top:200px;
 	}
-	
+	span.date{
+		font-size: 10px;
+	}
 	
 </style>
 
+<script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
 
 <script>
 var mySlider2 = [];
@@ -99,106 +102,7 @@ $(function(){
 	}
 	
 	
-	/* 댓글달기 */
-	$(document).on("click",".reply-addBtn",function(){
-		var rContent=$(this).prev();
-		var bNo=$(this).prev().attr("data-bno");
-		
-		var json = {
-				rContent:rContent.val(),
-				rBNo:{bNo:bNo},
-				rGNo:{gNo:"${Auth.userno}"}
-			};
-		var data = JSON.stringify(json)
-		rContent.val("");
-		$.ajax({
-			url:"${pageContext.request.contextPath}/board/insertReply",
-			type:"post",
-			data:data,
-			dataType:"json",
-			headers:{
-				"Content-Type":"application/json"
-			},
-			jsonp: false,
-			success:function(res){
-				var ulObj=$(rContent).parent().prev().find("ul.pagination");
-				var page=1;
-				getReplyListAll(bNo,page,ulObj);
-			}
-			
-		})
-	})
-	/* 댓글달기에서 enter key */	
-	$(document).on("keydown",".reply-textArea",function(key){
-		if (key.keyCode == 13) {
-     		$(this).next().click();
-     	}
-	})
-		
-	$(document).on("click",".addReply",function(){
-		
-		var ulObj=$(this).parent().parent().parent().find(".pagination");
-		
-		var bNo=$(this).attr("data-bNo");
-		var page=1;
-		$(this).hide();
-		getReplyListAll(bNo,page,ulObj);
-		
-	})
 	
-	function getReplyListAll(bNo,page,ulObj){
-		var addDivreplysList=$(ulObj).parent().find(".replysList");
-		$(addDivreplysList).empty();
-		$.ajax({
-			url:"${pageContext.request.contextPath}/board/selectReply",
-			type:"post",
-			data:{bNo:bNo,page:page},
-			dataType:"json",
-			success:function(res){
-				console.log(res)
-				$(res.replys).each(function(i,obj){
-					var $labelId = $("<label>").addClass("id").append(obj.rGNo.gId);
-					
-					var $spanText = $("<span>").addClass("text").append(obj.rContent);
-					var time = new Date(obj.rWritetime);
-					var $spanTime = $("<span>").append(time);
-					/* yy-MM-dd hh:mm */
-					$spanText.append($spanTime);
-					
-					var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
-					$(addDivreplysList).append($divReply);
-				})
-				printPaging(res,ulObj);
-			}
-		})
-	}
-	
-	function printPaging(res,ulObj){
-		$(ulObj).empty();
-		for(var i=res.pageMaker.startPage; i<=res.pageMaker.endPage; i++){
-			var $li = $("<li>").addClass("page-item");
-			var $a = $("<a>").text(i).addClass("page-link");
-			
-			if(res.pageMaker.cri.page == i){
-				$li.addClass("active");
-			}
-			
-			$li.append($a);
-			$(ulObj).append($li);
-		}
-	}
-	
-	
-	
-
-	$(document).on("click", ".pagination a", function(e){
-		e.preventDefault();
-		var page = $(this).text();
-		var ulObj=$(this).parent().parent();
-		var bNo=$(ulObj).attr("data-bNo");
-		
-		getReplyListAll(bNo,page,ulObj);
-	})
 	
 	
 	
@@ -249,7 +153,7 @@ $(function(){
 						$(obj.replys).each(function(i,r){
 							console.log(r)
 							var $labelId = $("<label>").addClass("id").append(r.rGNo.gId+":");
-							var $spanWritetime = $("<span>").append(r.rWritetime)
+							var $spanWritetime = $("<span>").append(r.rWritetime).addClass("date");
 							var $spanText = $("<span>").addClass("text").append(r.rContent).append($spanWritetime);		
 							var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
 							$divReplysList.append($divReply);
@@ -371,12 +275,12 @@ $(function(){
 							<c:if test="${board.replys[0].rNo!=0 }">
 								<c:forEach var="r" items="${board.replys }" step="1" begin="0" end="4">
 									<div class="reply">
-										<label class="id">${r.rGNo.gId } :</label><span class="text">${r.rContent } <span><fmt:formatDate value="${r.rWritetime }" pattern="yy-MM-dd hh:mm"/></span></span>
+										<label class="id">${r.rGNo.gId } : </label><span class="text">${r.rContent } <span class="date"><fmt:formatDate value="${r.rWritetime }" pattern="yy-MM-dd hh:mm"/></span></span>
 									</div>
 								</c:forEach>
 								<c:if test="${board.replyCount>5}">
 								<div class="divAddReply">
-									<a class="addReply" data-bNo="${board.bNo}">더보기...</a>
+									<a class="addReply" data-bNo="${board.bNo}" data-gno="${Auth.userno }">더보기...</a>
 								</div>
 								</c:if>
 							</c:if>
@@ -390,7 +294,7 @@ $(function(){
 	                <c:if test="${Auth!=null }">
 	                	<div class="reply-text row">
 	                		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bno="${board.bNo }"></textarea>
-	                		<button type="button" class="reply-addBtn btn btn-default active col-sm-1">게시</button>
+	                		<button type="button" class="reply-addBtn btn btn-default active col-sm-1" data-gNo=${Auth.userno }>게시</button>
 	                	</div>
                 	</c:if>
 	              </div>

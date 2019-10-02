@@ -139,6 +139,17 @@ public class GuestDaoImpl implements GuestDao{
 	public void updateAll(Guest guest) {
 		sqlSession.update(namespace+".updateAll",guest);
 	}
+
+	@Override
+	public Guest selectByGNo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Guest selectByGNo(int gNo) {
+		return sqlSession.selectOne(namespace+"selectByGNo",gNo);
+	}
 	
 
 }

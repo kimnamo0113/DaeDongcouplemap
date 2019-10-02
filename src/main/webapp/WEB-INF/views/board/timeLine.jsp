@@ -11,7 +11,7 @@
 		cursor: pointer;
 	}
 	#modal-content{
-		height: 300px;
+		max-height: 700px;
 		top:100px;
 	}
 	div.container-fluid{
@@ -42,8 +42,21 @@
 		width:680px;
 	}
 	
+	#dReplys{
+		height: 400px;
+		overflow: auto;
+	}
+	.divImg img{
+		max-width : auto;
+		max-height : 400px;
+	}
 	
-	
+	.divImg{
+		padding-bottom: 0px;
+	}
+	span.date{
+		font-size: 10px;
+	}
 	/* mouseover이벤트 */
 	
 		@import url(https://fonts.googleapis.com/css?family=Raleway:300,700);
@@ -162,38 +175,16 @@ figure.snip1384.hover i {
   opacity: 1;
 }
 </style>
+
+<script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
+
 <script type="text/javascript">
 var startPage=0;
-
+	var mySlider3;
 	$(function() {
-		$("#uploadProfileImg").change(function(){
-			if($(this)[0].files[0]==null){
-				return;
-			};
-			$("#proFileSpinner").addClass("spinner-border text-primary");
-			
-			
-			
-			var formData = new FormData();//서버로 보낼 데이터를 담을 공간
-			formData.append("file",$(this)[0].files[0]);
-			
-			console.log(formData)
-			$.ajax({
-				url:"${pageContext.request.contextPath}/upload/updateProfileImg",
-				type:"post",
-				data:formData,
-				processData:false, //FormData 를 보낼 경우 processData:false, contentType:false처리 필요
-				contentType:false,
-				success:function(res){
-					console.log(res);
-					$(".profileImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+res);
-					$("button.close").click();
-					$("#proFileSpinner").removeClass("spinner-border text-primary");
-				}
-			})
-			
-			
-		})
+		
+		
+		
 		
 		
 		$(".hover").mouseleave(function () {
@@ -201,20 +192,17 @@ var startPage=0;
 		});	
 		
 		
-		$("figcaption").click(function(){
-			var bNo=$(this).attr("data-bNo");
-			$.ajax({
-				url:"${pageContext.request.contextPath}/board/boardDetail",
-				type:"post",
-				data: {bNo:bNo},
-				dataType:"json",
-				success:function(res){
-					console.log(res);
-				}
-				
-			})
-		})
 		
+		$('#myModal3').on('hidden.bs.modal', function () {
+			  
+			  $(".bxslider3").empty();
+			  $("#dBPlace").empty();
+			 /*  $("#dReplys").empty();
+			  $h5Title = $("<h5>").attr("id","dBTitle")
+			  $pContent = $("<dBContents>").attr("id","dBcontents");
+			  $("#dReplys").append($h5Title).append($pContent); */
+			  
+		})
 		
 	})
 	
@@ -346,7 +334,8 @@ var startPage=0;
 		    	   		<figcaption data-bNo="${board.bNo }">
 					    <h3>${board.bTitle }</h3>
 						<p>${board.bPlace }</p><!-- <i class="ion-ios-arrow-right"></i> -->
-						<i class="fas fa-heart"> ${board.bGood }</i><i class="fas fa-comment"> ${board.replyCount }</i>
+ 						<i class="fas fa-heart"> ${board.bGood }</i><i class="fas fa-comment"> ${board.replyCount }</i>
+						
 						<p></p>
 					  </figcaption>
 					</figure>
@@ -355,32 +344,47 @@ var startPage=0;
 	    </div>
 	 </div>
   </div>
-  <div class="modal fade" id="myModal3" role="dialog">
+  <div class="modal fade" id="myModal3" role="dialog" >
     <div class="modal-dialog">
     
       <!-- Modal content-->
       <div class="modal-content" id="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="bPlace"></h4><br>
+          <h4 class="modal-title" id="dBPlace"></h4><br>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
-         <div class="modal-body">
-          <h5 id="bTitle"></h5>
+         <div class="modal-body row">
+          <div class="col-sm-8">
+	          <div class="bxslider3">
+	          	
+	          </div>
+          </div>
+          
+          <div class="col-sm-4">
+          	<div>
+        		<h5 id="dBTitle"></h5>
+	          	<p id="dBContents"></p>
+	          	<div id="dReplys" class="replysList form-control">
+			          	
+				</div>
+				
+				
+				<ul class="pagination justify-content-center">
+					</ul>
+          	</div>
+          	
+          	<c:if test="${Auth!=null }">
+              	<div class="reply-text row">
+              		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bNo="${board.bNo }"></textarea>
+              		<button type="button" class="reply-addBtn btn btn-default active col-sm-1" data-gNo=${Auth.userno }>게시</button>
+              	</div>
+            </c:if>
+          </div>
         </div>
         
-        <form enctype="multipart/form-data">
-	        <div id="proFileUpdate">
-	        	
-			  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
-					<input type="file" name="file" id="uploadProfileImg" style="display:none">
-					<label class="list-group-item">사진 내리기</label>		  		
-			  	
-	        </div>
 		    <div class="modal-footer">
-		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	        </div>
-        </form>
       </div>
       
     </div>
