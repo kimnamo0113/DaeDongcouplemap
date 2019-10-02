@@ -118,4 +118,9 @@ public class GuestServiceImpl implements GuestService {
 	public void updateAll(Guest guest) {
 		dao.updateAll(guest);
 	}
+
+	@Override
+	public Guest selectByGNo(int gNo) {
+		return dao.selectByGNo(gNo);
+	}
 }

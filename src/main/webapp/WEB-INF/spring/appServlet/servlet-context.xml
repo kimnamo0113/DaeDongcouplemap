@@ -45,7 +45,7 @@
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
 		<interceptor>
-			<mapping path="/sboard/modPage"/>
+			<mapping path="/board/timeLine"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>

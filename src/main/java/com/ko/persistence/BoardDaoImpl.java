@@ -59,6 +59,12 @@ public class BoardDaoImpl implements BoardDao{
 	public int selectBygNoBoardCount(int gNo) {
 		return sqlSession.selectOne(namespace+".selectBygNoBoardCount",gNo);
 	}
+
+
+	@Override
+	public Board selectByBNo(int bNo) {
+		return sqlSession.selectOne(namespace+".selectByBNo",bNo);
+	}
 	
 	
 }

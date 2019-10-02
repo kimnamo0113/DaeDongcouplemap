@@ -25,7 +25,7 @@ public class ReplyDaoImpl implements ReplyDao{
 
 	@Override
 	public List<Reply> selectReplyLimit5(int bNo) {
-		return sqlSession.selectList(namespace+".selectBoardLimit10",bNo);
+		return sqlSession.selectList(namespace+".selectBoardLimit5",bNo);
 	}
 
 	@Override
@@ -40,5 +40,6 @@ public class ReplyDaoImpl implements ReplyDao{
 		map.put("cri", cri);
 		return sqlSession.selectList(namespace+".selectPageByBNoPage",map);
 	}
+
 	
 }

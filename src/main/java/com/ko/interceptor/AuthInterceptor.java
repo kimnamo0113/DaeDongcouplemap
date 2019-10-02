@@ -21,7 +21,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		if(session.getAttribute("Auth")==null) { //로그인 안된 상태
 			logger.info("current user is not login.............");
 			saveDest(request);
-			response.sendRedirect(request.getContextPath()+"/auth/login");
+			response.sendRedirect(request.getContextPath()+"/member/login");
 			return false; //controller 진입을 막음
 		}
 		

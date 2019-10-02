@@ -9,9 +9,12 @@ $(function(){
     		  stopAutoOnClick: false,
     		  pager: true,
     		  pagerType : 'short',
-    		  slideWidth: 700,
+    		  slideWidth: 1100,
     		  touchEnabled:false
     		});
+    	
+    	
+    	
     	
 /* 글쓰기에서 이미지 업로드시 */    	
     	$("#imgFile").change(function(){
@@ -136,7 +139,7 @@ $(function(){
 		
 		$("#writeForm").submit(function(e){
 			e.preventDefault();
-			formData.append("gNo",$("input[name='userno']").val());
+			formData.append("bGNo.gNo",$("input[name='userno']").val());
 			/*formData.append("bGNo.gNo",1);//test용
 */			var hashResult=$("#hashResult").text();
 			var bContents=$("#bContents").val();
@@ -191,9 +194,16 @@ $(function(){
 		
 		
 		
-		function clearTf(){
-			
-		}
+		$('#writeModal').on('hidden.bs.modal', function () {
+			  $("select[name=area]").val("지역선택");
+			  $("select[name=province]").val("지역선택");
+			  $("select[name=province]").hide();
+			  $("select[name=gu]").val("지역선택");
+			  $("select[name=gu]").hide();
+			  $("select[name=dong]").val("지역선택");
+			  $("select[name=dong]").hide();
+			  
+		})
 		
     });
 

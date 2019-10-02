@@ -29,6 +29,10 @@
 		select * from guest where g_email=#{gEmail}
 	</select>
 	
+	<select id="selectByGNo" resultType="Guest">
+		select * from guest where g_no=#{gNo};
+	</select>
+	
 	<!-- 회원가입시 중복체크용 -->
 		<select id="selectIdCheck" resultType="int">
 			select count(g_no) from guest where g_id = #{gId}
@@ -86,4 +90,6 @@
 			WHERE g_no=#{gNo};
 		</update>
 	<!--  -->
+	
+	
 </mapper>

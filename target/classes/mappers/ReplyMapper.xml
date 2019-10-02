@@ -20,7 +20,7 @@
 		VALUES(#{rBNo.bNo}, #{rGNo.gNo}, #{rMNo.mNo}, #{rContent}, now(), 0, 0);
 	</insert>
 	
-	<select id="selectBoardLimit10" resultMap="ReplyDetail">
+	<select id="selectBoardLimit5" resultMap="ReplyDetail">
 		SELECT r_no, b_no, r.g_no, m_no, r_content, r_writetime, r_delete, r_good, r.g_no, g_name, g_id
 		FROM reply r
 		join guest g
