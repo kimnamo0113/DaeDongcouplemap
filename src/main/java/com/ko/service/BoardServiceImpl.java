@@ -35,7 +35,6 @@ public class BoardServiceImpl implements BoardService{
 	@Transactional
 	@Override
 	public void insertBoard(Board board, ArrayList<Map<String, String>> imgNameList) {
-		System.out.println(board.getbGNo());
 		dao.insertBoard(board);
 		cDao.insertContent(board,imgNameList);
 	}
@@ -64,7 +63,6 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<Board> selectBygNoLimit24(int page, int gNo) {
 		List<Board> boards = dao.selectBygNoLimit24(page,gNo);
-		System.out.println(boards.size());
 		for(int i=0; i<boards.size(); i++) {
 			int bNo=boards.get(i).getbNo();
 			boards.get(i).setReplyCount(rDao.selectReplyCount(bNo));

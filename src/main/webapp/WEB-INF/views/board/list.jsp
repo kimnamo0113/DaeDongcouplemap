@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 
-
 <style>
 	.bxslider2{
 		position: relative;
@@ -59,6 +58,21 @@
 	}
 	span.date{
 		font-size: 10px;
+	}
+	.guestImg{
+		border-radius: 50% 50% 50% 50%;
+		border:1px solid #ccc;
+		width:50px;
+		height: 50px;
+		margin-right:10px;
+		cursor: pointer;
+	}
+	.guestInfo a{
+		text-decoration: none;
+		color: #858796;
+	}
+	.guestInfo a:hover{
+		font-size: 1.2rem;
 	}
 	
 </style>
@@ -145,6 +159,7 @@ $(function(){
 							var iShare = $("<i>").addClass("far fa-share-square");
 						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 ?명이 좋아합니다.");
 						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iHeart2).append(iComment).append(iShare);
+						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
 						var $pHash = $("<p>").addClass("bHash").append(obj.bHash);
 						
@@ -166,19 +181,24 @@ $(function(){
 						var $ulPagination = $("<ul>").addClass("pagination justify-content-center").attr("data-bNo",obj.bNo);
 						var $divReplys = $("<div>").addClass("replys").append($divReplysList).append($ulPagination);
 						
-						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($pIcons).append($pWhoLike).append($pContents).append($pHash).append($divReplys);
-						
-						var $h6Title=$("<h6>").addClass("m-0 font-weight-bold text-primary").append(obj.bTitle);
-						var $divCardHeader=$("<div>").addClass("card-header py-3").append($h6Title);
+						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($pIcons).append($pWhoLike).append($h6Title).append($pContents).append($pHash).append($divReplys);
+								var imgSrc = obj.bGNo.gImage;
+								var leftSrc = imgSrc.slice(0,21);
+								var rightSrc = imgSrc.slice(23,imgSrc.length)
+								var $imgGuest = $("<img>").addClass("guestImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+leftSrc+"s_"+rightSrc);
+							var $h6Id = $("<h6>").append($imgGuest).append(obj.bGNo.gId).addClass("font-weight-bold");
+							var $h6bPlace = $("<h6>").append(obj.bPlace).addClass("font-weight-bold"); 
+						var $divCardHeader1=$("<div>").addClass("card-header py-3").append($h6Id);
+						var $divCardHeader2=$("<div>").addClass("card-header py-3").append($h6bPlace);
 						
 						var $divCard = $("<div>");
 						
 						if('${Auth.userid}'!=null){
 							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-sm-10").attr("data-bno",obj.bNo);
-							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-sm-1").append("게시").attr("type","button");
+							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-sm-1").append("게시").attr("type","button").attr("data-gNo",obj.bGNo.gNo);
 							var $divReplyText = $("<div>").addClass("reply-text row").append($textAreaReply).append($buttonReply);
 							
-							$divCard.addClass("card shadow mb-4").append($divCardHeader).append($divCardBody).append($divReplyText);
+							$divCard.addClass("card shadow mb-4").append($divCardHeader1).append($divCardHeader2).append($divCardBody).append($divReplyText);
 						}else{
 							$divCard.addClass("card shadow mb-4").append($divCardHeader).append($divCardBody);	
 						}
@@ -210,6 +230,12 @@ $(function(){
 	    }
 
 	});
+	
+	$(".guestImg").click(function(){
+		var href = $(this).next();
+		location.href=$(href).attr("href");
+	})
+	
 })
 
 
@@ -232,25 +258,29 @@ $(function(){
 	              <!-- Illustrations -->
 	              <div class="card shadow mb-4">
 	                <div class="card-header py-3">
-	               <%--    <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  ${fn:replace(place,"area:","") } <br>
-	                  ${fn:replace(place,"province:","") } <br>
-	                  ${fn:replace(place,"gu:","") } <br>
-	                  ${fn:replace(place,"dong:","") } <br> --%>
-	                  <h6 class="m-0 font-weight-bold text-primary">${board.bPlace }</h6>
+	                <%-- <c:set var="img" value="${board.contents[0].cImage }"/>
+		    		<c:set var="imglength" value="${fn:length(img) }"/>
+		    	  	 <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(img,0,20)}s_${fn:substring(img,22,imglength) }" > --%>
+	                
+	                
+	                  
+	                  <c:if test="${board.bGNo.gImage!=null}">
+	                  	<c:set var="gImg" value="${board.bGNo.gImage}"/>
+	                  	<c:set var="imglength" value="${fn:length(gImg)}"/>
+	                  	<h6 class="font-weight-bold guestInfo"><img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(gImg,0,21)}s_${fn:substring(gImg,23,imglength) }" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a></h6>
+	                  </c:if>
+	                  <c:if test="${board.bGNo.gImage==null}">
+	                  	<h6 class="font-weight-bold guestInfo"><img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a></h6>
+	                  </c:if>
 	                </div>
 	                <div class="card-header py-3">
-	                  <h6 class="m-0 font-weight-bold text-primary">${board.bTitle }</h6>
+	                  <h6 class="font-weight-bold">${board.bPlace }</h6>
 	                </div>
 	                
 	                <div class="card-body">
 	                  <div class="text-center">
 	                  <!-- style="visibility:hidden;opacity:0" -->
-	                  	<div class="slideHidden2" >
+	                  	<div class="slideHidden2">
 		                  <div class="bxslider2">
 		                    	<c:forEach var="c" items="${board.contents }">
 		                    	<div>
@@ -268,6 +298,7 @@ $(function(){
 	                  </div>
 					<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
 					<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
+	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
 					<p class="bHash">${board.bHash }</p>
 					<div class="replys">

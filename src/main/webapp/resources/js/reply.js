@@ -200,17 +200,15 @@ $(function(){
 		})
 		
 		
-			$("#uploadProfileImg").change(function(){
+		$("#uploadProfileImg").change(function(){
+			var bNo = $(this).attr("data-gNo"); 
 			if($(this)[0].files[0]==null){
 				return;
 			};
 			$("#proFileSpinner").addClass("spinner-border text-primary");
 			
-			
-			
 			var formData = new FormData();//서버로 보낼 데이터를 담을 공간
 			formData.append("file",$(this)[0].files[0]);
-			
 			console.log(formData)
 			$.ajax({
 				url:"/daedong/upload/updateProfileImg",
@@ -223,7 +221,7 @@ $(function(){
 /* 					$(".profileImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+res);
 					$("button.close").click();
  */					$("#proFileSpinner").removeClass("spinner-border text-primary");
- 					location.href="${pageContext.request.contextPath}/board/timeLine";
+ 					location.href="/daedong/board/timeLine?gNo="+bNo;
 				}
 			})
 			

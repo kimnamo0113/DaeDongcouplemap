@@ -76,10 +76,13 @@
 	
 	<select id="selectLimit10" resultType="Board" resultMap="BoardDetail">
 		select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime, b_delete, b_flat, b_good,
-			c.c_no, c.c_contents, c.c_image
+			c.c_no, c.c_contents, c.c_image,
+			g.g_name, g.g_id, g.g_image
 		from (select * from board order by b_no desc limit #{pageStart},#{perPageNum}) as b
 		left join content c
 			on c.b_no = b.b_no
+		left join guest g
+			on g.g_no = b.g_no
 		<include refid="search"></include> 
 		order by b.b_no desc;
 	</select>

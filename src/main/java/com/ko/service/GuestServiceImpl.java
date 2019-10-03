@@ -78,7 +78,6 @@ public class GuestServiceImpl implements GuestService {
 				pw += (char) ((Math.random() * 26) + 97);
 			}
 			guest.setgPassword(pw);
-			System.out.println(guest);
 			// 비밀번호 변경
 			dao.updatePassWord(guest);
 			// 비밀번호 변경 메일 발송

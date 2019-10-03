@@ -10,7 +10,7 @@
 	#proFileUpdate label,#proFileUpdate li{
 		cursor: pointer;
 	}
-	#modal-content{
+	#modalProfile{
 		max-height: 700px;
 		top:100px;
 	}
@@ -22,18 +22,13 @@
 		height: 180px;
 		margin: 10px;
 	}
-	@media (max-width: 768px) {
-	    .boardList img{
-			width:150px;
-			height: 150px;
-			margin: 10px;
-		}
-	}
+	
+
 	figure{
 		cursor: pointer;
 	}
 	#header{
-		width: 600px;
+		width: 500px;
 	    text-align: center;
 	    margin: 0 auto;
 	}
@@ -43,7 +38,7 @@
 	}
 	
 	#dReplys{
-		height: 400px;
+		height: 250px;
 		overflow: auto;
 	}
 	.divImg img{
@@ -59,7 +54,7 @@
 	}
 	/* mouseover이벤트 */
 	
-		@import url(https://fonts.googleapis.com/css?family=Raleway:300,700);
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,700);
 @import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
 figure.snip1384 {
   font-family: 'Raleway', Arial, sans-serif;
@@ -174,6 +169,136 @@ figure.snip1384.hover i {
   transform: translate(0px, 0px);
   opacity: 1;
 }
+
+@media (max-width: 768px) {
+		 .boardList img{
+				width:150px;
+				height: 150px;
+				margin: 10px;
+			}
+		.modalBodyLeft{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+		.modalBodyRight{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+		#modal-content{
+			min-height:1000px; 
+		}
+		.divText{
+			height: 50px;
+			overflow: auto;
+		}
+	#header {
+		width:500px;
+	}
+	.col-sm-1 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 8.33333%;
+    flex: 0 0 8.33333%;
+    max-width: 8.33333%;
+  }
+  .col-sm-2 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 16.66667%;
+    flex: 0 0 16.66667%;
+    max-width: 16.66667%;
+  }
+  .col-sm-3 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-sm-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.33333%;
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+  }
+  .col-sm-5 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 41.66667%;
+    flex: 0 0 41.66667%;
+    max-width: 41.66667%;
+  }
+  .col-sm-6 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .col-sm-7 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 58.33333%;
+    flex: 0 0 58.33333%;
+    max-width: 58.33333%;
+  }
+  .col-sm-8 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 66.66667%;
+    flex: 0 0 66.66667%;
+    max-width: 66.66667%;
+  }
+  .col-sm-9 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+  .col-sm-10 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 83.33333%;
+    flex: 0 0 83.33333%;
+    max-width: 83.33333%;
+  }
+  .col-sm-11 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 91.66667%;
+    flex: 0 0 91.66667%;
+    max-width: 91.66667%;
+  }
+  .col-sm-12 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+@media (max-width: 768px) {
+	figcaption h3{
+		display: none;
+	}
+
+	figure.snip1384 i.fa-heart{
+	 bottom: 5px;
+	 left: 10px;
+	}
+	figure.snip1384 i.fa-comment{
+	  bottom: 5px;
+	  right: 40px;
+	}
+		figure.snip1384 figcaption {
+	  z-index: 1;
+	  padding: 20px;
+	}
+}
+@media (max-width: 550px) {
+	 .boardList img{
+			width:130px;
+			height: 130px;
+			margin: 10px;
+		}
+}
+
+
+
 </style>
 
 <script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
@@ -182,10 +307,6 @@ figure.snip1384.hover i {
 var startPage=0;
 	var mySlider3;
 	$(function() {
-		
-		
-		
-		
 		
 		$(".hover").mouseleave(function () {
 		    $(this).removeClass("hover");
@@ -202,6 +323,101 @@ var startPage=0;
 			  $pContent = $("<dBContents>").attr("id","dBcontents");
 			  $("#dReplys").append($h5Title).append($pContent); */
 			  
+		})
+		
+			
+		$("#profileImg").click(function(){
+						
+			if($(this).attr("data-gNo") == '${Auth.userno}')
+				return true;	
+			else
+				return false;
+		})
+		//flat 버튼 = 0:관계x(팔로우) 1:요청됨 2:요청 수락 3:팔로잉
+		var flat = '${flat}';
+		
+		if(flat==0){
+			$("#follow").find("span").text("팔로우");	
+		}
+		else if(flat==1){
+			$("#follow").find("span").text("요청됨");
+		}
+		else if(flat==2){
+			$("#follow").find("span").text("요청 수락");
+		}
+		else if(flat==3){
+			$("#follow").find("span").text("팔로잉");
+		}
+		
+		
+		$("#follow").click(function(){
+			
+			var follow = '${Auth.userno}'; 
+			var follower = '${guest.gNo}';
+			
+			var followCount = $("#followCount").text(); 
+			var followerCount = $("#followerCount").text();  
+			
+			var span = $("#follow").find("span");
+			var spanStr = $(span).text();
+			var check;
+			if(spanStr=="팔로우"){
+				check=confirm("팔로우 요청을 하시겠습니까?");
+			}else if(spanStr=="요청됨"){
+				check=confirm("팔로우 요청을 취소 하시겠습니까?");
+			}else if(spanStr=="요청 수락"){
+				check=confirm("팔로우 요청을 수락하시겠습니까?");
+			}else{
+				check=confirm("팔로우를 취소 하시겠습니까?");
+			}
+			if(check==false){
+				return;
+			}
+			$(span).text("").addClass("spinner-border text-primary");
+			
+			if(spanStr=="팔로우" || spanStr=="요청 수락"){
+				$.ajax({
+					url : "/daedong/friend/follow",
+					type : "post",
+					data : {follow:follow,follower:follower},
+					dataType : "json",
+					success : function(res){
+						console.log(res);
+						$(span).removeClass("spinner-border text-primary");
+						if(res==true){
+							if(spanStr=="팔로우"){
+								$(span).text("요청됨");
+								$("#followerCount").text(Number(followerCount)+1);
+							}else{
+								$(span).text("팔로잉");
+								$("#followerCount").text(Number(followerCount)+1);
+							}
+						}
+						
+					}
+				})		
+			}else{
+				$.ajax({
+					url : "/daedong/friend/request",
+					type : "post",
+					data : {follow:follow,follower:follower},
+					dataType : "json",
+					success : function(res){
+						console.log(res);
+						$(span).removeClass("spinner-border text-primary");
+						if(res==true){
+							if(spanStr=="요청됨"){
+								$(span).text("팔로우");
+								$("#followerCount").text(Number(followerCount)-1);
+							}else{
+								$(span).text("요청 수락");
+								$("#followerCount").text(Number(followerCount)-1);
+							}
+						}
+					}
+				})
+			}
+			
 		})
 		
 	})
@@ -231,7 +447,7 @@ var startPage=0;
 			})
 			
 	    }
-
+	
 	
 	
 	});
@@ -245,34 +461,41 @@ var startPage=0;
   	<div class="form-group row" id="header">
   		<div class="col-sm-4">
 			<c:if test="${guest.gImage!=null }">
-				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal2" width="150" height="150">
+				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }" data-gNo="${guest.gNo }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal2" width="150" height="150">
 			</c:if>  	
 		  	<c:if test="${guest.gImage==null }">
-		  		<img id="profileImg" src="${pageContext.request.contextPath }/resources/images/boy.png" class="img-circle profileImg" data-toggle="modal" data-target="#myModal2">
+		  		<img id="profileImg" src="${pageContext.request.contextPath }/resources/images/boy.png" data-gNo="${guest.gNo }" class="img-circle profileImg"  data-toggle="modal" data-target="#myModal2">
 		  	</c:if>
 	  	</div>
 	  	<div class="col-sm-6">
-	  		<h1 class="h5 mb-0 text-gray-800">${Auth.userid}</h1><br>
+	  		<h1 class="h5 mb-0 text-gray-800">${guest.gId}
+	  			<!-- flat 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉 -->
+		  		<c:if test="${Auth.userno!=guest.gNo }">
+		  			<button class="btn btn-outline-primary" id="follow"><span></span></button>
+		  		</c:if>
+		  		
+	  		</h1>
+	  		<br>
 	  		<div class="row">
 	  		<div class="col-sm-4">
 	  			<label>게시글</label><br>
 	  		</div>
 	  		<div class="col-sm-4">
-	  			<label>팔로워</label><br>
+	  			<label>팔로우</label><br>
 	  		</div>
 	  		<div class="col-sm-4">
-	  			<label>팔로우</label><br>
+	  			<label>팔로워</label><br>
 	  		</div>
 	  		</div>
 	  		<div class="row">
 	  		<div class="col-sm-4">
-	  			<label>${bCount }</label><br>
+	  			<label id="boardCount">${bCount }</label><br>
 	  		</div>
 	  		<div class="col-sm-4">
-	  			<label>팔로워</label><br>
+	  			<label id="followCount">${followCount }</label><br>
 	  		</div>
 	  		<div class="col-sm-4">
-	  			<label>팔로우</label><br>
+	  			<label id="followerCount">${followerCount }</label><br>
 	  		</div>
 	  		</div>
 	  	</div>
@@ -287,7 +510,7 @@ var startPage=0;
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content" id="modal-content">
+      <div class="modal-content" id="modalProfile">
         <div class="modal-header">
           <h4 class="modal-title">프로필 사진 수정</h4>
           
@@ -297,7 +520,7 @@ var startPage=0;
 	        <div id="proFileUpdate">
 	        	
 			  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
-					<input type="file" name="file" id="uploadProfileImg" style="display:none">
+					<input type="file" name="file" id="uploadProfileImg"  data-gNo="${guest.gNo }"s style="display:none">
 					<label class="list-group-item">사진 내리기</label>		  		
 			  	
 	        </div>
@@ -355,13 +578,13 @@ var startPage=0;
         </div>
         
          <div class="modal-body row">
-          <div class="col-sm-8">
+          <div class="col-sm-8 modalBodyLeft">
 	          <div class="bxslider3">
 	          	
 	          </div>
           </div>
           
-          <div class="col-sm-4">
+          <div class="col-sm-4 modalBodyRight">
           	<div>
         		<h5 id="dBTitle"></h5>
 	          	<p id="dBContents"></p>

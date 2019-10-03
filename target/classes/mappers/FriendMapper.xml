@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ko.mapper.FriendMapper">
+	
+    <resultMap type="Friend" id="friendBasic">
+	   <result property="fNo" column="f_no" />
+		<result property="follow.gNo" column="g_follow" />
+		<result property="follower.gNo" column="g_follower" />
+		<result property="fDate" column="f_date" />
+		<result property="fRead" column="f_read" />
+	</resultMap>	
+	<select id="selectFriend" resultMap="friendBasic">
+		SELECT f_no, g_follow, g_follower, f_date, f_read
+		FROM daedong.friend
+		where g_follow=#{follow} and g_follower=#{follower}
+	</select>
+	
+	<insert id="insertFriend">
+		INSERT INTO daedong.friend
+		(g_follow, g_follower, f_date, f_read)
+		VALUES(#{follow}, #{follower}, CURRENT_TIMESTAMP, 0);
+	</insert>
+	
+	<delete id="deleteFriend">
+		DELETE FROM daedong.friend
+		WHERE g_follow=#{follow} and g_follower=#{follower};
+	</delete>
+	<select id="selectFollowCount" resultType="int">
+		select count(f_no) from friend where g_follow=#{gNo}
+	</select>
+	<select id="selectFollowerCount" resultType="int">
+		select count(f_no) from friend where g_follower=#{gNo}
+	</select>
+</mapper>

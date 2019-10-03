@@ -80,6 +80,18 @@
 		flex:0.3 0.3 auto;
 		margin-right:2px;
 	}
+	
+	@media (max-width: 767px){
+		nav.navbar{
+			-webkit-box-flex:0;
+			-ms-flex:0 0 100%;
+			flex:0 0 100%;
+			max-width:100%;
+		}
+	}
+	.searchText{
+		height: auto;
+	}
 </style>
 
 <!-- Bootstrap core JavaScript-->
@@ -88,6 +100,28 @@
 	var test="";
 	
 	$(function() {
+		
+var width_size = window.outerWidth;
+		
+		if(width_size <= 776){
+			$("#accordionSidebar").addClass("toggled");
+		}
+		
+		$(window).resize(function(){
+			width_size = window.outerWidth;
+			
+			if(width_size <= 776){
+				$("#accordionSidebar").addClass("toggled");
+			}
+		})
+		
+		$("#sidebarToggleTop").click(function(){
+			var length = $(".bxslider2").length;
+			for(var i=0; i<length; i++){
+				mySlider2[i].reloadSlider();
+			}
+		})
+		
 		
 		$("#hanbandoImg").click(function(){
 			/* var scX = window.screenLeft;
@@ -141,8 +175,6 @@
 	       	}
 
 	    });
-		
-		
 		
 		
 	})
@@ -299,7 +331,7 @@
                		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
                	</select>
                	
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="searchText">
+              <input type="text" class="form-control bg-light border-0 small searchText" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="searchText">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button" id="searchBtn">
                   <i class="fas fa-search fa-sm"></i>
@@ -363,7 +395,7 @@
 		               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
 		               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
 		               	</select>
-	                    <input id="searchText2" type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+	                    <input id="searchText2" type="text" class="form-control bg-light border-0 small searchText" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
 	                    
 	                    <div class="input-group-append">
 	                      <button class="btn btn-primary" type="button" id="searchBtn2">
@@ -578,7 +610,7 @@
 	            <!-- Nav Item - User Information -->
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${Auth.username }</span>
+	                <span class="mr-2 d-lg-inline text-gray-600 small">${Auth.username }</span>
 	                <c:if test="${Auth.userimage!=null }">
 						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename=${Auth.userimage}"  class="img-profile rounded-circle profileImg" data-toggle="modal" data-target="#myModal">
 					</c:if>

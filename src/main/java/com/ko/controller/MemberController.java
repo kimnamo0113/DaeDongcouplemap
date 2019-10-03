@@ -40,7 +40,6 @@ public class MemberController {
 		logger.info("-------------------login POST,"+guest);
 		
 		Guest dbguest = service.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
-		System.out.println(dbguest);
 		if(dbguest==null) {
 			logger.info("loginPOST...login fail,not member");
 			return;
@@ -125,7 +124,6 @@ public class MemberController {
 		logger.info("--------------------forgotPassPOST guest : "+guest);
 		
 		Guest dbguest = service.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
-		System.out.println(dbguest);
 		if(dbguest==null) {
 			logger.info("loginPOST...login fail,not member");
 			return null;

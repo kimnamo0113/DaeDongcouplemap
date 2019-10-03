@@ -107,3 +107,10 @@ select b.b_no, b.g_no, b.m_no, b_title, b_place, b_hash, b_contents, b_writetime
 		where g_no=1
 		order by b.b_no desc;
 
+	
+SELECT * FROM guest;
+
+INSERT INTO daedong.guest
+(g_id, g_password, g_name, g_tel, g_email, g_birth, g_gender, g_certification)
+VALUES('test2', password(1234), 'namo', '01012341234', 'klnver@naver.com', '940113', 0, 'true');
+

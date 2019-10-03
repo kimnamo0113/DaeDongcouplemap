@@ -24,7 +24,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 			response.sendRedirect(request.getContextPath()+"/member/login");
 			return false; //controller 진입을 막음
 		}
-		
 		return true;
 	}
 	
