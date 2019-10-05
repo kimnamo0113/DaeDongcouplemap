@@ -7,12 +7,12 @@ public class Friend {
 	private Guest follow;
 	private Guest follower;
 	private Date fDate;
-	private Boolean fRead;
+	private int fRead;
 	public Friend() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Friend(int fNo, Guest follow, Guest follower, Date fDate, Boolean fRead) {
+	public Friend(int fNo, Guest follow, Guest follower, Date fDate, int fRead) {
 		super();
 		this.fNo = fNo;
 		this.follow = follow;
@@ -44,10 +44,10 @@ public class Friend {
 	public void setfDate(Date fDate) {
 		this.fDate = fDate;
 	}
-	public Boolean getfRead() {
+	public int getfRead() {
 		return fRead;
 	}
-	public void setfRead(Boolean fRead) {
+	public void setfRead(int fRead) {
 		this.fRead = fRead;
 	}
 	@Override
@@ -55,8 +55,6 @@ public class Friend {
 		return "Friend [fNo=" + fNo + ", follow=" + follow + ", follower=" + follower + ", fDate=" + fDate + ", fRead="
 				+ fRead + "]";
 	}
-	
-	
 	
 	
 }

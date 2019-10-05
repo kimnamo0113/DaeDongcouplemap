@@ -16,7 +16,7 @@
 		<result property="bContents" column="b_contents" />
 		<result property="bWritetime" column="b_writetime" />
 		<result property="bDelete" column="b_delete" />
-		<result property="bFlat" column="b_flat" />
+		<result property="bFlag" column="b_flat" />
 		<result property="bGood" column="b_good" />
 		<association property="bGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic"></association>
 	</resultMap>
@@ -53,7 +53,7 @@
 			where b_place like CONCAT('%',#{keyword},'%') 
 			OR b_title like CONCAT('%',#{keyword},'%') 
 			OR b_contents like CONCAT('%',#{keyword},'%') 
-			OR g_no like CONCAT('%',#{keyword},'%') 
+			OR g.g_id like CONCAT('%',#{keyword},'%') 
 			OR b_hash like CONCAT('%',#{keyword},'%') 
 		</if>
 		<if test="searchType=='area'.toString()">
@@ -66,7 +66,7 @@
 			where b_contents like CONCAT('%',#{keyword},'%') 
 		</if>
 		<if test="searchType=='friend'.toString()">
-			where g_no like CONCAT('%',#{keyword},'%') 
+			where g.g_id like CONCAT('%',#{keyword},'%') 
 		</if>
 		<if test="searchType=='hash'.toString()">
 			where b_hash like CONCAT('%',#{keyword},'%') 

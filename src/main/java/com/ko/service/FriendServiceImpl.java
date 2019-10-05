@@ -1,7 +1,7 @@
 package com.ko.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ public class FriendServiceImpl implements FriendService{
 	FriendDao dao;
 	
 	@Override
-	public void insertFriend(int follow, int follower) {
-		dao.insertFriend(follow, follower);
+	public void insertFriend(int follow, int follower,int fRead) {
+		dao.insertFriend(follow, follower, fRead);
 	}
 
 	@Override
@@ -25,20 +25,20 @@ public class FriendServiceImpl implements FriendService{
 	}
 
 	@Override
-	public int selectFlat(int follow, int follower) {
+	public int selectFlag(int follow, int follower) {
 		Friend friend=dao.selectFriend(follow,follower);
 		Friend friend2=dao.selectFriend(follower,follow);
-		//flat 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
-		int flat=0;
+		//flag 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
+		int flag=0;
 		
 		if(friend!=null && friend2==null)
-			flat=1;
+			flag=1;
 		else if(friend==null && friend2!=null)
-			flat=2;
+			flag=2;
 		else if(friend!=null && friend2!=null)
-			flat=3;
+			flag=3;
 
-		return flat; 
+		return flag; 
 	}
 
 	@Override
@@ -54,6 +54,23 @@ public class FriendServiceImpl implements FriendService{
 	@Override
 	public int selectFollowerCount(int gNo) {
 		return dao.selectFollowerCount(gNo);
+	}
+
+	@Override
+	public int selectFriendAlarmCount(int gNo) {
+		return dao.selectFriendAlarmCount(gNo);
+	}
+
+	@Override
+	public List<Friend> selectAlarmList(int gNo) {
+		List<Friend> list =dao.selectAlarmList(gNo);
+		
+		return list;
+	}
+
+	@Override
+	public void updateFrined(int follow, int follower, Date date, int fRead) {
+		dao.updateFrined(follow,follower,date,fRead);
 	}
 
 	

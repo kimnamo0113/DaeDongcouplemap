@@ -25,6 +25,7 @@
 	.reply-text button{
 		border:1px solid #d1d3e2
 	}
+
 	figure{
 		cursor: pointer;
 	}
@@ -199,7 +200,78 @@ figure.snip1384.hover i {
 	#header {
 		width:500px;
 	}
-
+	.col-1 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 8.33333%;
+    flex: 0 0 8.33333%;
+    max-width: 8.33333%;
+  }
+  .col-2 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 16.66667%;
+    flex: 0 0 16.66667%;
+    max-width: 16.66667%;
+  }
+  .col-3 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.33333%;
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+  }
+  .col-5 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 41.66667%;
+    flex: 0 0 41.66667%;
+    max-width: 41.66667%;
+  }
+  .col-6 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .col-7 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 58.33333%;
+    flex: 0 0 58.33333%;
+    max-width: 58.33333%;
+  }
+  .col-8 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 66.66667%;
+    flex: 0 0 66.66667%;
+    max-width: 66.66667%;
+  }
+  .col-9 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+  .col-10 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 83.33333%;
+    flex: 0 0 83.33333%;
+    max-width: 83.33333%;
+  }
+  .col-11 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 91.66667%;
+    flex: 0 0 91.66667%;
+    max-width: 91.66667%;
+  }
+  .col-12 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 @media (max-width: 768px) {
 	figcaption h3{
@@ -261,118 +333,6 @@ var startPage=0;
 			  
 		})
 		
-			
-		$("#profileImg").click(function(){
-						
-			if($(this).attr("data-gNo") == '${Auth.userno}')
-				return true;	
-			else
-				return false;
-		})
-		//flag 버튼 = 0:관계x(팔로우) 1:요청됨 2:요청 수락 3:팔로잉
-		var flag = '${flag}';
-		
-		if(flag==0){
-			$("#follow").find("span").text("팔로우");	
-		}
-		else if(flag==1){
-			$("#follow").find("span").text("요청됨");
-		}
-		else if(flag==2){
-			$("#follow").find("span").text("요청 수락");
-		}
-		else if(flag==3){
-			$("#follow").find("span").text("팔로잉");
-		}
-		
-		
-		$("#follow").click(function(){
-			
-			var follow = '${Auth.userno}'; 
-			var follower = '${guest.gNo}';
-			
-			var followCount = $("#followCount").text(); 
-			var followerCount = $("#followerCount").text();  
-			
-			var span = $("#follow").find("span");
-			var spanStr = $(span).text();
-			var check;
-			if(spanStr=="팔로우"){
-				check=confirm("팔로우 요청을 하시겠습니까?");
-			}else if(spanStr=="요청됨"){
-				check=confirm("팔로우 요청을 취소 하시겠습니까?");
-			}else if(spanStr=="요청 수락"){
-				check=confirm("팔로우 요청을 수락하시겠습니까?");
-			}else{
-				check=confirm("팔로우를 취소 하시겠습니까?");
-			}
-			if(check==false){
-				return;
-			}
-			$(span).text("").addClass("spinner-border text-primary");
-			
-			
-			
-			if(spanStr=="팔로우"){
-				$.ajax({
-					url : "/daedong/friend/follow",
-					type : "post",
-					data : {follow:follow,follower:follower},
-					dataType : "json",
-					success : function(res){
-						console.log(res);
-						$(span).removeClass("spinner-border text-primary");
-						if(res==true){
-							$(span).text("요청됨");
-							$("#followerCount").text(Number(followerCount)+1);
-							
-						}
-						
-					}
-				})		
-			}
-			if(spanStr=="요청 수락"){
-				$.ajax({
-					url : "/daedong/friend/followAccept",
-					type : "post",
-					data : {follow:follow,follower:follower},
-					dataType : "json",
-					success : function(res){
-						console.log(res);
-						$(span).removeClass("spinner-border text-primary");
-						if(res==true){
-							
-							$(span).text("팔로잉");
-							$("#followerCount").text(Number(followerCount)+1);
-							
-						}
-						
-					}
-				})		
-			}
-			else{
-				$.ajax({
-					url : "/daedong/friend/request",
-					type : "post",
-					data : {follow:follow,follower:follower},
-					dataType : "json",
-					success : function(res){
-						console.log(res);
-						$(span).removeClass("spinner-border text-primary");
-						if(res==true){
-							if(spanStr=="요청됨"){
-								$(span).text("팔로우");
-								$("#followerCount").text(Number(followerCount)-1);
-							}else{
-								$(span).text("요청 수락");
-								$("#followerCount").text(Number(followerCount)-1);
-							}
-						}
-					}
-				})
-			}
-			
-		})
 		
 	})
 	
@@ -414,19 +374,10 @@ var startPage=0;
   <div class="align-items-center justify-content-between mb-4">
   	<div class="form-group row" id="header">
   		<div class="col-4">
-			<c:if test="${guest.gImage!=null }">
-				<img id="profileImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }" data-gNo="${guest.gNo }"  class="img-circle profileImg" data-toggle="modal" data-target="#myModal2" width="150" height="150">
-			</c:if>  	
-		  	<c:if test="${guest.gImage==null }">
-		  		<img id="profileImg" src="${pageContext.request.contextPath }/resources/images/boy.png" data-gNo="${guest.gNo }" class="img-circle profileImg"  data-toggle="modal" data-target="#myModal2">
-		  	</c:if>
 	  	</div>
 	  	<div class="col-6">
 	  		<h1 class="h5 mb-0 text-gray-800">${guest.gId}
 	  			<!-- flag 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉 -->
-		  		<c:if test="${Auth.userno!=guest.gNo }">
-		  			<button class="btn btn-outline-primary" id="follow"><span></span></button>
-		  		</c:if>
 		  		
 	  		</h1>
 	  		<br>
@@ -554,7 +505,7 @@ var startPage=0;
           	<c:if test="${Auth!=null }">
               	<div class="reply-text row">
               		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bNo="${board.bNo }"></textarea>
-              		<button type="button" class="reply-addBtn btn btn-default active col-sm-2" data-gNo=${Auth.userno }>게시</button>
+              		<button type="button" class="reply-addBtn btn btn-default active col-sm-1" data-gNo=${Auth.userno }>게시</button>
               	</div>
             </c:if>
           </div>

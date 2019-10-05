@@ -6,17 +6,19 @@ public class Auth {
 	private String username;
 	private String useremail;
 	private String userimage;
+	private int friendAlarm;
 	public Auth() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Auth(int userno, String userid, String username, String useremail, String userimage) {
+	public Auth(int userno, String userid, String username, String useremail, String userimage, int friendAlarm) {
 		super();
 		this.userno = userno;
 		this.userid = userid;
 		this.username = username;
 		this.useremail = useremail;
 		this.userimage = userimage;
+		this.friendAlarm = friendAlarm;
 	}
 	public int getUserno() {
 		return userno;
@@ -48,11 +50,18 @@ public class Auth {
 	public void setUserimage(String userimage) {
 		this.userimage = userimage;
 	}
+	public int getFriendAlarm() {
+		return friendAlarm;
+	}
+	public void setFriendAlarm(int friendAlarm) {
+		this.friendAlarm = friendAlarm;
+	}
 	@Override
 	public String toString() {
 		return "Auth [userno=" + userno + ", userid=" + userid + ", username=" + username + ", useremail=" + useremail
-				+ ", userimage=" + userimage + "]";
+				+ ", userimage=" + userimage + ", friendAlarm=" + friendAlarm + "]";
 	}
+	
 	
 	
 	

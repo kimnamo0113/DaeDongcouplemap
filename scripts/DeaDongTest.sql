@@ -114,3 +114,12 @@ INSERT INTO daedong.guest
 (g_id, g_password, g_name, g_tel, g_email, g_birth, g_gender, g_certification)
 VALUES('test2', password(1234), 'namo', '01012341234', 'klnver@naver.com', '940113', 0, 'true');
 
+select f_no, g_follow, g_follower, f_date, f_read ,
+	g2.g_no g2_no, g2.g_name g2_name, g2.g_email g2_email, g2.g_image g2_image  
+from friend f 
+join guest g2
+	on f.g_follower = g2.g_no
+where g_follower=2 && (f_read=0 || f_read=1);
+
+
+

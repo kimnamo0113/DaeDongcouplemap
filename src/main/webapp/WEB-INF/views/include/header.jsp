@@ -18,7 +18,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
 <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.2.0/handlebars.min.js"></script>
 
 
   <!-- Custom fonts for this template-->
@@ -80,7 +80,19 @@
 		flex:0.3 0.3 auto;
 		margin-right:2px;
 	}
+	#friendAlarmDropDouwn{
+		left-5rem
+	}
 	
+	.unreadBackGround{
+		background: #BEEFFF;
+	}
+	
+	.divAlarmList{
+		height: 400px;
+		width:100%;
+		overflow: auto;
+	}	
 	@media (max-width: 767px){
 		nav.navbar{
 			-webkit-box-flex:0;
@@ -92,16 +104,122 @@
 	.searchText{
 		height: auto;
 	}
+	.guestImg{
+		border-radius: 50% 50% 50% 50%;
+		border:1px solid #ccc;
+		width:50px;
+		height: 50px;
+		margin-right:10px;
+		cursor: pointer;
+	}
+	#logoutToggle{
+		margin-right:80px !important;
+	}
+	form.navbar-search{
+		margin-left:auto !important;
+		margin-right:10px !important;
+	}
 </style>
-
 <!-- Bootstrap core JavaScript-->
 
+<script id="template" type="text/x-handlebars-template">
+		<h6 class="dropdown-header">
+	    	Alerts Center
+	    </h6>
+		<div class="divAlarmList">
+		{{#each.}}
+			{{#if fRead 0}}
+			    <a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}" data-fRead="1" data-gNo="{{follow.gNo}}">
+			{{/if}}
+			{{#if fRead 1}}
+				<a class="dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}">
+			{{/if}}
+			{{#if fRead 3}}
+				<a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}" data-fRead="4" data-gNo="{{follow.gNo}}">
+			{{/if}}
+			  
+			  <div class="mr-3">
+			    <div>
+				  {{#if follow.gImage null}}
+					<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  {{else}}
+					<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
+				  {{/if}}
+			    </div>
+			  </div>
+			  <div>
+			    <div class="small text-gray-500" row>{{fDate}}</div>
+					{{#if fRead 0}}
+			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님을 팔로우 하셨습니다.</span>
+						<div>
+							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="0">수락</button>
+							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}" data-fRead="2">삭제</button>
+						</div>
+					{{/if}}
+					{{#if fRead 1}}
+			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님을 팔로우 하셨습니다.</span>
+						<div>
+							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="1">수락</button>
+							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}">삭제</button>
+						</div>
+					{{/if}}
+					
+					{{#if fRead 3}}
+			    		<span class=" font-weight-bold">{{follow.gId}}님이 팔로우요청을 수락 하셨습니다.</span>
+					{{/if}}
+				
+			  </div>
+			</a>
+		{{/each}}
+		<div>
+		<a class="dropdown-item text-center small text-gray-500" id="addFriendAlarmList">Show All Alerts</a>
+	</script>
+	
+	
 <script type="text/javascript">
+	Date.prototype.format = function(f) {
+	    if (!this.valueOf()) return " ";
+	 
+	    var weekName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+	    var d = this;
+	     
+	    return f.replace(/(yyyy|yy|MM|dd|E|hh|mm|ss|a\/p)/gi, function($1) {
+	        switch ($1) {
+	            case "yyyy": return d.getFullYear();
+	            case "yy": return (d.getFullYear() % 1000).zf(2);
+	            case "MM": return (d.getMonth() + 1).zf(2);
+	            case "dd": return d.getDate().zf(2);
+	            case "E": return weekName[d.getDay()];
+	            case "HH": return d.getHours().zf(2);
+	            case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2);
+	            case "mm": return d.getMinutes().zf(2);
+	            case "ss": return d.getSeconds().zf(2);
+	            case "a/p": return d.getHours() < 12 ? "오전" : "오후";
+	            default: return $1;
+	        }
+	    });
+	};
+ 
+	String.prototype.string = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
+	String.prototype.zf = function(len){return "0".string(len - this.length) + this;};
+	Number.prototype.zf = function(len){return this.toString().zf(len);};
+
+
+
 	var test="";
+	
+	Handlebars.registerHelper('if', function(v1, v2, options) {
+		  if(v1 == v2) {
+		    return options.fn(this);
+		  }
+		  return options.inverse(this);
+		});
 	
 	$(function() {
 		
-var width_size = window.outerWidth;
+		
+		
+		var width_size = window.outerWidth;
 		
 		if(width_size <= 776){
 			$("#accordionSidebar").addClass("toggled");
@@ -144,7 +262,7 @@ var width_size = window.outerWidth;
 		function searchFunc(){
 			var select = $("select[name='searchType']").val();
 			var keyword=$("#searchText").val();
-			location.href="list?page=1&searchType="+select+"&keyword="+keyword;
+			location.href="searchBoard?page=1&searchType="+select+"&keyword="+keyword;
 		}
 		
 		$("#searchBtn").click(function(){
@@ -161,7 +279,7 @@ var width_size = window.outerWidth;
 		function searchFunc2(){
 			var select = $("select[name='searchType2']").val();
 			var keyword=$("#searchText2").val();
-			location.href="list?page=1&searchType="+select+"&keyword="+keyword;
+			location.href="searchBoard?page=1&searchType="+select+"&keyword="+keyword;
 		}
 		
 		$("#searchBtn2").click(function(){
@@ -177,9 +295,100 @@ var width_size = window.outerWidth;
 	    });
 		
 		
+		$("#friendAlarmDropdown").click(function(){
+			$("#friendAlarmDropDouwn").empty();
+			$.ajax({
+				url:"${pageContext.request.contextPath}/friend/alarmList",
+				type:"post",
+				dataType:"json",
+				data:{gNo:"${Auth.userno}"},
+				success:function(res){
+					console.log(res)
+					
+					$(res).each(function(i,obj){
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						
+					})
+					var source=$("#template").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$("#friendAlarmDropDouwn").append(str);
+					
+				}
+			})
+		})
+		$("#addFriendAlarmList").click(function(){
+			$("#friendAlarmDropDouwn").empty();
+			$.ajax({
+				url:"${pageContext.request.contextPath}/friend/alarmList",
+				type:"post",
+				dataType:"json",
+				data:{gNo:"${Auth.userno}"},
+				success:function(res){
+					console.log(res)
+					
+					$(res).each(function(i,obj){
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						
+					})
+					var source=$("#template").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$("#friendAlarmDropDouwn").append(str);
+					
+				}
+			})
+		})
+		
+		
+		
+		$(document).on("click",".friendAccept",function(){
+			
+			$.ajax({
+				url:"/daedong/friend/followAccept",
+				type:"post",
+				data:{follow:${Auth.userno} ,follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
+				dataType:"text",
+				success:function(res){
+					console.log(res);
+				}
+				
+			})
+			location.reload()
+			return false;
+		})
+		$(document).on("click",".friendRemove",function(){
+			$.ajax({
+				url:"/daedong/friend/followUpdate",
+				type:"post",
+				data:{follow:${Auth.userno},follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
+				dataType:"text",
+				success:function(res){
+					console.log(res);
+					
+				}
+			})
+			location.reload()
+			return false;
+		})
+		
+		
+		$(document).on("click",".checkFriendMessage",function(){
+			$.ajax({
+				url:"/daedong/friend/followUpdate",
+				type:"post",
+				data:{follow:${Auth.userno},follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
+				dataType:"text",
+				success:function(res){
+					console.log(res);
+					
+				}
+			})
+		})
+		
 	})
-	
-
 </script>  
 
 <body id="page-top">
@@ -339,48 +548,12 @@ var width_size = window.outerWidth;
               </div>
             </div>
           </form>
-          
-
-          <!-- Topbar Navbar -->
-          <c:if test="${Auth==null}">
-	          <ul class="navbar-nav ml-auto" id="logoutToggle">
-	          	<li class="nav-item dropdown no-arrow mx-1">
-	              <a href="${pageContext.request.contextPath }/member/login">
-	                <i>login</i>
-	              </a>
-	              <!-- Dropdown - Alerts -->
-	            </li>
-	          	<li class="nav-item dropdown no-arrow mx-1">
-	              <a href="${pageContext.request.contextPath }/member/join">
-	                <i>join</i>
-	              </a>
-	              <!-- Dropdown - Alerts -->
-	            </li>
-	          </ul>
-          </c:if>
-          <c:if test="${Auth!=null }">
-          <!-- class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" -->
-          	<div class="input-group-append d-none d-sm-inline-block form-inline mr-auto">
-                <button class="btn btn-primary" type="button" id="writeBtn" data-toggle="modal" data-target="#writeModal">
-                  <i class="fas fa-pen fa-sm"></i> 글쓰기
-                </button>
-              </div>
-          	<div id="right">
-	          <ul class="navbar-nav ml-auto">
-	          	<li class="nav-item dropdown no-arrow d-sm-none">
-					<a href="#" id="write" class="nav-link" data-toggle="modal" data-target="#writeModal" aria-haspopup="true" aria-expanded="false">
-			          	<i class="fas fa-pen fa-fw">
-			          	</i>
-		          	</a>
-		         </li>
-	            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-	            <li class="nav-item dropdown no-arrow d-sm-none">
-	            
+           <ul class="navbar-nav ml-auto" id="dotbogi">
+	          <li class="nav-item dropdown no-arrow d-sm-none">
+		            
 	              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-search fa-fw"></i>
 	              </a>
-	              
-	              
 	              
 	              <!-- Dropdown - Messages -->
 	              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
@@ -406,6 +579,47 @@ var width_size = window.outerWidth;
 	                </form>
 	              </div>
 	            </li>
+          </ul>
+
+          <!-- Topbar Navbar -->
+          <c:if test="${Auth==null}">
+	          <ul class="navbar-nav ml-auto" id="logoutToggle">
+	          	<li class="nav-item dropdown no-arrow mx-1">
+	              <a href="${pageContext.request.contextPath }/member/login">
+	                <i>login</i>
+	              </a>
+	              <!-- Dropdown - Alerts -->
+	            </li>
+	          	<li class="nav-item dropdown no-arrow mx-1">
+	              <a href="${pageContext.request.contextPath }/member/join">
+	                <i>join</i>
+	              </a>
+	              <!-- Dropdown - Alerts -->
+	            </li>
+	          </ul>
+          </c:if>
+          
+         
+          
+          
+          <c:if test="${Auth!=null }">
+          <!-- class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" -->
+          	<div class="input-group-append d-none d-sm-inline-block form-inline mr-auto">
+                <button class="btn btn-primary" type="button" id="writeBtn" data-toggle="modal" data-target="#writeModal">
+                  <i class="fas fa-pen fa-sm"></i> 글쓰기
+                </button>
+              </div>
+          	<div id="right">
+	          <ul class="navbar-nav ml-auto">
+	          
+	          	<li class="nav-item dropdown no-arrow d-sm-none">
+					<a href="#" id="write" class="nav-link" data-toggle="modal" data-target="#writeModal" aria-haspopup="true" aria-expanded="false">
+			          	<i class="fas fa-pen fa-fw">
+			          	</i>
+		          	</a>
+		         </li>
+	            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+	            
 				
 				<!-- Modal -->
 			<div class="modal fade" id="writeModal" role="dialog">
@@ -455,13 +669,13 @@ var width_size = window.outerWidth;
 			   <!--  -->
 	            <!-- Nav Item - Alerts -->
 	            <li class="nav-item dropdown no-arrow mx-1">
-	              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	              <a class="nav-link dropdown-toggle" href="#" id="friendAlarmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-user fa-fw"></i>
 	                <!-- Counter - Alerts -->
-	                <span class="badge badge-danger badge-counter">3+</span>
+	                <span class="badge badge-danger badge-counter">${Auth.friendAlarm }</span>
 	              </a>
 	              <!-- Dropdown - Alerts -->
-	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="friendAlarmDropDouwn">
 	                <h6 class="dropdown-header">
 	                  Alerts Center
 	                </h6>
@@ -476,29 +690,7 @@ var width_size = window.outerWidth;
 	                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
 	                  </div>
 	                </a>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="mr-3">
-	                    <div class="icon-circle bg-success">
-	                      <i class="fas fa-donate text-white"></i>
-	                    </div>
-	                  </div>
-	                  <div>
-	                    <div class="small text-gray-500">December 7, 2019</div>
-	                    $290.29 has been deposited into your account!
-	                  </div>
-	                </a>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="mr-3">
-	                    <div class="icon-circle bg-warning">
-	                      <i class="fas fa-exclamation-triangle text-white"></i>
-	                    </div>
-	                  </div>
-	                  <div>
-	                    <div class="small text-gray-500">December 2, 2019</div>
-	                    Spending Alert: We've noticed unusually high spending for your account.
-	                  </div>
-	                </a>
-	                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+	                <a class="dropdown-item text-center small text-gray-500" >Show All Alerts</a>
 	              </div>
 	            </li>
 	            <li class="nav-item dropdown no-arrow mx-1">

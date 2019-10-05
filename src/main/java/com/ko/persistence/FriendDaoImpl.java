@@ -1,6 +1,8 @@
 package com.ko.persistence;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,10 +21,11 @@ public class FriendDaoImpl implements FriendDao{
 	
 	
 	@Override
-	public void insertFriend(int follow, int follower) {
+	public void insertFriend(int follow, int follower,int fRead) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("follow", follow);
 		map.put("follower", follower);
+		map.put("fRead", fRead);
 		sqlSession.insert(namespace+".insertFriend",map);
 	}
 
@@ -54,6 +57,29 @@ public class FriendDaoImpl implements FriendDao{
 	@Override
 	public int selectFollowerCount(int gNo) {
 		return sqlSession.selectOne(namespace+".selectFollowerCount",gNo);
+	}
+
+
+	@Override
+	public int selectFriendAlarmCount(int gNo) {
+		return sqlSession.selectOne(namespace+".selectFriendAlarmCount",gNo);
+	}
+
+
+	@Override
+	public List<Friend> selectAlarmList(int gNo) {
+		return sqlSession.selectList(namespace+".selectAlarmList",gNo);
+	}
+
+
+	@Override
+	public void updateFrined(int follow, int follower, Date date, int fRead) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("follow", follow);
+		map.put("follower", follower);
+		map.put("date", date);
+		map.put("fRead", fRead);
+		sqlSession.update(namespace+".updateFrined",map);
 	}
 
 

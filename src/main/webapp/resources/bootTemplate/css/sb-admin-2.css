@@ -5262,7 +5262,7 @@ input[type="button"].btn-block {
 .badge {
   display: inline-block;
   padding: 0.25em 0.4em;
-  font-size: 75%;
+  font-size: 80%;
   font-weight: 700;
   line-height: 1;
   text-align: center;
@@ -7237,7 +7237,7 @@ button.bg-dark:focus {
   display: -ms-inline-flexbox !important;
   display: inline-flex !important;
 }
-@media (min-width:768px){
+@media (min-width:900px){
 .d-sm-none {
     display: none !important;
   }
@@ -11157,7 +11157,14 @@ a:focus {
   background-color: #eaecf4;
   color: #3a3b45;
 }
-
+ .topbar .dropdown-list {
+    width: 20rem !important;
+  }
+@media (max-width: 576px) {
+	 .topbar .dropdown-list {
+    left:100 !important;
+  }
+}
 @media (min-width: 576px) {
   .topbar .dropdown {
     position: relative;
@@ -11165,9 +11172,6 @@ a:focus {
   .topbar .dropdown .dropdown-menu {
     width: auto;
     right: 0;
-  }
-  .topbar .dropdown-list {
-    width: 20rem !important;
   }
   .topbar .dropdown-list .dropdown-item .text-truncate {
     max-width: 13.375rem;

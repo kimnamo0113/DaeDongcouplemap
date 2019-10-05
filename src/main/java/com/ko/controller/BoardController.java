@@ -83,6 +83,17 @@ public class BoardController {
 		
 		model.addAttribute("boards",boards);
 	}
+	
+	@RequestMapping(value="searchBoard",method=RequestMethod.GET)
+	public void searchBoard(Model model,@ModelAttribute("cri") SearchCriteria cri) {
+		logger.info("---------------- list");
+		List<Board> boards = bService.selectLimit10(cri);
+		
+		
+		model.addAttribute("boards",boards);
+	}
+	
+	
 	@RequestMapping(value="selectlist",method=RequestMethod.GET)
 	public void selectlist(Model model) {
 		logger.info("---------------- list");
@@ -107,8 +118,8 @@ public class BoardController {
 		logger.info("-------------------- timeLine");
 		Auth auth=(Auth)session.getAttribute("Auth");
 		guest = gService.selectByGNo(guest.getgNo());
-		//flat(버튼) = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
-		int flat = fService.selectFlat(auth.getUserno(), guest.getgNo());
+		//flag(버튼) = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
+		int flag = fService.selectFlag(auth.getUserno(), guest.getgNo());
 		//guest board뽑기
 		List<Board> boards=bService.selectBygNoLimit24(0,guest.getgNo());
 		int followCount = fService.selectFollowCount(guest.getgNo());
@@ -116,7 +127,7 @@ public class BoardController {
 		model.addAttribute("followCount", followCount);
 		model.addAttribute("followerCount",followerCount);
 		model.addAttribute("guest",guest);
-		model.addAttribute("flat",flat);
+		model.addAttribute("flag",flag);
 		model.addAttribute("boards",boards);
 		model.addAttribute("bCount",bService.selectBygNoBoardCount(guest.getgNo()));
 	}

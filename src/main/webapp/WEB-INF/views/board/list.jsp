@@ -17,11 +17,10 @@
 		margin-right: 10px;
 	}
 	
-	.reply-text textarea{
-		margin-left: 25px;
+	.reply-text{
+		margin: 25px;
 	}
 	.reply-text button{
-		margin-right: 10px;
 		border:1px solid #d1d3e2
 	}
 	div.replys div.reply{
@@ -59,14 +58,7 @@
 	span.date{
 		font-size: 10px;
 	}
-	.guestImg{
-		border-radius: 50% 50% 50% 50%;
-		border:1px solid #ccc;
-		width:50px;
-		height: 50px;
-		margin-right:10px;
-		cursor: pointer;
-	}
+	
 	.guestInfo a{
 		text-decoration: none;
 		color: #858796;
@@ -74,7 +66,9 @@
 	.guestInfo a:hover{
 		font-size: 1.2rem;
 	}
-	
+	.addReply{
+		cursor: pointer;
+	}
 </style>
 
 <script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
@@ -194,8 +188,8 @@ $(function(){
 						var $divCard = $("<div>");
 						
 						if('${Auth.userid}'!=null){
-							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-sm-10").attr("data-bno",obj.bNo);
-							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-sm-1").append("게시").attr("type","button").attr("data-gNo",obj.bGNo.gNo);
+							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-10").attr("data-bno",obj.bNo);
+							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-1").append("게시").attr("type","button").attr("data-gNo",obj.bGNo.gNo);
 							var $divReplyText = $("<div>").addClass("reply-text row").append($textAreaReply).append($buttonReply);
 							
 							$divCard.addClass("card shadow mb-4").append($divCardHeader1).append($divCardHeader2).append($divCardBody).append($divReplyText);
@@ -244,8 +238,8 @@ $(function(){
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4" id="header">
-            <%-- <a href="${pageContext.request.contextPath }/board/write" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i>스마트에디터글쓰기</a> --%>
+          <div class="d-flex align-items-center justify-content-between mb-4" id="header">
+            <%-- <a href="${pageContext.request.contextPath }/board/write" class="d-none d-inline-block btn btn btn-primary shadow"><i class="fas fa-download fa text-white-50"></i>스마트에디터글쓰기</a> --%>
             
           </div>
 		  <div class="row ">
@@ -324,8 +318,8 @@ $(function(){
 	                </div>
 	                <c:if test="${Auth!=null }">
 	                	<div class="reply-text row">
-	                		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bno="${board.bNo }"></textarea>
-	                		<button type="button" class="reply-addBtn btn btn-default active col-sm-1" data-gNo=${Auth.userno }>게시</button>
+	                		<textarea rows="2" cols="" class="reply-textArea form-control col-10" data-bno="${board.bNo }"></textarea>
+	                		<button type="button" class="reply-addBtn btn btn-default active col-2" data-gNo=${Auth.userno }>게시</button>
 	                	</div>
                 	</c:if>
 	              </div>
