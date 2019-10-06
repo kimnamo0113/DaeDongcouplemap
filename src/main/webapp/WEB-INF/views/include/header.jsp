@@ -34,6 +34,9 @@
 <script src="${pageContext.request.contextPath }/resources/js/areaChoice.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/writeBtn.css">
 <style type="text/css">
+	i{
+		cursor: pointer;
+	}
 	#hanbandoImg{
 		width:50px;
 		height:50px;
@@ -301,7 +304,7 @@
 				url:"${pageContext.request.contextPath}/friend/alarmList",
 				type:"post",
 				dataType:"json",
-				data:{gNo:"${Auth.userno}"},
+				data:{gNo:'${Auth.userno}'},
 				success:function(res){
 					console.log(res)
 					
@@ -349,7 +352,7 @@
 			$.ajax({
 				url:"/daedong/friend/followAccept",
 				type:"post",
-				data:{follow:${Auth.userno} ,follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
+				data:{follow:'${Auth.userno}',follower: $(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
 				dataType:"text",
 				success:function(res){
 					console.log(res);
@@ -363,7 +366,7 @@
 			$.ajax({
 				url:"/daedong/friend/followUpdate",
 				type:"post",
-				data:{follow:${Auth.userno},follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
+				data:{follow:'${Auth.userno}',follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
 				dataType:"text",
 				success:function(res){
 					console.log(res);
@@ -379,7 +382,7 @@
 			$.ajax({
 				url:"/daedong/friend/followUpdate",
 				type:"post",
-				data:{follow:${Auth.userno},follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
+				data:{follow:'${Auth.userno}',follower:$(this).attr("data-gNo"),fRead:$(this).attr("data-fRead")},
 				dataType:"text",
 				success:function(res){
 					console.log(res);

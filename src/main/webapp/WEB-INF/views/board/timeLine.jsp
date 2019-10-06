@@ -53,6 +53,14 @@
 	span.date{
 		font-size: 10px;
 	}
+	label{ 
+		cursor: pointer;
+	}
+	.icons i{
+		font-size:1.5rem;
+		margin-right: 10px;
+	}
+	
 	/* mouseover이벤트 */
 	
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,700);
@@ -189,9 +197,10 @@ figure.snip1384.hover i {
 		    flex: 0 0 100% !important;
 		    max-width: 100% !important;
 		}
-		#modal-content{
+		#myModal3 #modal-content{
 			min-height:1000px; 
 		}
+		
 		.divText{
 			height: 50px;
 			overflow: auto;
@@ -230,6 +239,16 @@ figure.snip1384.hover i {
 			height: 130px;
 			margin: 10px;
 		}
+}
+#followModal #modal-content,#followerModal #modal-content{
+	height:600px;
+	width: 370px !important;
+	margin:0 auto;
+}
+.followScroll, .followerScroll{
+	overflow: auto;
+	height: 500px;
+	width: 360px;
 }
 
 
@@ -335,7 +354,7 @@ var startPage=0;
 				$.ajax({
 					url : "/daedong/friend/followAccept",
 					type : "post",
-					data : {follow:follow,follower:follower},
+					data : {follow:follow,follower:follower,fRead:3},
 					dataType : "json",
 					success : function(res){
 						console.log(res);
@@ -374,6 +393,70 @@ var startPage=0;
 			
 		})
 		
+		
+		$("#labelFollowCount").click(function(){
+			$("#followCount").click();
+		})
+		
+		$("#labelFollowerCount").click(function(){
+			$("#followerCount").click();
+		})
+		
+		$("#followCount").click(function(){
+			$(".followScroll").empty();
+			$.ajax({
+				url:"/daedong/friend/followList",
+				type:"post",
+				data:{gNo:$(this).attr("data-gNo")},
+				dataType:"json",
+				success:function(res){
+					console.log(res);
+					
+					$(res).each(function(i,obj){
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						
+					})
+					
+					var source=$("#followListTemp").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$(".followScroll").append(str);
+				}
+			})
+		})
+		$("#followerCount").click(function(){
+			$(".followerScroll").empty();
+			$.ajax({
+				url:"/daedong/friend/followerList",
+				type:"post",
+				data:{gNo:$(this).attr("data-gNo")},
+				dataType:"json",
+				success:function(res){
+					console.log(res);
+					
+					$(res).each(function(i,obj){
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						
+					})
+					
+					var source=$("#followerListTemp").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$(".followerScroll").append(str);
+				}
+			})
+		})
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	})
 	
 	$(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
@@ -393,7 +476,7 @@ var startPage=0;
 				success:function(res){
 					console.log(res);
 					$(res).each(function(i,obj){
-												
+						
 					})
 					
 				}
@@ -401,10 +484,9 @@ var startPage=0;
 			})
 			
 	    }
-	
-	
-	
 	});
+	
+	
 </script>
 
 <div class="container-fluid">
@@ -435,10 +517,10 @@ var startPage=0;
 	  			<label>게시글</label><br>
 	  		</div>
 	  		<div class="col-4">
-	  			<label>팔로우</label><br>
+	  			<label id="labelFollowCount">팔로우</label><br>
 	  		</div>
 	  		<div class="col-4">
-	  			<label>팔로워</label><br>
+	  			<label id="labelFollowerCount">팔로워</label><br>
 	  		</div>
 	  		</div>
 	  		<div class="row">
@@ -446,10 +528,10 @@ var startPage=0;
 	  			<label id="boardCount">${bCount }</label><br>
 	  		</div>
 	  		<div class="col-4">
-	  			<label id="followCount">${followCount }</label><br>
+	  			<label id="followCount" data-toggle="modal" data-target="#followModal" data-gNo="${guest.gNo }">${followCount }</label><br>
 	  		</div>
 	  		<div class="col-4">
-	  			<label id="followerCount">${followerCount }</label><br>
+	  			<label id="followerCount" data-toggle="modal" data-target="#followerModal" data-gNo="${guest.gNo }">${followerCount }</label><br>
 	  		</div>
 	  		</div>
 	  	</div>
@@ -540,6 +622,8 @@ var startPage=0;
           
           <div class="col-4 modalBodyRight">
           	<div>
+          		<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
+          		<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
         		<h5 id="dBTitle"></h5>
 	          	<p id="dBContents"></p>
 	          	<div id="dReplys" class="replysList form-control">
@@ -566,6 +650,139 @@ var startPage=0;
       
     </div>
   </div>
+  
+  
+  
+   <!-- follow Modal -->
+  <div class="modal fade" id="followModal" role="dialog" >
+	<div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content" id="modal-content">
+	        <div class="modal-header">
+	          <h5 class="modal-title">Follow</h5><br>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	         <div class="modal-body row">
+	          <div class="col-12 followScroll">
+		         
+	          </div>
+	          
+        </div>
+        
+		    <div class="modal-footer">
+	        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <script id="followListTemp" type="text/x-handlebars-template">
+				{{#each.}}
+	 			<a class="d-flex" href="#">
+	             <div class="mr-2">
+					 {{#if follower.gImage null}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  	 {{else}}
+						<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{follower.gImage}}" class="guestImg">
+				     {{/if}}
+	             </div>
+	             <div class="col-6">
+	               <div class="small text-gray-500">{{fDate}}</div>
+	               <p class="font-weight-bold">{{follower.gId}}</p>
+	             </div>
+	             <div class="col-4 text-center">
+					{{#if fRead 0}}
+						<button class="btn btn-primary" data-gNo="" data-fRead="0">요청됨</button>
+					{{/if}}
+					{{#if fRead 1}}
+						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+					{{/if}}
+					{{#if fRead 2}}
+						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+					{{/if}}
+					{{#if fRead 3}}
+						<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
+					{{/if}}
+					{{#if fRead 4}}
+	             		<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
+					{{/if}}
+	             </div>
+
+	           </a>
+				{{/each}}
+		</script>
+  
+  
+  
+  
+  <!-- follower Modal -->
+  <div class="modal fade" id="followerModal" role="dialog" >
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content" id="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Follower</h5><br>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+         <div class="modal-body row">
+          <div class="col-12 followerScroll">
+	         
+          </div>
+          
+        </div>
+        
+		    <div class="modal-footer">
+	        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
+  <script id="followerListTemp" type="text/x-handlebars-template">
+				{{#each.}}
+	 			<a class="d-flex" href="#">
+	             <div class="mr-2">
+					 {{#if follow.gImage null}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  	 {{else}}
+						<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
+				     {{/if}}
+	             </div>
+	             <div class="col-6">
+	               <div class="small text-gray-500">{{fDate}}</div>
+	               <p class="font-weight-bold">{{follow.gId}}</p>
+	             </div>
+	             <div class="col-4 text-center">
+					{{#if fRead 0}}
+						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+					{{/if}}
+					{{#if fRead 1}}
+						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+					{{/if}}
+					{{#if fRead 2}}
+						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+					{{/if}}
+					{{#if fRead 3}}
+						<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
+					{{/if}}
+					{{#if fRead 4}}
+	             		<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
+					{{/if}}
+	             </div>
+
+	           </a>
+				{{/each}}
+		</script>
+  
+  
+  
+  
+  
 </div>
 <!-- /.container-fluid -->
 

@@ -3283,15 +3283,13 @@ input[type="button"].btn-block {
 .dropdown-toggle:empty::after {
   margin-left: 0;
 }
-
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
+  left: -120px;
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 18rem;
   padding: 0.5rem 0;
   margin: 0.125rem 0 0;
   font-size: 0.85rem;
@@ -3303,7 +3301,11 @@ input[type="button"].btn-block {
   border: 1px solid #e3e6f0;
   border-radius: 0.35rem;
 }
-
+@media (max-width: 576px) {
+	.dropdown-menu {
+		left: 100px;
+	}
+}
 .dropdown-menu-left {
   right: auto;
   left: 0;
@@ -11165,14 +11167,16 @@ a:focus {
     left:100 !important;
   }
 }
+
+ .topbar .dropdown .dropdown-menu {
+    width: auto;
+    right: 0;
+  }
 @media (min-width: 576px) {
   .topbar .dropdown {
     position: relative;
   }
-  .topbar .dropdown .dropdown-menu {
-    width: auto;
-    right: 0;
-  }
+ 
   .topbar .dropdown-list .dropdown-item .text-truncate {
     max-width: 13.375rem;
   }

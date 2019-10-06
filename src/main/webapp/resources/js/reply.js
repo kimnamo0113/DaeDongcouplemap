@@ -169,6 +169,51 @@ $(function(){
 				
 			})
 		})
+		$(".fa-comment").click(function(){
+			var bNo=$(this).attr("data-bNo");
+			$(".pagination").attr("data-bNo",bNo);
+			$(".reply-textArea").attr("data-bNo",bNo);
+			
+			$(".bxslider3").empty();
+			$("#dBPlace").empty();
+			$.ajax({
+				url:"/daedong/board/boardDetail",
+				type:"post",
+				data: {bNo:bNo},
+				dataType:"json",
+				success:function(res){
+					console.log(res)
+					$("#dBPlace").append(res.bPlace);
+					$("#dBTitle").append(res.bTitle);
+					$("#dBContents").append(res.bContents);
+					$divReply = $("<div>").addClass("replys");
+					
+					$(res.replys).each(function(i,obj){
+						var id = obj.rGNo.gId;
+						var text = obj.rContent;
+						$divReply.append(id+" : ").append(text+"<br>");
+					})
+					$("#dReplys").append($divReply);
+					$(res.contents).each(function(i,obj){
+						var $div = $("<div>");
+						
+						var $img = $("<img>").attr("src","/daedong/upload/displayFile?filename="+obj.cImage);
+						var $divImg = $("<div>").append($img).addClass("divImg");
+						
+						var $pText = $("<p>").append(obj.cContents);
+						var $divText = $("<div>").append($pText).addClass("divText form-control");
+						
+						$div.append($divImg).append($divText);
+						$(".bxslider3").append($div);
+					})
+					
+					imgLoading();
+					
+					getReplyListAll(res.bNo,1,$(".pagination"))
+				}
+				
+			})
+		})
 		
 		
 		$("#uploadProfileImg").change(function(){

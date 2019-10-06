@@ -73,5 +73,15 @@ public class FriendServiceImpl implements FriendService{
 		dao.updateFrined(follow,follower,date,fRead);
 	}
 
+	@Override
+	public List<Friend> selectFollowerList(int gNo) {
+		return dao.selectFollowerList(gNo);
+	}
+
+	@Override
+	public List<Friend> selectFollowList(int gNo) {
+		return dao.selectFollowList(gNo);
+	}
+
 	
 }

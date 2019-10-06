@@ -69,6 +69,86 @@
 	.addReply{
 		cursor: pointer;
 	}
+	.divImg img{
+		cursor: pointer;
+	}
+	
+	#dReplys{
+		height: 250px;
+		overflow: auto;
+	}
+	/* 모달3 */
+	@media (max-width: 768px) {
+		 .boardList img{
+				width:150px;
+				height: 150px;
+				margin: 10px;
+			}
+		.modalBodyLeft{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+		.modalBodyRight{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+		#myModal3 #modal-content{
+			min-height:1000px; 
+		}
+		
+		.divText{
+			height: 50px;
+			overflow: auto;
+		}
+	#header {
+		width:500px;
+	}
+
+}
+@media (max-width: 768px) {
+	figcaption h3{
+		display: none;
+	}
+
+	figure.snip1384 i.fa-heart{
+	 bottom: 5px;
+	 left: 10px;
+	}
+	figure.snip1384 i.fa-comment{
+	  bottom: 5px;
+	  right: 40px;
+	}
+		figure.snip1384 figcaption {
+	  z-index: 1;
+	  padding: 20px;
+	}
+}
+@media (max-width: 576px) {
+	.reply-text{
+		margin: 25px;
+	}
+}
+@media (max-width: 550px) {
+	 .boardList img{
+			width:130px;
+			height: 130px;
+			margin: 10px;
+		}
+}
+#followModal #modal-content,#followerModal #modal-content{
+	height:600px;
+	width: 370px !important;
+	margin:0 auto;
+}
+.followScroll, .followerScroll{
+	overflow: auto;
+	height: 500px;
+	width: 360px;
+}
 </style>
 
 <script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
@@ -76,6 +156,7 @@
 <script>
 var mySlider2 = [];
 var startPage=1;
+var mySlider3;
 
 $(function(){
 	$('.bxslider2').each(function(i, obj){
@@ -111,7 +192,17 @@ $(function(){
 	
 	
 	
-	
+	$('#myModal3').on('hidden.bs.modal', function () {
+		  
+		  $(".bxslider3").empty();
+		  $("#dBPlace").empty();
+		  $("#dBTitle").empty();
+		 /*  $("#dReplys").empty();
+		  $h5Title = $("<h5>").attr("id","dBTitle")
+		  $pContent = $("<dBContents>").attr("id","dBcontents");
+		  $("#dReplys").append($h5Title).append($pContent); */
+		  
+	})
 	
 	
 	
@@ -230,6 +321,30 @@ $(function(){
 		location.href=$(href).attr("href");
 	})
 	
+	$(document).on("click",".insertHeart",function(){
+		$.ajax({
+			url:"/daedong/board/insertHeart",
+			type:"post",
+			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+			dataType:"text",
+			success:function(res){
+				
+			}
+		})	
+	})
+	$(document).on("click",".deleteHeart",function(){
+		$.ajax({
+			url:"/daedong/board/deleteHeart",
+			type:"post",
+			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+			dataType:"text",
+			success:function(res){
+				
+			}
+		})
+	})
+	
+	
 })
 
 
@@ -290,8 +405,9 @@ $(function(){
 			              </div>
 		                </div>
 	                  </div>
-					<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
-					<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
+	                  
+					<p class="icons"><i class="fas fa-heart deleteHeart" data-bNo="${board.bNo}"></i><i class="far fa-heart insertHeart" data-bNo="${board.bNo}"></i><i class="far fa-comment" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i><i class="far fa-share-square"></i></p>
+					<p class="whoLike">??님 외 ${board.bGood }명이 좋아합니다.</p>
 	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
 					<p class="bHash">${board.bHash }</p>
@@ -334,6 +450,52 @@ $(function(){
         </div>
         <!-- /.container-fluid -->
 
+
+<div class="modal fade" id="myModal3" role="dialog" >
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content" id="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="dBPlace"></h4><br>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+         <div class="modal-body row">
+          <div class="col-8 modalBodyLeft">
+	          <div class="bxslider3">
+	          	
+	          </div>
+          </div>
+          
+          <div class="col-4 modalBodyRight">
+          	<div>
+        		<h5 id="dBTitle"></h5>
+	          	<p id="dBContents"></p>
+	          	<div id="dReplys" class="replysList form-control">
+			          	
+				</div>
+				
+				
+				<ul class="pagination justify-content-center">
+					</ul>
+          	</div>
+          	
+          	<c:if test="${Auth!=null }">
+              	<div class="reply-text row">
+              		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bNo="${board.bNo }"></textarea>
+              		<button type="button" class="reply-addBtn btn btn-default active col-sm-2" data-gNo=${Auth.userno }>게시</button>
+              	</div>
+            </c:if>
+          </div>
+        </div>
+        
+		    <div class="modal-footer">
+	        </div>
+      </div>
+      
+    </div>
+  </div>
 
 
 

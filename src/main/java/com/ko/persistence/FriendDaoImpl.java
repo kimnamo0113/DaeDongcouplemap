@@ -83,4 +83,16 @@ public class FriendDaoImpl implements FriendDao{
 	}
 
 
+	@Override
+	public List<Friend> selectFollowerList(int gNo) {
+		return sqlSession.selectList(namespace+".selectFollowerList",gNo);
+	}
+
+
+	@Override
+	public List<Friend> selectFollowList(int gNo) {
+		return sqlSession.selectList(namespace+".selectFollowList",gNo);
+	}
+
+
 }

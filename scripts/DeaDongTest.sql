@@ -123,3 +123,10 @@ where g_follower=2 && (f_read=0 || f_read=1);
 
 
 
+select f_no, g_follow, g_follower, f_date, f_read ,
+			g1.g_no g1_no, g1.g_id g1_id, g1.g_name g1_name, g1.g_email g1_email, g1.g_image g1_image  
+		from friend f 
+		join guest g1
+			on f.g_follow = g1.g_no
+		where g_follower=2
+		order by g1_name asc

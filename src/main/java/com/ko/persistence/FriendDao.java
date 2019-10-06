@@ -21,4 +21,8 @@ public interface FriendDao {
 	public List<Friend> selectAlarmList(int gNo);
 
 	public void updateFrined(int follow, int follower, Date date, int fRead);
+
+	public List<Friend> selectFollowerList(int gNo);
+
+	public List<Friend> selectFollowList(int gNo);
 }

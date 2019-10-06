@@ -199,6 +199,27 @@ public class BoardController {
 		}
 		return entity;
 	}
-	
-	
+	@RequestMapping(value="insertHeart",method=RequestMethod.POST)
+	public ResponseEntity<Boolean> insertHeart(){
+		ResponseEntity<Boolean> entity = null;
+		try {
+			
+			entity=new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity=new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	@RequestMapping(value="deleteHeart",method=RequestMethod.POST)
+	public ResponseEntity<Boolean> deleteHeart(){
+		ResponseEntity<Boolean> entity = null;
+		try {
+			entity=new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity=new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
 }
