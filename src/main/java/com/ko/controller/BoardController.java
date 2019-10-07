@@ -1,5 +1,6 @@
 package com.ko.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,12 +24,14 @@ import com.ko.domain.Auth;
 import com.ko.domain.Board;
 import com.ko.domain.Criteria;
 import com.ko.domain.Guest;
+import com.ko.domain.Like;
 import com.ko.domain.PageMaker;
 import com.ko.domain.Reply;
 import com.ko.domain.SearchCriteria;
 import com.ko.service.BoardService;
 import com.ko.service.FriendService;
 import com.ko.service.GuestService;
+import com.ko.service.LikeService;
 import com.ko.service.ReplyService;
 
  
@@ -49,6 +52,9 @@ public class BoardController {
 	
 	@Autowired
 	private FriendService fService;
+	
+	@Autowired
+	private LikeService lService;
 	
 /*	@RequestMapping(value="write",method=RequestMethod.GET)
 	public void writeGET() {
@@ -76,11 +82,20 @@ public class BoardController {
     }*/
 	
 	@RequestMapping(value="list",method=RequestMethod.GET)
-	public void list(Model model,@ModelAttribute("cri") SearchCriteria cri) {
+	public void list(Model model,@ModelAttribute("cri") SearchCriteria cri, HttpSession session) {
 		logger.info("---------------- list");
 		List<Board> boards = bService.selectLimit10(cri);
 		
 		
+		Auth auth = (Auth)session.getAttribute("Auth");
+		List<Like> likeList = new ArrayList<>();
+		if(auth!=null) {
+			for(int i = 0; i < boards.size(); i++) {
+				likeList.add(lService.selectLikeByBNoGNo(boards.get(i).getbNo(), auth.getUserno()));
+			}
+		}
+		
+		model.addAttribute("likeList",likeList);
 		model.addAttribute("boards",boards);
 	}
 	
@@ -102,13 +117,29 @@ public class BoardController {
 	
 	@ResponseBody
 	@RequestMapping(value="listAdd",method=RequestMethod.GET)
-	public ResponseEntity<List<Board>> listAdd(SearchCriteria cri) {
+	public ResponseEntity<Map<String, Object>> listAdd(SearchCriteria cri,HttpSession session) {
 		logger.info("---------------- list");
-		List<Board> boards = bService.selectLimit10(cri);
+		ResponseEntity<Map<String,Object>> entity = null;
+		try {
+			List<Board> boards = bService.selectLimit10(cri);
+			Map<String, Object> map = new HashMap<>();
+			map.put("boards", boards);
+			
+			Auth auth = (Auth)session.getAttribute("Auth");
+			List<Like> likeList = new ArrayList<>();
+			if(auth!=null) {
+				for(int i = 0; i < boards.size(); i++) {
+					likeList.add(lService.selectLikeByBNoGNo(boards.get(i).getbNo(), auth.getUserno()));
+				}
+			}
+			map.put("likeList", likeList);
+			
+			
+			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		ResponseEntity<List<Board>> entity = null;
-		
-		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
 		
 		return entity;
 	}
@@ -119,7 +150,10 @@ public class BoardController {
 		Auth auth=(Auth)session.getAttribute("Auth");
 		guest = gService.selectByGNo(guest.getgNo());
 		//flag(버튼) = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
-		int flag = fService.selectFlag(auth.getUserno(), guest.getgNo());
+		if(auth!=null) {
+			int flag = fService.selectFlag(auth.getUserno(), guest.getgNo());
+			model.addAttribute("flag",flag);
+		}
 		//guest board뽑기
 		List<Board> boards=bService.selectBygNoLimit24(0,guest.getgNo());
 		int followCount = fService.selectFollowCount(guest.getgNo());
@@ -127,7 +161,7 @@ public class BoardController {
 		model.addAttribute("followCount", followCount);
 		model.addAttribute("followerCount",followerCount);
 		model.addAttribute("guest",guest);
-		model.addAttribute("flag",flag);
+		
 		model.addAttribute("boards",boards);
 		model.addAttribute("bCount",bService.selectBygNoBoardCount(guest.getgNo()));
 	}
@@ -200,10 +234,13 @@ public class BoardController {
 		return entity;
 	}
 	@RequestMapping(value="insertHeart",method=RequestMethod.POST)
-	public ResponseEntity<Boolean> insertHeart(){
+	public ResponseEntity<Boolean> insertHeart(int bNo, int gNo){
+		logger.info("--------------------insertHeart");
+		System.out.println(bNo);
+		System.out.println(gNo);
 		ResponseEntity<Boolean> entity = null;
 		try {
-			
+			lService.insertLike(bNo,gNo);
 			entity=new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -212,9 +249,10 @@ public class BoardController {
 		return entity;
 	}
 	@RequestMapping(value="deleteHeart",method=RequestMethod.POST)
-	public ResponseEntity<Boolean> deleteHeart(){
+	public ResponseEntity<Boolean> deleteHeart(int bNo, int gNo){
 		ResponseEntity<Boolean> entity = null;
 		try {
+			lService.deleteLike(bNo,gNo);
 			entity=new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -52,9 +52,6 @@ public class FriendController {
 			HttpSession session
 			){
 		logger.info("------------------------------follow");
-		System.out.println(follow);
-		System.out.println(follower);
-		System.out.println(fRead);
 		ResponseEntity<Boolean> entity = null;
 		if(fRead==0) {
 			Auth auth = (Auth)session.getAttribute("Auth");
@@ -107,6 +104,7 @@ public class FriendController {
 		
 		try {
 			service.deleteFriend(follow, follower);
+			service.updateFrined(follower, follow, new Date(), 2);
 			entity = new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -131,11 +129,12 @@ public class FriendController {
 	}
 	
 	@RequestMapping(value="followerList",method=RequestMethod.POST)
-	public ResponseEntity<List<Friend>> followerList(int gNo){
+	public ResponseEntity<List<Friend>> followerList(int gNo,HttpSession session){
 		logger.info("---------------------- alarmList");
 		ResponseEntity<List<Friend>> entity = null;
+		
 		try {
-			List<Friend> folloRequest = service.selectFollowerList(gNo);
+			List<Friend> folloRequest = service.selectFollowerList(gNo,session);
 			entity = new ResponseEntity<List<Friend>>(folloRequest,HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -145,11 +144,12 @@ public class FriendController {
 	}
 	
 	@RequestMapping(value="followList",method=RequestMethod.POST)
-	public ResponseEntity<List<Friend>> followList(int gNo){
+	public ResponseEntity<List<Friend>> followList(int gNo,HttpSession session){
 		logger.info("---------------------- alarmList");
 		ResponseEntity<List<Friend>> entity = null;
+		
 		try {
-			List<Friend> folloRequest = service.selectFollowList(gNo);
+			List<Friend> folloRequest = service.selectFollowList(gNo,session);
 			entity = new ResponseEntity<List<Friend>>(folloRequest,HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.ko.domain.Friend;
 
 public interface FriendService {
@@ -16,6 +18,6 @@ public interface FriendService {
 	public int selectFriendAlarmCount(int gNo);
 	public List<Friend> selectAlarmList(int gNo);
 	public void updateFrined(int follow, int follower, Date date, int fRead);
-	public List<Friend> selectFollowerList(int gNo);
-	public List<Friend> selectFollowList(int gNo);
+	public List<Friend> selectFollowerList(int gNo,HttpSession session);
+	public List<Friend> selectFollowList(int gNo,HttpSession session);
 }

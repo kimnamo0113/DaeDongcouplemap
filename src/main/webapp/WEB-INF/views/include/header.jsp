@@ -125,9 +125,9 @@
 </style>
 <!-- Bootstrap core JavaScript-->
 
-<script id="template" type="text/x-handlebars-template">
+<script id="friendTemp" type="text/x-handlebars-template">
 		<h6 class="dropdown-header">
-	    	Alerts Center
+	    	Friend Alarm
 	    </h6>
 		<div class="divAlarmList">
 		{{#each.}}
@@ -154,6 +154,58 @@
 			    <div class="small text-gray-500" row>{{fDate}}</div>
 					{{#if fRead 0}}
 			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님을 팔로우 하셨습니다.</span>
+						<div>
+							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="0">수락</button>
+							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}" data-fRead="2">삭제</button>
+						</div>
+					{{/if}}
+					{{#if fRead 1}}
+			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님을 팔로우 하셨습니다.</span>
+						<div>
+							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="1">수락</button>
+							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}">삭제</button>
+						</div>
+					{{/if}}
+					
+					{{#if fRead 3}}
+			    		<span class=" font-weight-bold">{{follow.gId}}님이 팔로우요청을 수락 하셨습니다.</span>
+					{{/if}}
+				
+			  </div>
+			</a>
+		{{/each}}
+		<div>
+		<a class="dropdown-item text-center small text-gray-500" id="addFriendAlarmList">Show All Alerts</a>
+	</script>
+<script id="boardTemp" type="text/x-handlebars-template">
+		<h6 class="dropdown-header">
+	    	Friend Alarm
+	    </h6>
+		<div class="divAlarmList">
+		{{#each.}}
+			{{#if fRead 0}}
+			    <a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}" data-fRead="1" data-gNo="{{follow.gNo}}">
+			{{/if}}
+			{{#if fRead 1}}
+				<a class="dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}">
+			{{/if}}
+			{{#if fRead 3}}
+				<a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}" data-fRead="4" data-gNo="{{follow.gNo}}">
+			{{/if}}
+			  
+			  <div class="mr-3">
+			    <div>
+				  {{#if follow.gImage null}}
+					<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  {{else}}
+					<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
+				  {{/if}}
+			    </div>
+			  </div>
+			  <div>
+			    <div class="small text-gray-500" row>{{fDate}}</div>
+					{{#if fRead 0}}
+			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님글을 좋아합니다.</span>
 						<div>
 							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="0">수락</button>
 							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}" data-fRead="2">삭제</button>
@@ -313,7 +365,7 @@
 						obj.fDate=time.format("yyyy-MM-dd HH:mm");
 						
 					})
-					var source=$("#template").html();
+					var source=$("#friendTemp").html();
 					var fn = Handlebars.compile(source);
 					var str = fn(res);
 					$("#friendAlarmDropDouwn").append(str);
@@ -336,7 +388,7 @@
 						obj.fDate=time.format("yyyy-MM-dd HH:mm");
 						
 					})
-					var source=$("#template").html();
+					var source=$("#friendTemp").html();
 					var fn = Handlebars.compile(source);
 					var str = fn(res);
 					$("#friendAlarmDropDouwn").append(str);
@@ -669,7 +721,7 @@
 			      
 			    </div>
 			  </div>
-			   <!--  -->
+			   <!-- 친구알림 -->
 	            <!-- Nav Item - Alerts -->
 	            <li class="nav-item dropdown no-arrow mx-1">
 	              <a class="nav-link dropdown-toggle" href="#" id="friendAlarmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -679,8 +731,21 @@
 	              </a>
 	              <!-- Dropdown - Alerts -->
 	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="friendAlarmDropDouwn">
+
+	              </div>
+	            </li>
+	            
+	            <!-- 종 알림 -->
+	            <li class="nav-item dropdown no-arrow mx-1">
+	              <a class="nav-link dropdown-toggle" href="#" id="friendAlarmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                <i class="fas fa-bell fa-fw"></i>
+	                <!-- Counter - Alerts -->
+	                <span class="badge badge-danger badge-counter">${Auth.boardAlarm }</span>
+	              </a>
+	              <!-- Dropdown - Alerts -->
+	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="friendAlarmDropDouwn">
 	                <h6 class="dropdown-header">
-	                  Alerts Center
+	                  Board Alarm
 	                </h6>
 	                <a class="dropdown-item d-flex align-items-center" href="#">
 	                  <div class="mr-3">
@@ -696,13 +761,19 @@
 	                <a class="dropdown-item text-center small text-gray-500" >Show All Alerts</a>
 	              </div>
 	            </li>
-	            <li class="nav-item dropdown no-arrow mx-1">
+	            
+	            
+	            
+	            <!--  -->
+	            
+	            
+	           <!--  <li class="nav-item dropdown no-arrow mx-1">
 	              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-bell fa-fw"></i>
-	                <!-- Counter - Alerts -->
+	                Counter - Alerts
 	                <span class="badge badge-danger badge-counter">3+</span>
 	              </a>
-	              <!-- Dropdown - Alerts -->
+	              Dropdown - Alerts
 	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
 	                <h6 class="dropdown-header">
 	                  Alerts Center
@@ -715,7 +786,7 @@
 	                  </div>
 	                  <div>
 	                    <div class="small text-gray-500">December 12, 2019</div>
-	                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
+	                    <span class="font-weight-bold">????????????????????????!</span>
 	                  </div>
 	                </a>
 	                <a class="dropdown-item d-flex align-items-center" href="#">
@@ -742,7 +813,7 @@
 	                </a>
 	                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
 	              </div>
-	            </li>
+	            </li> -->
 	
 	            <!-- Nav Item - Messages -->
 	            <li class="nav-item dropdown no-arrow mx-1">

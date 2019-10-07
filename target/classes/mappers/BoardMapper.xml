@@ -100,7 +100,14 @@
 	</select>
 	
 	
+	
 	<select id="selectBygNoBoardCount" resultType="int">
 		select count(b_no) from board where g_no = #{gNo}
 	</select>
+	
+	<update id="updateBoard" parameterType="Board">
+		UPDATE daedong.board
+		SET g_no=#{bGNo.gNo}<!-- , m_no=#{mNo} -->, b_title=#{bTitle}, b_place=#{bPlace}, b_hash=#{bHash}, b_contents=#{bContents}, b_writetime=#{bWritetime}, b_delete=#{bDelete}, b_flat=#{bFlag}, b_good=#{bGood}
+		WHERE b_no=#{bNo};
+	</update>
 </mapper>

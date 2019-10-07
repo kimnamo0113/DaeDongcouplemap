@@ -1,3 +1,30 @@
+-- 댓글
+DROP TABLE IF EXISTS `daedong`.`Reply` RESTRICT;
+
+-- 회원
+DROP TABLE IF EXISTS `daedong`.`Guest` RESTRICT;
+
+-- 게시판
+DROP TABLE IF EXISTS `daedong`.`Board` RESTRICT;
+
+-- 관리자
+DROP TABLE IF EXISTS `daedong`.`Manager` RESTRICT;
+
+-- 친구목록
+DROP TABLE IF EXISTS `daedong`.`Friend` RESTRICT;
+
+-- 메세지
+DROP TABLE IF EXISTS `daedong`.`Message` RESTRICT;
+
+-- 채팅방
+DROP TABLE IF EXISTS `daedong`.`Chating` RESTRICT;
+
+-- 게시판내용
+DROP TABLE IF EXISTS `daedong`.`Content` RESTRICT;
+
+-- 좋아요
+DROP TABLE IF EXISTS `daedong`.`Like` RESTRICT;
+
 -- 대동연애지도
 DROP SCHEMA IF EXISTS `daedong`;
 
@@ -109,7 +136,7 @@ CREATE TABLE `daedong`.`Friend` (
 	`g_follow`   INT      NULL     COMMENT '팔로우', -- 팔로우
 	`g_follower` INT      NULL     COMMENT '팔로워', -- 팔로워
 	`f_date`     DATETIME NULL     DEFAULT now() COMMENT '친추날짜', -- 친추날짜
-	`f_read`     BOOLEAN  NULL     DEFAULT false COMMENT '읽음' -- 읽음
+	`f_read`     INT(1)   NULL     DEFAULT false COMMENT '0:안읽음 1:읽음 2:삭제' -- 읽음
 )
 COMMENT '친구목록';
 
@@ -181,9 +208,11 @@ ALTER TABLE `daedong`.`Content`
 
 -- 좋아요
 CREATE TABLE `daedong`.`Like` (
-	`l_no` INT NOT NULL COMMENT '좋아요번호', -- 좋아요번호
-	`b_no` INT NULL     COMMENT '게시판번호', -- 게시판번호
-	`g_no` INT NULL     COMMENT '회원번호' -- 회원번호
+	`l_no`   INT      NOT NULL COMMENT '좋아요번호', -- 좋아요번호
+	`b_no`   INT      NULL     COMMENT '게시판번호', -- 게시판번호
+	`g_no`   INT      NULL     COMMENT '회원번호', -- 회원번호
+	`l_date` DATETIME NULL     DEFAULT now() COMMENT '좋아한날짜', -- 좋아한날짜
+	`l_read` INT(1)   NULL     DEFAULT 0 COMMENT '읽음' -- 읽음
 )
 COMMENT '좋아요';
 

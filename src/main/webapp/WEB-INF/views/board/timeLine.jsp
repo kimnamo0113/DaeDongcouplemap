@@ -292,35 +292,48 @@ var startPage=0;
 		var flag = '${flag}';
 		
 		if(flag==0){
-			$("#follow").find("span").text("팔로우");	
+			$("#follow").attr("data-fRead",0).find("span").text("팔로우");	
 		}
 		else if(flag==1){
-			$("#follow").find("span").text("요청됨");
+			$("#follow").attr("data-fRead",1).find("span").text("요청됨");
 		}
 		else if(flag==2){
-			$("#follow").find("span").text("요청 수락");
+			$("#follow").attr("data-fRead",2).find("span").text("요청 수락");
 		}
 		else if(flag==3){
-			$("#follow").find("span").text("팔로잉");
+			$("#follow").attr("data-fRead",3).find("span").text("팔로잉");
 		}
 		
 		
-		$("#follow").click(function(){
+		
+		$(document).on("click",".follow",function(){
+			
+			
 			
 			var follow = '${Auth.userno}'; 
-			var follower = '${guest.gNo}';
+			var follower = $(this).attr("data-gNo");
+			
+			var span = $(this).find("span");
+			var spanStr = $(span).text();
+			
+			if(spanStr=='나'){
+				return false;
+			}
+			
+			
 			
 			var followCount = $("#followCount").text(); 
 			var followerCount = $("#followerCount").text();  
 			
-			var span = $("#follow").find("span");
-			var spanStr = $(span).text();
+			var fReadFlag = $(this).attr("data-fRead");
+			
+			
 			var check;
-			if(spanStr=="팔로우"){
+			if(fReadFlag==0){
 				check=confirm("팔로우 요청을 하시겠습니까?");
-			}else if(spanStr=="요청됨"){
+			}else if(fReadFlag==1){
 				check=confirm("팔로우 요청을 취소 하시겠습니까?");
-			}else if(spanStr=="요청 수락"){
+			}else if(fReadFlag==2){
 				check=confirm("팔로우 요청을 수락하시겠습니까?");
 			}else{
 				check=confirm("팔로우를 취소 하시겠습니까?");
@@ -331,8 +344,8 @@ var startPage=0;
 			$(span).text("").addClass("spinner-border text-primary");
 			
 			
-			
-			if(spanStr=="팔로우"){
+			/* 팔로우 */
+			if(fReadFlag==0){
 				$.ajax({
 					url : "/daedong/friend/follow",
 					type : "post",
@@ -342,15 +355,28 @@ var startPage=0;
 						console.log(res);
 						$(span).removeClass("spinner-border text-primary");
 						if(res==true){
-							$(span).text("요청됨");
-							$("#followerCount").text(Number(followerCount)+1);
+							
+							
+							if('${guest.gNo}' == '${Auth.userno}'){
+								$(span).text("요청됨").parent().attr("data-fRead",1).removeClass("btn-outline-primary").addClass("btn-primary");
+								$("#followCount").text(Number(followCount)+1);	
+							}else if(follower=='${guest.gNo}'){
+								$(span).text("요청됨").parent().attr("data-fRead",3).removeClass("btn-outline-primary").addClass("btn-primary");
+								$("#followerCount").text(Number(followerCount)+1);
+							}
+							else if(follow=='${Auth.userno}'){
+								$(span).text("요청됨").parent().attr("data-fRead",3).removeClass("btn-outline-primary").addClass("btn-primary");	
+							}else{
+								$(span).text("요청됨").parent().attr("data-fRead",3).removeClass("btn-outline-primary").addClass("btn-primary");
+								$("#followerCount").text(Number(followerCount)+1);
+							}
+							
 							
 						}
 						
 					}
 				})		
-			}
-			if(spanStr=="요청 수락"){
+			}else if(fReadFlag==2){ /* 요청수락 */
 				$.ajax({
 					url : "/daedong/friend/followAccept",
 					type : "post",
@@ -362,14 +388,22 @@ var startPage=0;
 						if(res==true){
 							
 							$(span).text("팔로잉");
-							$("#followerCount").text(Number(followerCount)+1);
-							
+							$(span).parent().attr("data-fRead",3).removeClass("btn-primary").addClass("btn-outline-primary");
+							if('${guest.gNo}' == '${Auth.userno}'){
+								$("#followCount").text(Number(followCount)+1);
+							}else if(follower=='${guest.gNo}'){
+								$("#followerCount").text(Number(followerCount)+1);
+							}else if(follow=='${Auth.userno}'){
+								
+							}else{
+								$("#followerCount").text(Number(followerCount)+1);
+								
+							}
 						}
 						
 					}
 				})		
-			}
-			else{
+			}else{			/* 팔로잉/요청됨 */
 				$.ajax({
 					url : "/daedong/friend/request",
 					type : "post",
@@ -380,17 +414,42 @@ var startPage=0;
 						$(span).removeClass("spinner-border text-primary");
 						if(res==true){
 							if(spanStr=="요청됨"){
-								$(span).text("팔로우");
-								$("#followerCount").text(Number(followerCount)-1);
+
+								$(span).text("팔로우").parent().attr("data-fRead",0).removeClass("btn-outline-primary").addClass("btn-primary");
+								if('${guest.gNo}' == '${Auth.userno}'){
+									$("#followCount").text(Number(followCount)-1);	
+								}else if(follower=='${guest.gNo}'){
+									$("#followerCount").text(Number(followerCount)-1);
+								}
+								else if(follow=='${Auth.userno}'){
+								}
+								else{
+									$("#followerCount").text(Number(followerCount)-1);
+								}
+								
 							}else{
-								$(span).text("요청 수락");
-								$("#followerCount").text(Number(followerCount)-1);
+								
+								if('${guest.gNo}' == '${Auth.userno}'){
+									$(span).text("팔로우").parent().attr("data-fRead",2).removeClass("btn-outline-primary").addClass("btn-primary");
+									$("#followCount").text(Number(followCount)-1);
+								}else if(follower=='${guest.gNo}'){
+									$(span).text("요청 수락").parent().attr("data-fRead",2).removeClass("btn-outline-primary").addClass("btn-primary");
+									$("#followerCount").text(Number(followerCount)-1);
+								}
+								else if(follow=='${Auth.userno}'){
+									$(span).text("요청 수락").parent().attr("data-fRead",2).removeClass("btn-outline-primary").addClass("btn-primary");
+								}
+								else{
+									$(span).text("요청 수락").parent().attr("data-fRead",2).removeClass("btn-outline-primary").addClass("btn-primary");
+									$("#followerCount").text(Number(followerCount)-1);	
+								}
+								
 							}
 						}
 					}
 				})
 			}
-			
+			return false;
 		})
 		
 		
@@ -450,7 +509,10 @@ var startPage=0;
 		})
 		
 		
-		
+		$(document).on("click",".guestImg",function(){
+			var href = $(this).next();
+			location.href=$(href).attr("href");
+		})
 		
 		
 		
@@ -506,10 +568,11 @@ var startPage=0;
 	  	<div class="col-6">
 	  		<h1 class="h5 mb-0 text-gray-800">${guest.gId}
 	  			<!-- flag 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉 -->
-		  		<c:if test="${Auth.userno!=guest.gNo }">
-		  			<button class="btn btn-outline-primary" id="follow"><span></span></button>
+	  			<c:if test="${Auth!=null }">
+			  		<c:if test="${Auth.userno!=guest.gNo }">
+			  			<button class="btn btn-outline-primary follow" id="follow" data-gNo="${guest.gNo }"><span></span></button>
+			  		</c:if>
 		  		</c:if>
-		  		
 	  		</h1>
 	  		<br>
 	  		<div class="row">
@@ -677,42 +740,115 @@ var startPage=0;
       
     </div>
   </div>
-  
-  <script id="followListTemp" type="text/x-handlebars-template">
+    <c:if test="${Auth!=null }">
+  		<c:if test="${Auth.userno==guest.gNo }">
+  			<script id="followListTemp" type="text/x-handlebars-template">
 				{{#each.}}
-	 			<a class="d-flex" href="#">
+	 			<a class="d-flex" href="${pageContext.request.contextPath }/board/timeLine?gNo={{follower.gNo}}">
 	             <div class="mr-2">
 					 {{#if follower.gImage null}}
 						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
 				  	 {{else}}
-						<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{follower.gImage}}" class="guestImg">
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename={{follower.gImage}}" class="guestImg">
 				     {{/if}}
 	             </div>
-	             <div class="col-6">
+	             <div class="col-5">
 	               <div class="small text-gray-500">{{fDate}}</div>
 	               <p class="font-weight-bold">{{follower.gId}}</p>
 	             </div>
-	             <div class="col-4 text-center">
+	             <div class="col-5 text-center">
 					{{#if fRead 0}}
-						<button class="btn btn-primary" data-gNo="" data-fRead="0">요청됨</button>
+						<button class="btn btn-primary follow" data-gNo="{{follower.gNo}}" data-fRead="1" ><span>요청됨</span></button>
 					{{/if}}
 					{{#if fRead 1}}
-						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+						<button class="btn btn-primary follow" data-gNo="{{follower.gNo}}" data-fRead="1" ><span>요청됨</span></button>
 					{{/if}}
 					{{#if fRead 2}}
-						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+						<button class="btn btn-primary follow" data-gNo="{{follower.gNo}}" data-fRead="1" ><span>요청됨</span></button>
 					{{/if}}
 					{{#if fRead 3}}
-						<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
+						<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
 					{{/if}}
 					{{#if fRead 4}}
-	             		<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
+					{{/if}}
+					{{#if fRead 5}}
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="" ><span>나</span></button>
 					{{/if}}
 	             </div>
 
 	           </a>
 				{{/each}}
-		</script>
+	</script>
+  		</c:if>
+  		<c:if test="${Auth.userno!=guest.gNo }">
+  			<script id="followListTemp" type="text/x-handlebars-template">
+				{{#each.}}
+	 			<a class="d-flex" href="${pageContext.request.contextPath }/board/timeLine?gNo={{follower.gNo}}">
+	             <div class="mr-2">
+					 {{#if follower.gImage null}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  	 {{else}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename={{follower.gImage}}" class="guestImg">
+				     {{/if}}
+	             </div>
+	             <div class="col-5">
+	               <div class="small text-gray-500">{{fDate}}</div>
+	               <p class="font-weight-bold">{{follower.gId}}</p>
+	             </div>
+	             <div class="col-5 text-center">
+					{{#if fRead 0}}
+						<button class="btn btn-primary follow" data-gNo="{{follower.gNo}}" data-fRead="0" ><span>팔로우</span></button>
+					{{/if}}
+					{{#if fRead 1}}
+						<button class="btn btn-primary follow" data-gNo="{{follower.gNo}}" data-fRead="2" ><span>요청 수락</span></button>
+					{{/if}}
+					{{#if fRead 2}}
+						<button class="btn btn-primary follow" data-gNo="{{follower.gNo}}" data-fRead="3" ><span>요청됨</span></button>
+					{{/if}}
+					{{#if fRead 3}}
+						<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
+					{{/if}}
+					{{#if fRead 4}}
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
+					{{/if}}
+					{{#if fRead 5}}
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="" ><span>나</span></button>
+
+					{{/if}}
+	             </div>
+
+	           </a>
+				{{/each}}
+	</script>
+  		</c:if>
+  	</c:if>
+  	<c:if test="${Auth==null }">
+  		<script id="followListTemp" type="text/x-handlebars-template">
+				{{#each.}}
+	 			<a class="d-flex" href="${pageContext.request.contextPath }/board/timeLine?gNo={{follower.gNo}}">
+	             <div class="mr-2">
+					 {{#if follower.gImage null}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  	 {{else}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename={{follower.gImage}}" class="guestImg">
+				     {{/if}}
+	             </div>
+	             <div class="col-5">
+	               <div class="small text-gray-500">{{fDate}}</div>
+	               <p class="font-weight-bold">{{follower.gId}}</p>
+	             </div>
+	             <div class="col-5 text-center">
+	             </div>
+
+	           </a>
+				{{/each}}
+	</script>
+  	</c:if>
+  
+  
+  
+  
   
   
   
@@ -742,42 +878,114 @@ var startPage=0;
     </div>
   </div>
   
-  
-  <script id="followerListTemp" type="text/x-handlebars-template">
+  <c:if test="${Auth!=null }">
+  	<c:if test="${Auth.userno==guest.gNo }">
+  		<script id="followerListTemp" type="text/x-handlebars-template">
 				{{#each.}}
-	 			<a class="d-flex" href="#">
+	 			<a class="d-flex" href="${pageContext.request.contextPath }/board/timeLine?gNo={{follow.gNo}}">
 	             <div class="mr-2">
 					 {{#if follow.gImage null}}
 						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
 				  	 {{else}}
-						<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
 				     {{/if}}
 	             </div>
-	             <div class="col-6">
+	             <div class="col-5">
 	               <div class="small text-gray-500">{{fDate}}</div>
 	               <p class="font-weight-bold">{{follow.gId}}</p>
 	             </div>
-	             <div class="col-4 text-center">
+	             <div class="col-5 text-center">
 					{{#if fRead 0}}
-						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+						<button class="btn btn-primary follow" data-gNo="{{follow.gNo}}" data-fRead="2" ><span>팔로우</span></button>
 					{{/if}}
 					{{#if fRead 1}}
-						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+						<button class="btn btn-primary follow" data-gNo="{{follow.gNo}}" data-fRead="2" ><span>팔로우</span></button>
 					{{/if}}
 					{{#if fRead 2}}
-						<button class="btn btn-primary" data-gNo="" data-fRead="0">팔로우</button>
+						<button class="btn btn-primary follow" data-gNo="{{follow.gNo}}" data-fRead="2" ><span>팔로우</span></button>
 					{{/if}}
 					{{#if fRead 3}}
-						<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
+						<button class="btn btn-outline-primary follow" data-gNo="{{follow.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
 					{{/if}}
 					{{#if fRead 4}}
-	             		<button class="btn btn-outline-primary" data-gNo="" data-fRead="0">팔로잉</button>
-					{{/if}}
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follow.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
+					{{/if}}				
+					{{#if fRead 5}}
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="" ><span>나</span></button>
+					{{/if}}	
 	             </div>
 
 	           </a>
 				{{/each}}
 		</script>
+  	</c:if>
+  	<c:if test="${Auth.userno!=guest.gNo }">
+  		<script id="followerListTemp" type="text/x-handlebars-template">
+				{{#each.}}
+	 			<a class="d-flex" href="${pageContext.request.contextPath }/board/timeLine?gNo={{follow.gNo}}">
+	             <div class="mr-2">
+					 {{#if follow.gImage null}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  	 {{else}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
+				     {{/if}}
+	             </div>
+	             <div class="col-5">
+	               <div class="small text-gray-500">{{fDate}}</div>
+	               <p class="font-weight-bold">{{follow.gId}}</p>
+	             </div>
+	             <div class="col-5 text-center">
+					{{#if fRead 0}}
+						<button class="btn btn-primary follow" data-gNo="{{follow.gNo}}" data-fRead="0" ><span>팔로우</span></button>
+					{{/if}}
+					{{#if fRead 1}}
+						<button class="btn btn-primary follow" data-gNo="{{follow.gNo}}" data-fRead="2" ><span>요청 수락</span></button>
+					{{/if}}
+					{{#if fRead 2}}
+						<button class="btn btn-primary follow" data-gNo="{{follow.gNo}}" data-fRead="3" ><span>요청됨</span></button>
+					{{/if}}
+					{{#if fRead 3}}
+						<button class="btn btn-outline-primary follow" data-gNo="{{follow.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
+					{{/if}}
+					{{#if fRead 4}}
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follow.gNo}}" data-fRead="3" ><span>팔로잉</span></button>
+					{{/if}}				
+					{{#if fRead 5}}
+	             		<button class="btn btn-outline-primary follow" data-gNo="{{follower.gNo}}" data-fRead="" ><span>나</span></button>
+					{{/if}}	
+	             </div>
+
+	           </a>
+				{{/each}}
+		</script>
+  	</c:if>
+  	  
+  </c:if>
+  <c:if test="${Auth==null }">
+  	  <script id="followerListTemp" type="text/x-handlebars-template">
+				{{#each.}}
+	 			<a class="d-flex" href="${pageContext.request.contextPath }/board/timeLine?gNo={{follow.gNo}}">
+	             <div class="mr-2">
+					 {{#if follow.gImage null}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  	 {{else}}
+						<img id="profileImgSmall" src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
+				     {{/if}}
+	             </div>
+	             <div class="col-5">
+	               <div class="small text-gray-500">{{fDate}}</div>
+	               <p class="font-weight-bold">{{follow.gId}}</p>
+	             </div>
+	             <div class="col-5 text-center">
+								
+						
+	             </div>
+
+	           </a>
+				{{/each}}
+		</script>
+  </c:if>
+
   
   
   

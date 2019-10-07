@@ -7,11 +7,13 @@ public class Auth {
 	private String useremail;
 	private String userimage;
 	private int friendAlarm;
+	private int BoardAlarm;
 	public Auth() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Auth(int userno, String userid, String username, String useremail, String userimage, int friendAlarm) {
+	public Auth(int userno, String userid, String username, String useremail, String userimage, int friendAlarm,
+			int boardAlarm) {
 		super();
 		this.userno = userno;
 		this.userid = userid;
@@ -19,6 +21,7 @@ public class Auth {
 		this.useremail = useremail;
 		this.userimage = userimage;
 		this.friendAlarm = friendAlarm;
+		BoardAlarm = boardAlarm;
 	}
 	public int getUserno() {
 		return userno;
@@ -56,12 +59,17 @@ public class Auth {
 	public void setFriendAlarm(int friendAlarm) {
 		this.friendAlarm = friendAlarm;
 	}
+	public int getBoardAlarm() {
+		return BoardAlarm;
+	}
+	public void setBoardAlarm(int boardAlarm) {
+		BoardAlarm = boardAlarm;
+	}
 	@Override
 	public String toString() {
 		return "Auth [userno=" + userno + ", userid=" + userid + ", username=" + username + ", useremail=" + useremail
-				+ ", userimage=" + userimage + ", friendAlarm=" + friendAlarm + "]";
+				+ ", userimage=" + userimage + ", friendAlarm=" + friendAlarm + ", BoardAlarm=" + BoardAlarm + "]";
 	}
-	
 	
 	
 	

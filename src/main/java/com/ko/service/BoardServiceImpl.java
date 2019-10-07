@@ -50,7 +50,6 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<Board> selectLimit10(SearchCriteria cri) {
 		List<Board> boards = dao.selectLimit10(cri);
-		
 		for(int i=0; i<boards.size(); i++) {
 			int bNo=boards.get(i).getbNo();
 			boards.get(i).setReplys(rDao.selectReplyLimit5(bNo));
@@ -85,6 +84,13 @@ public class BoardServiceImpl implements BoardService{
 		board.setReplyCount(rDao.selectReplyCount(bNo));
 		board.setReplys(rDao.selectPageByBNoPage(bNo,cri));
 		return board;
+	}
+
+
+
+	@Override
+	public Board selectByBNo(int bNo) {
+		return dao.selectByBNo(bNo);
 	}
 
 	

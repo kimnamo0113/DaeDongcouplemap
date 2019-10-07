@@ -21,6 +21,7 @@ import com.ko.domain.Guest;
 import com.ko.domain.Auth;
 import com.ko.service.FriendService;
 import com.ko.service.GuestService;
+import com.ko.service.LikeService;
 
 @RequestMapping("/member/*")
 @Controller
@@ -33,6 +34,9 @@ public class MemberController {
 	
 	@Autowired
 	FriendService fService;
+	
+	@Autowired
+	LikeService lService;
 	
 	@RequestMapping(value="login",method=RequestMethod.GET)
 	public void loginFormGet() {
@@ -57,6 +61,7 @@ public class MemberController {
 		auth.setUserimage(dbguest.getgImage());
 		auth.setUserno(dbguest.getgNo());
 		auth.setFriendAlarm(fService.selectFriendAlarmCount(dbguest.getgNo()));
+		auth.setBoardAlarm(lService.selectLikeAlarmCount(dbguest.getgNo()));
 		model.addAttribute("loginDTO",auth);
 	}
 	

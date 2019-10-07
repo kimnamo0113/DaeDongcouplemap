@@ -65,6 +65,12 @@ public class BoardDaoImpl implements BoardDao{
 	public Board selectByBNo(int bNo) {
 		return sqlSession.selectOne(namespace+".selectByBNo",bNo);
 	}
+
+
+	@Override
+	public void updateBoard(Board board) {
+		sqlSession.update(namespace+".updateBoard",board);
+	}
 	
 	
 }

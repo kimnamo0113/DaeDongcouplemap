@@ -220,9 +220,11 @@ $(function(){
 				data: {page:startPage},
 				dataType:"json",
 				success:function(res){
-					console.log(res);
-					$(res).each(function(i,obj){
-						
+					if(res.boards.length==0){
+						startPage-=1;
+						return;
+					}					
+					$(res.boards).each(function(i,obj){
 						var $divBxSlider2=$("<div>").addClass("bxslider2");
 						$(obj.contents).each(function(j,content){
 							var $divImg=$("<div>").addClass("divImg").css({"float":"left","list-style":"none","position":"relative","width":"710px"});
@@ -238,12 +240,18 @@ $(function(){
 						var $divBxWrapper=$("<div>").addClass("bx-wrapper").append($divBxViewPort);
 						var $divSlideHidden2=$("<div>").addClass("slideHidden2").append($divBxWrapper);
 						var $divTextCenter=$("<div>").addClass("text-center").append($divSlideHidden2);
-							var iHeart = $("<i>").addClass("fas fa-heart");
-							var iHeart2 = $("<i>").addClass("far fa-heart");
+							
+						var iHeart;
+							if(res.likeList[i]!=null){
+								iHeart= $("<i>").addClass("fas fa-heart deleteHeart").attr("data-bNo",obj.bNo);	
+							}else{
+								iHeart= $("<i>").addClass("far fa-heart insertHeart").attr("data-bNo",obj.bNo);
+							}
+							
 							var iComment = $("<i>").addClass("far fa-comment");
 							var iShare = $("<i>").addClass("far fa-share-square");
-						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 ?명이 좋아합니다.");
-						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iHeart2).append(iComment).append(iShare);
+						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 <span>"+obj.bGood+"</span>명이 좋아합니다.");
+						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iComment).append(iShare);
 						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
 						var $pHash = $("<p>").addClass("bHash").append(obj.bHash);
@@ -251,7 +259,6 @@ $(function(){
 						var $divReplysList=$("<div>").addClass("replysList");
 						
 						$(obj.replys).each(function(i,r){
-							console.log(r)
 							var $labelId = $("<label>").addClass("id").append(r.rGNo.gId+":");
 							var $spanWritetime = $("<span>").append(r.rWritetime).addClass("date");
 							var $spanText = $("<span>").addClass("text").append(r.rContent).append($spanWritetime);		
@@ -267,11 +274,18 @@ $(function(){
 						var $divReplys = $("<div>").addClass("replys").append($divReplysList).append($ulPagination);
 						
 						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($pIcons).append($pWhoLike).append($h6Title).append($pContents).append($pHash).append($divReplys);
+							var $imgGuest=$("<img>");
+							if(obj.bGNo.gImage!=null){
 								var imgSrc = obj.bGNo.gImage;
 								var leftSrc = imgSrc.slice(0,21);
 								var rightSrc = imgSrc.slice(23,imgSrc.length)
-								var $imgGuest = $("<img>").addClass("guestImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+leftSrc+"s_"+rightSrc);
-							var $h6Id = $("<h6>").append($imgGuest).append(obj.bGNo.gId).addClass("font-weight-bold");
+								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+leftSrc+"s_"+rightSrc);
+									
+							}else{
+								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/resources/images/boy.png");
+							}
+							var $aId = $("<a>").attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.bGNo.gNo).append(obj.bGNo.gId);
+								var $h6Id = $("<h6>").append($imgGuest).append($aId).addClass("font-weight-bold");
 							var $h6bPlace = $("<h6>").append(obj.bPlace).addClass("font-weight-bold"); 
 						var $divCardHeader1=$("<div>").addClass("card-header py-3").append($h6Id);
 						var $divCardHeader2=$("<div>").addClass("card-header py-3").append($h6bPlace);
@@ -316,30 +330,46 @@ $(function(){
 
 	});
 	
-	$(".guestImg").click(function(){
+	$(document).on("click",".guestImg",function(){
 		var href = $(this).next();
 		location.href=$(href).attr("href");
 	})
 	
+	
+	
 	$(document).on("click",".insertHeart",function(){
+		if('${Auth}'==''){
+			alert("로그인을 해주세요.")
+			return ;
+		}
+		
+		var $thisObj = this;
 		$.ajax({
 			url:"/daedong/board/insertHeart",
 			type:"post",
 			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
 			dataType:"text",
 			success:function(res){
-				
+				$($thisObj).removeClass("far insertHeart").addClass("fas deleteHeart");
+				var bGood = $($thisObj).parent().next().find("span").text();
+				bGood = Number(bGood)+1;
+				$($thisObj).parent().next().find("span").text(bGood);
 			}
 		})	
 	})
 	$(document).on("click",".deleteHeart",function(){
+		
+		var $thisObj = this;
 		$.ajax({
 			url:"/daedong/board/deleteHeart",
 			type:"post",
 			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
 			dataType:"text",
 			success:function(res){
-				
+				$($thisObj).removeClass("fas deleteHeart").addClass("far insertHeart");
+				var bGood = $($thisObj).parent().next().find("span").text();
+				bGood = Number(bGood)-1;
+				$($thisObj).parent().next().find("span").text(bGood);
 			}
 		})
 	})
@@ -362,7 +392,7 @@ $(function(){
 
             <!-- Content Column -->
             
-			<c:forEach var="board" items="${boards }" >
+			<c:forEach var="board" items="${boards }" varStatus="status">
 	            <div class="col-lg-12 mb-4">
 	              <!-- Illustrations -->
 	              <div class="card shadow mb-4">
@@ -406,8 +436,17 @@ $(function(){
 		                </div>
 	                  </div>
 	                  
-					<p class="icons"><i class="fas fa-heart deleteHeart" data-bNo="${board.bNo}"></i><i class="far fa-heart insertHeart" data-bNo="${board.bNo}"></i><i class="far fa-comment" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i><i class="far fa-share-square"></i></p>
-					<p class="whoLike">??님 외 ${board.bGood }명이 좋아합니다.</p>
+					<p class="icons">
+						<c:if test="${likeList[status.count-1]!=null }">
+							<i class="fas fa-heart deleteHeart" data-bNo="${board.bNo}"></i>
+						</c:if>
+						<c:if test="${likeList[status.count-1]==null }">
+							<i class="far fa-heart insertHeart" data-bNo="${board.bNo}"></i>
+						</c:if>
+						<i class="far fa-comment" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i><i class="far fa-share-square"></i>
+					</p>
+					
+					<p class="whoLike">??님 외 <span>${board.bGood }</span>명이 좋아합니다.</p>
 	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
 					<p class="bHash">${board.bHash }</p>

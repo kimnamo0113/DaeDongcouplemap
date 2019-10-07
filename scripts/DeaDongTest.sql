@@ -129,4 +129,19 @@ select f_no, g_follow, g_follower, f_date, f_read ,
 		join guest g1
 			on f.g_follow = g1.g_no
 		where g_follower=2
-		order by g1_name asc
+		order by g1_name ASC
+		
+UPDATE daedong.guest
+SET g_image=null
+WHERE g_no=1;
+
+		
+SELECT count(l_no) 
+	FROM daedong.`like` l
+join board b
+	on b.b_no = l.b_no
+join guest g
+	on b.g_no = g.g_no
+where l_read = 0 and g.g_no=2; 
+
+

@@ -1,11 +1,17 @@
 package com.ko.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ko.domain.Auth;
 import com.ko.domain.Friend;
 import com.ko.persistence.FriendDao;
 
@@ -74,13 +80,84 @@ public class FriendServiceImpl implements FriendService{
 	}
 
 	@Override
-	public List<Friend> selectFollowerList(int gNo) {
-		return dao.selectFollowerList(gNo);
+	public List<Friend> selectFollowerList(int gNo,HttpSession session) {
+		
+		List<Friend> friends = dao.selectFollowerList(gNo);
+		
+		Auth auth = (Auth)session.getAttribute("Auth");
+		
+		
+		if(auth!=null) {
+			int follower = auth.getUserno();
+			for(int i=0; i<friends.size(); i++) {
+				
+				int follow = friends.get(i).getFollow().getgNo();
+				
+				Friend onlyFollower=dao.selectFriend(follow,follower);
+				Friend onlyFollow=dao.selectFriend(follower,follow);
+				//flag 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
+				/* 팔로우 */
+				int flag=0;
+				/*요청 수락*/
+				if(onlyFollower!=null && onlyFollow==null)
+					flag=1;
+				/* 요청 됨 */
+				else if(onlyFollower==null && onlyFollow!=null)
+					flag=2;
+				/* 팔로잉 */
+				else if(onlyFollower!=null && onlyFollow!=null)
+					flag=3;
+				/* 나 */
+				if(follow==follower) {
+					flag=5;
+				}
+				friends.get(i).setfRead(flag);
+			}
+
+		}
+	
+		
+		return friends;
 	}
 
 	@Override
-	public List<Friend> selectFollowList(int gNo) {
-		return dao.selectFollowList(gNo);
+	public List<Friend> selectFollowList(int gNo,HttpSession session) {
+
+		List<Friend> friends = dao.selectFollowList(gNo);
+		
+		Auth auth = (Auth)session.getAttribute("Auth");
+		
+		
+		if(auth!=null) {
+			int follow = auth.getUserno();
+			
+			for(int i=0; i<friends.size(); i++) {
+				int follower = friends.get(i).getFollower().getgNo();
+				
+				Friend onlyFollow=dao.selectFriend(follow,follower);
+				Friend onlyFollower=dao.selectFriend(follower,follow);
+				//flag 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
+				/* 팔로우 */
+				int flag=0;
+				/*요청 수락*/
+				if(onlyFollower!=null && onlyFollow==null)
+					flag=1;
+				/* 요청 됨 */
+				else if(onlyFollower==null && onlyFollow!=null)
+					flag=2;
+				/* 팔로잉 */
+				else if(onlyFollower!=null && onlyFollow!=null)
+					flag=3;
+				/* 나 */
+				if(follow==follower) {
+					flag=5;
+				}
+				friends.get(i).setfRead(flag);
+			}
+		}
+		
+		
+		return friends;
 	}
 
 	

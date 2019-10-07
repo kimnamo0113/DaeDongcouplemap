@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ko.mapper.LikeMapper">
+	<resultMap type="Like" id="LikeBasic">
+		<result property="lNo" column="l_no" />
+		<association property="lBNo" resultMap="com.ko.mapper.BoardMapper.BoardBasic"/>
+		<association property="lGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic" />
+	</resultMap>
+
 	<select id="selectLikeCount" resultType="int">
 		select count(l_no) from `like` where b_no = #{bNo}
 	</select>
 	
-	<insert id="insertLike" parameterType="Board">
+	<select id="selectLikeByBNoGNo" resultMap="LikeBasic">
+		select l_no, b_no, g_no from `like` where b_no = #{bNo} and g_no = #{gNo}
+	</select>
+	
+	<insert id="insertLike" parameterType="map">
 		INSERT INTO daedong.`like`
 		(b_no, g_no)
 		VALUES(#{bNo}, #{gNo});
 	</insert>
+	<delete id="deleteLike" parameterType="map">
+		delete from daedong.`like`
+		where b_no = #{bNo} and g_no = #{gNo}
+	</delete>
+	
+	<select id="selectLikeAlarmCount" resultType="int">
+		SELECT count(l_no) 
+			FROM daedong.`like` l
+		join board b
+			on b.b_no = l.b_no
+		join guest g
+			on b.g_no = g.g_no
+		where l.l_read = 0 and g.g_no=#{gNo}
+	</select>
 </mapper>
