@@ -1,5 +1,6 @@
 package com.ko.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,14 +24,17 @@ import com.ko.domain.Auth;
 import com.ko.domain.Board;
 import com.ko.domain.Criteria;
 import com.ko.domain.Guest;
+import com.ko.domain.Like;
 import com.ko.domain.PageMaker;
 import com.ko.domain.Reply;
 import com.ko.domain.SearchCriteria;
 import com.ko.service.BoardService;
+import com.ko.service.FriendService;
 import com.ko.service.GuestService;
+import com.ko.service.LikeService;
 import com.ko.service.ReplyService;
 
-
+ 
 @Controller
 @RequestMapping("/board/*")
 public class BoardController {
@@ -44,7 +48,13 @@ public class BoardController {
 	
 	
 	@Autowired
-	GuestService gService;
+	private GuestService gService;
+	
+	@Autowired
+	private FriendService fService;
+	
+	@Autowired
+	private LikeService lService;
 	
 /*	@RequestMapping(value="write",method=RequestMethod.GET)
 	public void writeGET() {
@@ -72,12 +82,33 @@ public class BoardController {
     }*/
 	
 	@RequestMapping(value="list",method=RequestMethod.GET)
-	public void list(Model model,@ModelAttribute("cri") SearchCriteria cri) {
+	public void list(Model model,@ModelAttribute("cri") SearchCriteria cri, HttpSession session) {
 		logger.info("---------------- list");
 		List<Board> boards = bService.selectLimit10(cri);
 		
+		
+		Auth auth = (Auth)session.getAttribute("Auth");
+		List<Like> likeList = new ArrayList<>();
+		if(auth!=null) {
+			for(int i = 0; i < boards.size(); i++) {
+				likeList.add(lService.selectLikeByBNoGNo(boards.get(i).getbNo(), auth.getUserno()));
+			}
+		}
+		
+		model.addAttribute("likeList",likeList);
 		model.addAttribute("boards",boards);
 	}
+	
+	@RequestMapping(value="searchBoard",method=RequestMethod.GET)
+	public void searchBoard(Model model,@ModelAttribute("cri") SearchCriteria cri) {
+		logger.info("---------------- list");
+		List<Board> boards = bService.selectLimit10(cri);
+		
+		
+		model.addAttribute("boards",boards);
+	}
+	
+	
 	@RequestMapping(value="selectlist",method=RequestMethod.GET)
 	public void selectlist(Model model) {
 		logger.info("---------------- list");
@@ -86,25 +117,51 @@ public class BoardController {
 	
 	@ResponseBody
 	@RequestMapping(value="listAdd",method=RequestMethod.GET)
-	public ResponseEntity<List<Board>> listAdd(SearchCriteria cri) {
+	public ResponseEntity<Map<String, Object>> listAdd(SearchCriteria cri,HttpSession session) {
 		logger.info("---------------- list");
-		System.out.println(cri);
-		List<Board> boards = bService.selectLimit10(cri);
+		ResponseEntity<Map<String,Object>> entity = null;
+		try {
+			List<Board> boards = bService.selectLimit10(cri);
+			Map<String, Object> map = new HashMap<>();
+			map.put("boards", boards);
+			
+			Auth auth = (Auth)session.getAttribute("Auth");
+			List<Like> likeList = new ArrayList<>();
+			if(auth!=null) {
+				for(int i = 0; i < boards.size(); i++) {
+					likeList.add(lService.selectLikeByBNoGNo(boards.get(i).getbNo(), auth.getUserno()));
+				}
+			}
+			map.put("likeList", likeList);
+			
+			
+			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		ResponseEntity<List<Board>> entity = null;
-		
-		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
 		
 		return entity;
 	}
 	
 	@RequestMapping(value="timeLine",method=RequestMethod.GET)
-	public void timeLineGET(Model model,Guest guest) {
+	public void timeLineGET(Model model,Guest guest, HttpSession session) {
 		logger.info("-------------------- timeLine");
+		Auth auth=(Auth)session.getAttribute("Auth");
 		guest = gService.selectByGNo(guest.getgNo());
-		
-		model.addAttribute("guest",guest);
+		//flag(버튼) = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉
+		if(auth!=null) {
+			int flag = fService.selectFlag(auth.getUserno(), guest.getgNo());
+			model.addAttribute("flag",flag);
+		}
+		//guest board뽑기
 		List<Board> boards=bService.selectBygNoLimit24(0,guest.getgNo());
+		int followCount = fService.selectFollowCount(guest.getgNo());
+		int followerCount = fService.selectFollowerCount(guest.getgNo());
+		model.addAttribute("followCount", followCount);
+		model.addAttribute("followerCount",followerCount);
+		model.addAttribute("guest",guest);
+		
 		model.addAttribute("boards",boards);
 		model.addAttribute("bCount",bService.selectBygNoBoardCount(guest.getgNo()));
 	}
@@ -114,7 +171,6 @@ public class BoardController {
 		logger.info("---------------- timelineListAdd");
 		
 		List<Board> boards = bService.selectBygNoLimit24(page, gNo);
-		System.out.println(boards.size());
 		ResponseEntity<List<Board>> entity = null;
 		
 		entity=new ResponseEntity<List<Board>>(boards,HttpStatus.OK);
@@ -141,20 +197,16 @@ public class BoardController {
 	public ResponseEntity<Map<String,Object>> selectReply(int bNo,int page){
 		logger.info("--------------------- selectReply");
 		ResponseEntity<Map<String,Object>> entity = null;
-		System.out.println(page);
 		Criteria cri = new Criteria();
 		cri.setPage(page);
-		System.out.println(cri);
 		try {
 			List<Reply> replys = rService.selectPageByBNoPage(bNo,cri);
 			
-			System.out.println(replys.size());
 			
 			PageMaker pageMaker = new PageMaker();
 			pageMaker.setCri(cri);
 			
 			pageMaker.setTotalCount(rService.selectReplyCount(bNo));
-			System.out.println(pageMaker);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("replys", replys);
 			map.put("pageMaker", pageMaker);
@@ -172,7 +224,6 @@ public class BoardController {
 	@RequestMapping(value="boardDetail",method=RequestMethod.POST)
 	public ResponseEntity<Board> boardDetail(int bNo,Criteria cri){
 		ResponseEntity<Board> entity = null;
-		System.out.println(cri);
 		try {
 			Board board = bService.selectBNoReplyLimit10(bNo,cri);
 			entity = new ResponseEntity<Board>(board,HttpStatus.OK);
@@ -182,6 +233,31 @@ public class BoardController {
 		}
 		return entity;
 	}
-	
-	
+	@RequestMapping(value="insertHeart",method=RequestMethod.POST)
+	public ResponseEntity<Boolean> insertHeart(int bNo, int gNo){
+		logger.info("--------------------insertHeart");
+		System.out.println(bNo);
+		System.out.println(gNo);
+		ResponseEntity<Boolean> entity = null;
+		try {
+			lService.insertLike(bNo,gNo);
+			entity=new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity=new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	@RequestMapping(value="deleteHeart",method=RequestMethod.POST)
+	public ResponseEntity<Boolean> deleteHeart(int bNo, int gNo){
+		ResponseEntity<Boolean> entity = null;
+		try {
+			lService.deleteLike(bNo,gNo);
+			entity=new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity=new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
 }

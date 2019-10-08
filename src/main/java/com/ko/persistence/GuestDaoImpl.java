@@ -148,7 +148,7 @@ public class GuestDaoImpl implements GuestDao{
 
 	@Override
 	public Guest selectByGNo(int gNo) {
-		return sqlSession.selectOne(namespace+"selectByGNo",gNo);
+		return sqlSession.selectOne(namespace+".selectByGNo",gNo);
 	}
 	
 

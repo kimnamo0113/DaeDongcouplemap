@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ko.domain.Guest;
 import com.ko.domain.Auth;
+import com.ko.service.FriendService;
 import com.ko.service.GuestService;
+import com.ko.service.LikeService;
 
 @RequestMapping("/member/*")
 @Controller
@@ -28,7 +30,13 @@ public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
-	GuestService service;
+	GuestService gService;
+	
+	@Autowired
+	FriendService fService;
+	
+	@Autowired
+	LikeService lService;
 	
 	@RequestMapping(value="login",method=RequestMethod.GET)
 	public void loginFormGet() {
@@ -39,21 +47,22 @@ public class MemberController {
 	public void loginPOST(Guest guest, Model model) {
 		logger.info("-------------------login POST,"+guest);
 		
-		Guest dbguest = service.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
-		System.out.println(dbguest);
+		Guest dbguest = gService.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
 		if(dbguest==null) {
 			logger.info("loginPOST...login fail,not member");
 			return;
 		}
 		model.addAttribute("guest",dbguest);
 
-		Auth dto = new Auth();
-		dto.setUserid(dbguest.getgId());
-		dto.setUsername(dbguest.getgName());
-		dto.setUseremail(guest.getgEmail());
-		dto.setUserimage(dbguest.getgImage());
-		dto.setUserno(dbguest.getgNo());
-		model.addAttribute("loginDTO",dto);
+		Auth auth = new Auth();
+		auth.setUserid(dbguest.getgId());
+		auth.setUsername(dbguest.getgName());
+		auth.setUseremail(guest.getgEmail());
+		auth.setUserimage(dbguest.getgImage());
+		auth.setUserno(dbguest.getgNo());
+		auth.setFriendAlarm(fService.selectFriendAlarmCount(dbguest.getgNo()));
+		auth.setBoardAlarm(lService.selectLikeAlarmCount(dbguest.getgNo()));
+		model.addAttribute("loginDTO",auth);
 	}
 	
 	
@@ -73,7 +82,7 @@ public class MemberController {
 	public String joinFormPost(Guest guest,Model model) throws Exception {
 		logger.info("-------------------joinPost guest="+guest);
 		
-		service.insertJoinDefault(guest);
+		gService.insertJoinDefault(guest);
 		
 		return "redirect:/member/noCertification";
 	}
@@ -94,8 +103,8 @@ public class MemberController {
 		logger.info("-------------------joinNext PUT");
 		guest.setgCertification("true");
 		Auth auth = (Auth)session.getAttribute("Auth");
-		guest.setgNo(service.selectById(auth.getUserid()).getgNo());
-		service.updateJoinPlus(guest);
+		guest.setgNo(gService.selectById(auth.getUserid()).getgNo());
+		gService.updateJoinPlus(guest);
 		return "redirect:/";
 	}
 	
@@ -107,7 +116,7 @@ public class MemberController {
 		model.addAttribute("message","인증이 완료되었습니다.");
 		model.addAttribute("url","login");
 		
-		service.updateCertification(guest,"false");
+		gService.updateCertification(guest,"false");
 		
 		return "member/alertPage";
 	}
@@ -124,8 +133,7 @@ public class MemberController {
 	public String forgotPassPOST(Guest guest, Model model) {
 		logger.info("--------------------forgotPassPOST guest : "+guest);
 		
-		Guest dbguest = service.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
-		System.out.println(dbguest);
+		Guest dbguest = gService.selectByEmailAndPassword(guest.getgEmail(), guest.getgPassword());
 		if(dbguest==null) {
 			logger.info("loginPOST...login fail,not member");
 			return null;

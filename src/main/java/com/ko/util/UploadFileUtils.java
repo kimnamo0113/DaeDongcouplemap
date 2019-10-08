@@ -17,17 +17,17 @@ import org.springframework.util.FileCopyUtils;
 
 public class UploadFileUtils {
 
-	public static String uploadFile(String uploadPath, String originalName, byte[] fileData,String flatSrc) throws Exception {
-		String path = calcPath(uploadPath+"/"+flatSrc);
+	public static String uploadFile(String uploadPath, String originalName, byte[] fileData,String flagSrc) throws Exception {
+		String path = calcPath(uploadPath+"/"+flagSrc);
 		UUID uid = UUID.randomUUID();
 		String savedName = uid + "_" + originalName;
 
-		File target = new File(uploadPath+"/"+flatSrc + path, savedName); // outUploadPath경로가 반드시 존재한다는 가정하게 처리됨
+		File target = new File(uploadPath+"/"+flagSrc + path, savedName); // outUploadPath경로가 반드시 존재한다는 가정하게 처리됨
 		FileCopyUtils.copy(fileData, target);
 		
 		String thumbFile = null;
-		thumbFile = makeThumbnail(uploadPath+"/"+flatSrc, path, savedName);
-		return flatSrc+thumbFile; //
+		thumbFile = makeThumbnail(uploadPath+"/"+flagSrc, path, savedName);
+		return flagSrc+thumbFile; //
 	}
 
 	private static String calcPath(String uploadPath) {

@@ -81,7 +81,6 @@ public class UploadController {
 		InputStream in =null;
 		try {
 			HttpHeaders headers = new HttpHeaders();
-			System.out.println(filename);
 			in = new FileInputStream(outUploadPath+"/"+filename);
 			headers.setContentType(mType);
 			
@@ -121,7 +120,6 @@ public class UploadController {
     	
 //    	UploadServerFileUrl.getInstance().calcPath(uploadPath);
     	String datePath=uploadUrl.calcPath(root_path+innerUploadPath);
-    	System.out.println(datePath);
         // 파일정보
         StringBuffer sb = new StringBuffer();
         try {
@@ -195,7 +193,6 @@ public class UploadController {
 			Area area,
 			HttpSession session) throws IOException, Exception {
 		logger.info("------------------insertBoard2");
-		System.out.println(board);
 		ResponseEntity<String> entity=null;
 		
 		ArrayList<Map<String, String>> imgNameList = new ArrayList<>();

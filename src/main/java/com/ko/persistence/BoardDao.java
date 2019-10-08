@@ -12,4 +12,5 @@ public interface BoardDao {
 	public List<Board> selectBygNoLimit24(int page, int gNo);
 	public int selectBygNoBoardCount(int gNo);
 	public Board selectByBNo(int bNo);
+	public void updateBoard(Board board);
 }

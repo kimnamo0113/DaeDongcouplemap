@@ -26,6 +26,7 @@ public class Criteria {
 	}
 
 	public int getPageStart() {
+		System.out.println("start : "+(this.page-1)*perPageNum);
 		return (this.page-1)*perPageNum;
 	}
 	

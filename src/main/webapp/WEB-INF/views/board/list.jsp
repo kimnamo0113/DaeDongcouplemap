@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 
-
 <style>
 	.bxslider2{
 		position: relative;
@@ -18,11 +17,10 @@
 		margin-right: 10px;
 	}
 	
-	.reply-text textarea{
-		margin-left: 25px;
+	.reply-text{
+		margin: 25px;
 	}
 	.reply-text button{
-		margin-right: 10px;
 		border:1px solid #d1d3e2
 	}
 	div.replys div.reply{
@@ -61,6 +59,96 @@
 		font-size: 10px;
 	}
 	
+	.guestInfo a{
+		text-decoration: none;
+		color: #858796;
+	}
+	.guestInfo a:hover{
+		font-size: 1.2rem;
+	}
+	.addReply{
+		cursor: pointer;
+	}
+	.divImg img{
+		cursor: pointer;
+	}
+	
+	#dReplys{
+		height: 250px;
+		overflow: auto;
+	}
+	/* 모달3 */
+	@media (max-width: 768px) {
+		 .boardList img{
+				width:150px;
+				height: 150px;
+				margin: 10px;
+			}
+		.modalBodyLeft{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+		.modalBodyRight{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+		#myModal3 #modal-content{
+			min-height:1000px; 
+		}
+		
+		.divText{
+			height: 50px;
+			overflow: auto;
+		}
+	#header {
+		width:500px;
+	}
+
+}
+@media (max-width: 768px) {
+	figcaption h3{
+		display: none;
+	}
+
+	figure.snip1384 i.fa-heart{
+	 bottom: 5px;
+	 left: 10px;
+	}
+	figure.snip1384 i.fa-comment{
+	  bottom: 5px;
+	  right: 40px;
+	}
+		figure.snip1384 figcaption {
+	  z-index: 1;
+	  padding: 20px;
+	}
+}
+@media (max-width: 576px) {
+	.reply-text{
+		margin: 25px;
+	}
+}
+@media (max-width: 550px) {
+	 .boardList img{
+			width:130px;
+			height: 130px;
+			margin: 10px;
+		}
+}
+#followModal #modal-content,#followerModal #modal-content{
+	height:600px;
+	width: 370px !important;
+	margin:0 auto;
+}
+.followScroll, .followerScroll{
+	overflow: auto;
+	height: 500px;
+	width: 360px;
+}
 </style>
 
 <script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
@@ -68,6 +156,7 @@
 <script>
 var mySlider2 = [];
 var startPage=1;
+var mySlider3;
 
 $(function(){
 	$('.bxslider2').each(function(i, obj){
@@ -103,7 +192,17 @@ $(function(){
 	
 	
 	
-	
+	$('#myModal3').on('hidden.bs.modal', function () {
+		  
+		  $(".bxslider3").empty();
+		  $("#dBPlace").empty();
+		  $("#dBTitle").empty();
+		 /*  $("#dReplys").empty();
+		  $h5Title = $("<h5>").attr("id","dBTitle")
+		  $pContent = $("<dBContents>").attr("id","dBcontents");
+		  $("#dReplys").append($h5Title).append($pContent); */
+		  
+	})
 	
 	
 	
@@ -121,9 +220,11 @@ $(function(){
 				data: {page:startPage},
 				dataType:"json",
 				success:function(res){
-					console.log(res);
-					$(res).each(function(i,obj){
-						
+					if(res.boards.length==0){
+						startPage-=1;
+						return;
+					}					
+					$(res.boards).each(function(i,obj){
 						var $divBxSlider2=$("<div>").addClass("bxslider2");
 						$(obj.contents).each(function(j,content){
 							var $divImg=$("<div>").addClass("divImg").css({"float":"left","list-style":"none","position":"relative","width":"710px"});
@@ -139,19 +240,25 @@ $(function(){
 						var $divBxWrapper=$("<div>").addClass("bx-wrapper").append($divBxViewPort);
 						var $divSlideHidden2=$("<div>").addClass("slideHidden2").append($divBxWrapper);
 						var $divTextCenter=$("<div>").addClass("text-center").append($divSlideHidden2);
-							var iHeart = $("<i>").addClass("fas fa-heart");
-							var iHeart2 = $("<i>").addClass("far fa-heart");
+							
+						var iHeart;
+							if(res.likeList[i]!=null){
+								iHeart= $("<i>").addClass("fas fa-heart deleteHeart").attr("data-bNo",obj.bNo);	
+							}else{
+								iHeart= $("<i>").addClass("far fa-heart insertHeart").attr("data-bNo",obj.bNo);
+							}
+							
 							var iComment = $("<i>").addClass("far fa-comment");
 							var iShare = $("<i>").addClass("far fa-share-square");
-						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 ?명이 좋아합니다.");
-						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iHeart2).append(iComment).append(iShare);
+						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 <span>"+obj.bGood+"</span>명이 좋아합니다.");
+						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iComment).append(iShare);
+						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
 						var $pHash = $("<p>").addClass("bHash").append(obj.bHash);
 						
 						var $divReplysList=$("<div>").addClass("replysList");
 						
 						$(obj.replys).each(function(i,r){
-							console.log(r)
 							var $labelId = $("<label>").addClass("id").append(r.rGNo.gId+":");
 							var $spanWritetime = $("<span>").append(r.rWritetime).addClass("date");
 							var $spanText = $("<span>").addClass("text").append(r.rContent).append($spanWritetime);		
@@ -166,19 +273,31 @@ $(function(){
 						var $ulPagination = $("<ul>").addClass("pagination justify-content-center").attr("data-bNo",obj.bNo);
 						var $divReplys = $("<div>").addClass("replys").append($divReplysList).append($ulPagination);
 						
-						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($pIcons).append($pWhoLike).append($pContents).append($pHash).append($divReplys);
-						
-						var $h6Title=$("<h6>").addClass("m-0 font-weight-bold text-primary").append(obj.bTitle);
-						var $divCardHeader=$("<div>").addClass("card-header py-3").append($h6Title);
+						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($pIcons).append($pWhoLike).append($h6Title).append($pContents).append($pHash).append($divReplys);
+							var $imgGuest=$("<img>");
+							if(obj.bGNo.gImage!=null){
+								var imgSrc = obj.bGNo.gImage;
+								var leftSrc = imgSrc.slice(0,21);
+								var rightSrc = imgSrc.slice(23,imgSrc.length)
+								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+leftSrc+"s_"+rightSrc);
+									
+							}else{
+								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/resources/images/boy.png");
+							}
+							var $aId = $("<a>").attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.bGNo.gNo).append(obj.bGNo.gId);
+								var $h6Id = $("<h6>").append($imgGuest).append($aId).addClass("font-weight-bold");
+							var $h6bPlace = $("<h6>").append(obj.bPlace).addClass("font-weight-bold"); 
+						var $divCardHeader1=$("<div>").addClass("card-header py-3").append($h6Id);
+						var $divCardHeader2=$("<div>").addClass("card-header py-3").append($h6bPlace);
 						
 						var $divCard = $("<div>");
 						
 						if('${Auth.userid}'!=null){
-							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-sm-10").attr("data-bno",obj.bNo);
-							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-sm-1").append("게시").attr("type","button");
+							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-10").attr("data-bno",obj.bNo);
+							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-1").append("게시").attr("type","button").attr("data-gNo",obj.bGNo.gNo);
 							var $divReplyText = $("<div>").addClass("reply-text row").append($textAreaReply).append($buttonReply);
 							
-							$divCard.addClass("card shadow mb-4").append($divCardHeader).append($divCardBody).append($divReplyText);
+							$divCard.addClass("card shadow mb-4").append($divCardHeader1).append($divCardHeader2).append($divCardBody).append($divReplyText);
 						}else{
 							$divCard.addClass("card shadow mb-4").append($divCardHeader).append($divCardBody);	
 						}
@@ -210,6 +329,52 @@ $(function(){
 	    }
 
 	});
+	
+	$(document).on("click",".guestImg",function(){
+		var href = $(this).next();
+		location.href=$(href).attr("href");
+	})
+	
+	
+	
+	$(document).on("click",".insertHeart",function(){
+		if('${Auth}'==''){
+			alert("로그인을 해주세요.")
+			return ;
+		}
+		
+		var $thisObj = this;
+		$.ajax({
+			url:"/daedong/board/insertHeart",
+			type:"post",
+			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+			dataType:"text",
+			success:function(res){
+				$($thisObj).removeClass("far insertHeart").addClass("fas deleteHeart");
+				var bGood = $($thisObj).parent().next().find("span").text();
+				bGood = Number(bGood)+1;
+				$($thisObj).parent().next().find("span").text(bGood);
+			}
+		})	
+	})
+	$(document).on("click",".deleteHeart",function(){
+		
+		var $thisObj = this;
+		$.ajax({
+			url:"/daedong/board/deleteHeart",
+			type:"post",
+			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+			dataType:"text",
+			success:function(res){
+				$($thisObj).removeClass("fas deleteHeart").addClass("far insertHeart");
+				var bGood = $($thisObj).parent().next().find("span").text();
+				bGood = Number(bGood)-1;
+				$($thisObj).parent().next().find("span").text(bGood);
+			}
+		})
+	})
+	
+	
 })
 
 
@@ -218,8 +383,8 @@ $(function(){
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4" id="header">
-            <%-- <a href="${pageContext.request.contextPath }/board/write" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i>스마트에디터글쓰기</a> --%>
+          <div class="d-flex align-items-center justify-content-between mb-4" id="header">
+            <%-- <a href="${pageContext.request.contextPath }/board/write" class="d-none d-inline-block btn btn btn-primary shadow"><i class="fas fa-download fa text-white-50"></i>스마트에디터글쓰기</a> --%>
             
           </div>
 		  <div class="row ">
@@ -227,30 +392,34 @@ $(function(){
 
             <!-- Content Column -->
             
-			<c:forEach var="board" items="${boards }" >
+			<c:forEach var="board" items="${boards }" varStatus="status">
 	            <div class="col-lg-12 mb-4">
 	              <!-- Illustrations -->
 	              <div class="card shadow mb-4">
 	                <div class="card-header py-3">
-	               <%--    <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  <c:set var="place" value="${board.bPlace }"/>
-	                  ${fn:replace(place,"area:","") } <br>
-	                  ${fn:replace(place,"province:","") } <br>
-	                  ${fn:replace(place,"gu:","") } <br>
-	                  ${fn:replace(place,"dong:","") } <br> --%>
-	                  <h6 class="m-0 font-weight-bold text-primary">${board.bPlace }</h6>
+	                <%-- <c:set var="img" value="${board.contents[0].cImage }"/>
+		    		<c:set var="imglength" value="${fn:length(img) }"/>
+		    	  	 <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(img,0,20)}s_${fn:substring(img,22,imglength) }" > --%>
+	                
+	                
+	                  
+	                  <c:if test="${board.bGNo.gImage!=null}">
+	                  	<c:set var="gImg" value="${board.bGNo.gImage}"/>
+	                  	<c:set var="imglength" value="${fn:length(gImg)}"/>
+	                  	<h6 class="font-weight-bold guestInfo"><img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(gImg,0,21)}s_${fn:substring(gImg,23,imglength) }" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a></h6>
+	                  </c:if>
+	                  <c:if test="${board.bGNo.gImage==null}">
+	                  	<h6 class="font-weight-bold guestInfo"><img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a></h6>
+	                  </c:if>
 	                </div>
 	                <div class="card-header py-3">
-	                  <h6 class="m-0 font-weight-bold text-primary">${board.bTitle }</h6>
+	                  <h6 class="font-weight-bold">${board.bPlace }</h6>
 	                </div>
 	                
 	                <div class="card-body">
 	                  <div class="text-center">
 	                  <!-- style="visibility:hidden;opacity:0" -->
-	                  	<div class="slideHidden2" >
+	                  	<div class="slideHidden2">
 		                  <div class="bxslider2">
 		                    	<c:forEach var="c" items="${board.contents }">
 		                    	<div>
@@ -266,8 +435,19 @@ $(function(){
 			              </div>
 		                </div>
 	                  </div>
-					<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
-					<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
+	                  
+					<p class="icons">
+						<c:if test="${likeList[status.count-1]!=null }">
+							<i class="fas fa-heart deleteHeart" data-bNo="${board.bNo}"></i>
+						</c:if>
+						<c:if test="${likeList[status.count-1]==null }">
+							<i class="far fa-heart insertHeart" data-bNo="${board.bNo}"></i>
+						</c:if>
+						<i class="far fa-comment" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i><i class="far fa-share-square"></i>
+					</p>
+					
+					<p class="whoLike">??님 외 <span>${board.bGood }</span>명이 좋아합니다.</p>
+	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
 					<p class="bHash">${board.bHash }</p>
 					<div class="replys">
@@ -293,8 +473,8 @@ $(function(){
 	                </div>
 	                <c:if test="${Auth!=null }">
 	                	<div class="reply-text row">
-	                		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bno="${board.bNo }"></textarea>
-	                		<button type="button" class="reply-addBtn btn btn-default active col-sm-1" data-gNo=${Auth.userno }>게시</button>
+	                		<textarea rows="2" cols="" class="reply-textArea form-control col-10" data-bno="${board.bNo }"></textarea>
+	                		<button type="button" class="reply-addBtn btn btn-default active col-2" data-gNo=${Auth.userno }>게시</button>
 	                	</div>
                 	</c:if>
 	              </div>
@@ -309,6 +489,52 @@ $(function(){
         </div>
         <!-- /.container-fluid -->
 
+
+<div class="modal fade" id="myModal3" role="dialog" >
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content" id="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="dBPlace"></h4><br>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+         <div class="modal-body row">
+          <div class="col-8 modalBodyLeft">
+	          <div class="bxslider3">
+	          	
+	          </div>
+          </div>
+          
+          <div class="col-4 modalBodyRight">
+          	<div>
+        		<h5 id="dBTitle"></h5>
+	          	<p id="dBContents"></p>
+	          	<div id="dReplys" class="replysList form-control">
+			          	
+				</div>
+				
+				
+				<ul class="pagination justify-content-center">
+					</ul>
+          	</div>
+          	
+          	<c:if test="${Auth!=null }">
+              	<div class="reply-text row">
+              		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bNo="${board.bNo }"></textarea>
+              		<button type="button" class="reply-addBtn btn btn-default active col-sm-2" data-gNo=${Auth.userno }>게시</button>
+              	</div>
+            </c:if>
+          </div>
+        </div>
+        
+		    <div class="modal-footer">
+	        </div>
+      </div>
+      
+    </div>
+  </div>
 
 
 

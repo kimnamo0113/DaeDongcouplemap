@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ko.mapper.FriendMapper">
+	
+    <resultMap type="Friend" id="friendBasic">
+	   <result property="fNo" column="f_no" />
+		<result property="follow.gNo" column="g_follow" />
+		<result property="follower.gNo" column="g_follower" />
+		<result property="fDate" column="f_date" />
+		<result property="fRead" column="f_read" />
+	</resultMap>	
+	
+	<resultMap type="Friend" id="friendExtents">
+		<result property="fNo" column="f_no" />
+		<result property="fDate" column="f_date" />
+		<result property="fRead" column="f_read" />
+		<association property="follow" resultMap="follow"/>
+		<association property="follower" resultMap="follower"/>
+	</resultMap>
+	
+	<resultMap type="Guest" id="follow">
+		<result property="gNo" column="g_follow" />
+		<result property="gId" column="g1_id" />
+		<result property="gName" column="g1_name" />
+		<result property="gEmail" column="g1_email" />
+		<result property="gImage" column="g1_image" />
+	</resultMap>
+	<resultMap type="Guest" id="follower">
+		<result property="gNo" column="g_follower" />
+		<result property="gId" column="g2_id" />
+		<result property="gName" column="g2_name" />
+		<result property="gEmail" column="g2_email" />
+		<result property="gImage" column="g2_image" />
+	</resultMap>
+	
+	
+	<select id="selectFriend" resultMap="friendBasic">
+		SELECT f_no, g_follow, g_follower, f_date, f_read
+		FROM daedong.friend
+		where g_follow=#{follow} and g_follower=#{follower}
+	</select>
+	
+	<insert id="insertFriend">
+		INSERT INTO daedong.friend
+		(g_follow, g_follower, f_date, f_read)
+		VALUES(#{follow}, #{follower}, CURRENT_TIMESTAMP, #{fRead});
+	</insert>
+	
+	<delete id="deleteFriend">
+		DELETE FROM daedong.friend
+		WHERE g_follow=#{follow} and g_follower=#{follower};
+	</delete>
+	<select id="selectFollowCount" resultType="int">
+		select count(f_no) from friend where g_follow=#{gNo}
+	</select>
+	<select id="selectFollowerCount" resultType="int">
+		select count(f_no) from friend where g_follower=#{gNo}
+	</select>
+	
+	<select id="selectFriendAlarmCount" resultType="int">
+		select count(f_no) from friend where g_follower=#{gNo} and (f_read=0 or f_read=3)
+	</select>
+	
+	<select id="selectAlarmList" resultMap="friendExtents">
+		select f_no, g_follow, g_follower, f_date, f_read ,
+			g1.g_no g1_no, g1.g_id g1_id, g1.g_name g1_name, g1.g_email g1_email, g1.g_image g1_image  
+		from friend f 
+		join guest g1
+			on f.g_follow = g1.g_no
+		where g_follower=#{gNo} and (f_read=0 or f_read=1 or f_read=3)
+		order by f_date desc
+	</select>
+	<select id="selectFollowerList" resultMap="friendExtents">
+		select f_no, g_follow, g_follower, f_date, f_read ,
+			g1.g_no g1_no, g1.g_id g1_id, g1.g_name g1_name, g1.g_email g1_email, g1.g_image g1_image  
+		from friend f 
+		join guest g1
+			on f.g_follow = g1.g_no
+		where g_follower=#{gNo}
+		order by g1_name asc
+	</select>
+	<select id="selectFollowList" resultMap="friendExtents">
+		select f_no, g_follow, g_follower, f_date, f_read ,
+			g2.g_no g2_no, g2.g_id g2_id, g2.g_name g2_name, g2.g_email g2_email, g2.g_image g2_image  
+		from friend f 
+		join guest g2
+			on f.g_follower = g2.g_no
+		where g_follow=#{gNo}
+		order by g2_name asc
+	</select>
+	
+	
+	
+	<update id="updateFrined" parameterType="Map">
+		UPDATE daedong.friend
+		SET f_date=#{date}, f_read=#{fRead}
+		WHERE g_follow=#{follow} and g_follower=#{follower};
+	</update>
+	
+</mapper>
