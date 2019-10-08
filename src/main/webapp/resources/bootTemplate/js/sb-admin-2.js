@@ -3,11 +3,32 @@
 
   // Toggle the side navigation
   $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-    $("body").toggleClass("sidebar-toggled");
-    $(".sidebar").toggleClass("toggled");
-    if ($(".sidebar").hasClass("toggled")) {
-      $('.sidebar .collapse').collapse('hide');
-    };
+	    var width_size = window.outerWidth;
+	  
+	    $("body").toggleClass("sidebar-toggled");
+	    $(".sidebar").toggleClass("toggled");
+	    if ($(".sidebar").hasClass("toggled")) {
+	      $('.sidebar .collapse').collapse('hide');
+	      
+	      if(width_size <= 776){
+				$("#accordionSidebar").addClass("toggled");
+				$("#content").css("margin-left","0px");
+			}else{
+				$("#content").css("margin-left","110px");
+			}
+	    }else{
+	      $("#content").css("margin-left","220px");
+	      if(width_size <= 776){
+				$("#content").css("margin-left","110px");
+			}else{
+				$("#content").css("margin-left","220px");
+			}
+	    }
+	    var length = $(".bxslider2").length;
+		for(var i=0; i<length; i++){
+			mySlider2[i].reloadSlider();
+		}
+	    
   });
 
   // Close any open menu accordions when window is resized below 768px

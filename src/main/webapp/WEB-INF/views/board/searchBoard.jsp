@@ -303,7 +303,11 @@ figure.snip1384.hover i {
 			margin: 10px;
 		}
 }
-
+#dBGId{
+	color:black;
+	font-size: 20px;
+	font-weight: bold;
+}
 
 
 </style>
@@ -335,6 +339,9 @@ var startPage=0;
 		
 		
 	})
+	
+	
+	
 	
 	$(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
 		
@@ -375,7 +382,7 @@ var startPage=0;
   	<div class="form-group row" id="header">
   		<div class="col-4">
 	  	</div>
-	  	<div class="col-6">
+	  	<%-- <div class="col-6">
 	  		<h1 class="h5 mb-0 text-gray-800">${guest.gId}
 	  			<!-- flag 버튼 = 0:관계x(팔로워) 1:요청됨 2:팔로워 3:팔로잉 -->
 		  		
@@ -403,49 +410,15 @@ var startPage=0;
 	  			<label id="followerCount">${followerCount }</label><br>
 	  		</div>
 	  		</div>
-	  	</div>
+	  	</div> --%>
 	  	  	
 	</div>
     
     
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="myModal2" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content" id="modalProfile">
-        <div class="modal-header">
-          <h4 class="modal-title">프로필 사진 수정</h4>
-          
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <form enctype="multipart/form-data">
-	        <div id="proFileUpdate">
-	        	
-			  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
-					<input type="file" name="file" id="uploadProfileImg"  data-gNo="${guest.gNo }"s style="display:none">
-					<label class="list-group-item">사진 내리기</label>		  		
-			  	
-	        </div>
-		    <div class="modal-footer">
-		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        </div>
-        </form>
-      </div>
-      
-    </div>
-  </div>
   
 
-  <div class="row">
-
-    <!-- Area Chart -->
-    
-
-    <!-- Pie Chart -->
-  </div>
 
   <!-- Content Row -->
   <div class="row">
@@ -491,6 +464,7 @@ var startPage=0;
           
           <div class="col-4 modalBodyRight">
           	<div>
+          		<a id="dBGId"><span></span></a>
         		<h5 id="dBTitle"></h5>
 	          	<p id="dBContents"></p>
 	          	<div id="dReplys" class="replysList form-control">

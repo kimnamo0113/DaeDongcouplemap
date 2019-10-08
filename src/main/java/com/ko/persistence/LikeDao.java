@@ -1,5 +1,7 @@
 package com.ko.persistence;
 
+import java.util.List;
+
 import com.ko.domain.Board;
 import com.ko.domain.Like;
 
@@ -15,4 +17,6 @@ public interface LikeDao {
 	public void deleteLike(int bNo, int gNo);
 
 	public int selectLikeAlarmCount(int gNo);
+
+	public List<Like> selectLikeList(int gNo);
 }

@@ -63,4 +63,10 @@ public class LikeDaoImpl implements LikeDao{
 		return sqlSession.selectOne(namespace+".selectLikeAlarmCount",gNo);
 	}
 
+
+	@Override
+	public List<Like> selectLikeList(int gNo) {
+		return sqlSession.selectList(namespace+".selectLikeList",gNo);
+	}
+
 }

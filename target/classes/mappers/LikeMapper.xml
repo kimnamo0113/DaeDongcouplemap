@@ -3,9 +3,14 @@
 <mapper namespace="com.ko.mapper.LikeMapper">
 	<resultMap type="Like" id="LikeBasic">
 		<result property="lNo" column="l_no" />
+		<result property="lDate" column="l_date" />
+		<result property="lRead" column="l_read" />
 		<association property="lBNo" resultMap="com.ko.mapper.BoardMapper.BoardBasic"/>
 		<association property="lGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic" />
 	</resultMap>
+	
+
+
 
 	<select id="selectLikeCount" resultType="int">
 		select count(l_no) from `like` where b_no = #{bNo}
@@ -14,6 +19,9 @@
 	<select id="selectLikeByBNoGNo" resultMap="LikeBasic">
 		select l_no, b_no, g_no from `like` where b_no = #{bNo} and g_no = #{gNo}
 	</select>
+	
+	
+	
 	
 	<insert id="insertLike" parameterType="map">
 		INSERT INTO daedong.`like`
@@ -33,5 +41,16 @@
 		join guest g
 			on b.g_no = g.g_no
 		where l.l_read = 0 and g.g_no=#{gNo}
+	</select>
+	
+	<select id="selectLikeList" resultMap="LikeBasic">
+		select l.b_no, b_title, g.g_no, g.g_name, g.g_id
+			FROM daedong.`like` l
+		join board b
+			on b.b_no = l.b_no
+		join guest g
+			on l.g_no = g.g_no
+		where b.g_no=#{gNo} and b.b_delete=0
+		order by l.l_date desc;
 	</select>
 </mapper>

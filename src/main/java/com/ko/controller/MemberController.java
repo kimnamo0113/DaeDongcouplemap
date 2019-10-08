@@ -1,6 +1,7 @@
 package com.ko.controller;
 
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,12 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ko.domain.Guest;
+import com.ko.domain.SearchCriteria;
 import com.ko.domain.Auth;
 import com.ko.service.FriendService;
 import com.ko.service.GuestService;
@@ -60,8 +63,7 @@ public class MemberController {
 		auth.setUseremail(guest.getgEmail());
 		auth.setUserimage(dbguest.getgImage());
 		auth.setUserno(dbguest.getgNo());
-		auth.setFriendAlarm(fService.selectFriendAlarmCount(dbguest.getgNo()));
-		auth.setBoardAlarm(lService.selectLikeAlarmCount(dbguest.getgNo()));
+		
 		model.addAttribute("loginDTO",auth);
 	}
 	
@@ -147,8 +149,20 @@ public class MemberController {
 		model.addAttribute("loginDTO",dto);
 		return "member/updatePassword";
 	}
-	@RequestMapping(value="updatePassword",method=RequestMethod.GET)
-	public void updatePasswordGET() {
+	
+	@RequestMapping(value="searchFriend",method=RequestMethod.GET)
+	public ResponseEntity<List<Guest>> searchFriend(Model model,@ModelAttribute("cri") SearchCriteria cri) {
+		logger.info("---------------- searchFriend");
+		ResponseEntity<List<Guest>> entity = null;
+				
+		try {
+			List<Guest> guests = gService.selectSearchGIdAll(cri.getKeyword());
+			entity = new ResponseEntity<List<Guest>>(guests,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<List<Guest>>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
 	}
 	
 	

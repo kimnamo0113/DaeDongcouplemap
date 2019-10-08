@@ -37,6 +37,7 @@
 	i{
 		cursor: pointer;
 	}
+	
 	#hanbandoImg{
 		width:50px;
 		height:50px;
@@ -114,6 +115,7 @@
 		height: 50px;
 		margin-right:10px;
 		cursor: pointer;
+		margin-bottom: 10px;
 	}
 	#logoutToggle{
 		margin-right:80px !important;
@@ -121,6 +123,35 @@
 	form.navbar-search{
 		margin-left:auto !important;
 		margin-right:10px !important;
+	}
+	#friendSearchList{
+		width: 45%;
+    	left: 120px;
+    	height: 300px;
+    	overflow: auto;
+	}
+	#searchDropdown select{
+		width: 10px;
+	}
+	#searchDropdown{
+		width:280px;
+		
+	}
+	.friendsList{
+		color: white;
+		text-decoration: none;
+	}
+	.friendsList:hover{
+		font-size: 18px;
+		color: white;
+		text-decoration: none;
+	}
+	ul#accordionSidebar{
+		position: fixed;
+	}
+	li#liFriendsList{
+		height: 300px;
+		overflow: auto;
 	}
 </style>
 <!-- Bootstrap core JavaScript-->
@@ -178,57 +209,22 @@
 		<a class="dropdown-item text-center small text-gray-500" id="addFriendAlarmList">Show All Alerts</a>
 	</script>
 <script id="boardTemp" type="text/x-handlebars-template">
-		<h6 class="dropdown-header">
-	    	Friend Alarm
-	    </h6>
-		<div class="divAlarmList">
-		{{#each.}}
-			{{#if fRead 0}}
-			    <a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}" data-fRead="1" data-gNo="{{follow.gNo}}">
-			{{/if}}
-			{{#if fRead 1}}
-				<a class="dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}">
-			{{/if}}
-			{{#if fRead 3}}
-				<a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" href="timeLine?gNo={{follow.gNo}}" data-fRead="4" data-gNo="{{follow.gNo}}">
-			{{/if}}
-			  
-			  <div class="mr-3">
-			    <div>
-				  {{#if follow.gImage null}}
-					<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
-				  {{else}}
-					<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{follow.gImage}}" class="guestImg">
-				  {{/if}}
-			    </div>
-			  </div>
-			  <div>
-			    <div class="small text-gray-500" row>{{fDate}}</div>
-					{{#if fRead 0}}
-			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님글을 좋아합니다.</span>
-						<div>
-							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="0">수락</button>
-							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}" data-fRead="2">삭제</button>
-						</div>
-					{{/if}}
-					{{#if fRead 1}}
-			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님을 팔로우 하셨습니다.</span>
-						<div>
-							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="1">수락</button>
-							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}">삭제</button>
-						</div>
-					{{/if}}
-					
-					{{#if fRead 3}}
-			    		<span class=" font-weight-bold">{{follow.gId}}님이 팔로우요청을 수락 하셨습니다.</span>
-					{{/if}}
-				
-			  </div>
-			</a>
-		{{/each}}
-		<div>
-		<a class="dropdown-item text-center small text-gray-500" id="addFriendAlarmList">Show All Alerts</a>
-	</script>
+	<h6 class="dropdown-header">
+      Board Alarm
+    </h6>
+    <a class="dropdown-item d-flex align-items-center" href="#">
+      <div class="mr-3">
+        <div class="icon-circle bg-primary">
+          <i class="fas fa-file-alt text-white"></i>
+        </div>
+      </div>
+      <div>
+        <div class="small text-gray-500">December 12, 2019</div>
+        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+      </div>
+    </a>
+    <a class="dropdown-item text-center small text-gray-500" >Show All Alerts</a>
+</script>
 	
 	
 <script type="text/javascript">
@@ -272,20 +268,46 @@
 	
 	$(function() {
 		
-		
-		
 		var width_size = window.outerWidth;
 		
-		if(width_size <= 776){
-			$("#accordionSidebar").addClass("toggled");
-		}
+		 if ($(".sidebar").hasClass("toggled")) {
+		      $('.sidebar .collapse').collapse('hide');
+		      
+		      if(width_size <= 776){
+					$("#accordionSidebar").addClass("toggled");
+					$("#content").css("margin-left","0px");
+				}else{
+					$("#content").css("margin-left","110px");
+				}
+		    }else{
+		      $("#content").css("margin-left","220px");
+		      if(width_size <= 776){
+					$("#content").css("margin-left","110px");
+				}else{
+					$("#content").css("margin-left","220px");
+				}
+		    }
 		
 		$(window).resize(function(){
 			width_size = window.outerWidth;
 			
-			if(width_size <= 776){
-				$("#accordionSidebar").addClass("toggled");
-			}
+			 if ($(".sidebar").hasClass("toggled")) {
+			      $('.sidebar .collapse').collapse('hide');
+			      
+			      if(width_size <= 776){
+						$("#accordionSidebar").addClass("toggled");
+						$("#content").css("margin-left","0px");
+					}else{
+						$("#content").css("margin-left","110px");
+					}
+			    }else{
+			      $("#content").css("margin-left","220px");
+			      if(width_size <= 776){
+						$("#content").css("margin-left","110px");
+					}else{
+						$("#content").css("margin-left","220px");
+					}
+			    }
 		})
 		
 		$("#sidebarToggleTop").click(function(){
@@ -317,8 +339,87 @@
 		function searchFunc(){
 			var select = $("select[name='searchType']").val();
 			var keyword=$("#searchText").val();
-			location.href="searchBoard?page=1&searchType="+select+"&keyword="+keyword;
+			if(select=='friend'){
+				
+			}else{
+				location.href="searchBoard?page=1&searchType="+select+"&keyword="+keyword;	
+			}
+			
 		}
+		
+		$("#searchType").change(function(){
+			var searchType = $(this).val();
+			if(searchType=='friend'){
+				$("#searchText").addClass("searchFriend");
+				
+			}else{
+				$("#searchText").removeClass("searchFriend");
+				$("#friendSearchList").removeClass("show");
+			}
+			
+		})
+		$("#searchType2").change(function(){
+			var searchType = $(this).val();
+			if(searchType=='friend'){
+				$("#searchText2").addClass("searchFriend");
+				
+			}else{
+				$("#searchText").removeClass("searchFriend");
+				$("#friendSearchList").removeClass("show");
+			}
+			
+		})
+		
+		
+		$("#friendSearchList").mouseleave(function(){
+			if($(this).hasClass("show")){
+				$(this).removeClass("show");
+			}
+		})
+		
+        /*  $(document).on({mouseenter: function () {
+         },
+         mouseleave: function () {
+        	if($(this).hasClass("show")){
+ 				$(this).removeClass("show");
+ 			}
+         }
+         }, "#friendSearchList"); 
+		 */
+		
+		
+		$(document).on("propertychange change keyup paste input",".searchFriend",function(){
+			
+			var select = $("select[name='searchType']").val();
+			var keyword=$(this).val();
+			$("#friendSearchList").empty();
+			$.ajax({
+				url:"${pageContext.request.contextPath}/member/searchFriend",
+				type:"get",
+				dataType:"json",
+				data:{page:1,keyword:keyword},
+				success:function(res){
+					console.log(res)
+					$("#friendSearchList").addClass("show");
+					$(res).each(function(i,obj){
+						
+						var $img;
+						if(obj.gImage!=null){
+							$img = $("<img>").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+obj.gImage).addClass("guestImg");	
+						}else{
+							$img = $("<img>").attr("src","${pageContext.request.contextPath }/resources/images/boy.png").addClass("guestImg");
+						}
+						
+						var $aId = $("<a>").append($img).append(obj.gId).attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.gNo);		
+						var $p = $("<p>").append($aId);
+						$("#friendSearchList").append($p);	
+					})
+					
+					
+				}
+			})
+			
+		})
 		
 		$("#searchBtn").click(function(){
 			searchFunc()
@@ -443,6 +544,16 @@
 			})
 		})
 		
+		
+		/* setInterval(function() {
+	    var elem = document.getElementById('accordionSidebar');
+		    if (elem.classList.contains("toggled")) {
+		    	$("div#content").css("margin-left","110px");
+		    }else{
+		    	$("div#content").css("margin-left","230px");
+		    }
+		}, 500); */
+		
 	})
 </script>  
 
@@ -519,42 +630,39 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Addons
+        Friends
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
+      <li class="nav-item" id="liFriendsList">
+      <c:forEach var="friend" items="${friends}">
+     	 <p class="nav-link collapsed" href="#">
+     	 <c:if test="${friend.follower.gImage==null }">
+     	 	<img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">	
+     	 </c:if>
+     	 <c:if test="${friend.follower.gImage!=null }">
+     	  	<img src="${pageContext.request.contextPath }/upload/displayFile?filename=${friend.follower.gImage}" class="guestImg">
+     	 </c:if>
+         
+          <a class="friendsList" href="${pageContext.request.contextPath }/board/timeLine?gNo=${friend.follower.gNo}">${friend.follower.gId }</a>
+        </p>
+      </c:forEach>
+       
       </li>
 
       <!-- Nav Item - Charts -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="charts.html">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Charts</span></a>
-      </li>
+      </li> -->
 
       <!-- Nav Item - Tables -->
-      <li class="nav-item">
+     <!--  <li class="nav-item">
         <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-table"></i>
           <span>Tables</span></a>
-      </li>
+      </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -585,22 +693,27 @@
 			<img src="${pageContext.request.contextPath }/resources/images/hanbando.png" id="hanbandoImg">	
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
+            <div class="input-group dropdown">
            		<select class="form-control" name="searchType" id="searchType">
                		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
-               		<option value="aera" ${cri.searchType=='aera'?'selected':'' }>Area</option>
+               		<option value="area" ${cri.searchType=='area'?'selected':'' }>Area</option>
                		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
                		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
                		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
                		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
                	</select>
                	
-              <input type="text" class="form-control bg-light border-0 small searchText" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="searchText">
+              <input type="text" class="form-control bg-light border-0 small searchText dropdown-toggle" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="searchText">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button" id="searchBtn">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
+              <div class="dropdown-menu" id="friendSearchList">
+			      <a class="dropdown-item" href="#">Link 1</a>
+			      <a class="dropdown-item" href="#">Link 2</a>
+			      <a class="dropdown-item" href="#">Link 3</a>
+			    </div>
             </div>
           </form>
            <ul class="navbar-nav ml-auto" id="dotbogi">
@@ -611,30 +724,42 @@
 	              </a>
 	              
 	              <!-- Dropdown - Messages -->
-	              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+	              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown" id="searchDropdown">
 	                <form class="form-inline mr-auto w-100 navbar-search">
 	                  <div class="input-group">
 	                  <!-- max width 수정 -->
 	                  	<select class="form-control" name="searchType2" id="searchType2">
 		               		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
-		               		<option value="aera" ${cri.searchType=='aera'?'selected':'' }>Area</option>
+		               		<option value="area" ${cri.searchType=='area'?'selected':'' }>Area</option>
 		               		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
 		               		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
 		               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
 		               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
 		               	</select>
-	                    <input id="searchText2" type="text" class="form-control bg-light border-0 small searchText" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+	                    <input id="searchText2" type="text" class="form-control bg-light border-0 small searchText dropdown-toggle" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
 	                    
 	                    <div class="input-group-append">
 	                      <button class="btn btn-primary" type="button" id="searchBtn2">
 	                        <i class="fas fa-search fa-sm"></i>
 	                      </button>
 	                    </div>
+	                    
+	                    
+	                    
 	                  </div>
 	                </form>
 	              </div>
+	              
 	            </li>
           </ul>
+          
+               
+          
+          
+          
+          
+          
+          
 
           <!-- Topbar Navbar -->
           <c:if test="${Auth==null}">
@@ -744,21 +869,32 @@
 	              </a>
 	              <!-- Dropdown - Alerts -->
 	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="friendAlarmDropDouwn">
-	                <h6 class="dropdown-header">
-	                  Board Alarm
-	                </h6>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="mr-3">
-	                    <div class="icon-circle bg-primary">
-	                      <i class="fas fa-file-alt text-white"></i>
-	                    </div>
-	                  </div>
-	                  <div>
-	                    <div class="small text-gray-500">December 12, 2019</div>
-	                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-	                  </div>
-	                </a>
-	                <a class="dropdown-item text-center small text-gray-500" >Show All Alerts</a>
+	              	<h6 class="dropdown-header">
+				      Board Alarm
+				    </h6>
+	                <c:forEach var="like" items="${likes }">
+	                	<c:if test="${like.lRead==0 }">
+	                		<a class="dropdown-item d-flex align-items-center unreadBackGround" href="#">
+	                	</c:if>
+	                	<c:if test="${like.lRead==1 }">
+	                		<a class="dropdown-item d-flex align-items-center unreadBackGround" href="#">
+	                	</c:if>
+	                	
+					      <div class="mr-3">
+					     	<c:if test="${like.lGNo.gImage == null}">
+								<img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">
+					     	</c:if>
+					     	<c:if test="${like.lGNo.gImage != null}">
+					 	      <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${like.lGNo.gImage}" class="guestImg">
+					     	</c:if>
+					      </div>
+					      <div>
+					        <div class="small text-gray-500">날자</div>
+					        <span class="font-weight-bold">[${like.lGNo.gId }]님이 회원님의 <span>[${like.lBNo.bTitle }]</span>게실물을 좋아합니다.</span>
+					      </div>
+					    </a>
+	                </c:forEach>
+	                    <a class="dropdown-item text-center small text-gray-500" >Show All Alerts</a>
 	              </div>
 	            </li>
 	            
@@ -816,13 +952,13 @@
 	            </li> -->
 	
 	            <!-- Nav Item - Messages -->
-	            <li class="nav-item dropdown no-arrow mx-1">
+	          <!--   <li class="nav-item dropdown no-arrow mx-1">
 	              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-envelope fa-fw"></i>
-	                <!-- Counter - Messages -->
+	                Counter - Messages
 	                <span class="badge badge-danger badge-counter">7</span>
 	              </a>
-	              <!-- Dropdown - Messages -->
+	              Dropdown - Messages
 	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
 	                <h6 class="dropdown-header">
 	                  Message Center
@@ -869,7 +1005,7 @@
 	                </a>
 	                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
 	              </div>
-	            </li>
+	            </li> -->
 	
 	            <div class="topbar-divider d-none d-sm-block"></div>
 	
@@ -926,7 +1062,7 @@
   <script src="${pageContext.request.contextPath }/resources/bootTemplate/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="${pageContext.request.contextPath }/resources/bootTemplate/js/sb-admin-2.min.js"></script>
+  <script src="${pageContext.request.contextPath }/resources/bootTemplate/js/sb-admin-2.js"></script>
 
   <!-- Page level plugins -->
   <script src="${pageContext.request.contextPath }/resources/bootTemplate/vendor/chart.js/Chart.min.js"></script>

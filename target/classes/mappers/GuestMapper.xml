@@ -92,5 +92,11 @@
 		</update>
 	<!--  -->
 	
+	<!-- 회원검색용 -->
+		<select id="selectSearchGIdAll" resultType="Guest">
+			SELECT g_no, g_id, g_name, g_email, g_join, g_delete, g_image
+			FROM daedong.guest
+			where g_id like CONCAT('%',#{keyword},'%')
+		</select>
 	
 </mapper>

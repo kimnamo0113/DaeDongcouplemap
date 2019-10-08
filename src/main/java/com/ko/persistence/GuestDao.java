@@ -1,5 +1,7 @@
 package com.ko.persistence;
 
+import java.util.List;
+
 import com.ko.domain.Guest;
 
 public interface GuestDao {
@@ -27,4 +29,5 @@ public interface GuestDao {
 	public void updateAll(Guest guest);
 	public Guest selectByGNo();
 	public Guest selectByGNo(int gNo);
+	public List<Guest> selectSearchGIdAll(String keyword);
 }

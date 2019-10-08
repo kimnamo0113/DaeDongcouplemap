@@ -37,6 +37,7 @@
 	
 	<beans:bean id="loginInterceptor" class="com.ko.interceptor.LoginInterceptor"></beans:bean>
 	<beans:bean id="authInterceptor" class="com.ko.interceptor.AuthInterceptor"></beans:bean>
+	<beans:bean id="refreshInterceptor" class="com.ko.interceptor.RefreshIntercepter"></beans:bean>
 	
 	<interceptors>
 		<interceptor>
@@ -47,6 +48,10 @@
 		<interceptor>
 			<mapping path="/board/timeLineasd"/>
 			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/board/*"/>
+			<beans:ref bean="refreshInterceptor"/>
 		</interceptor>
 	</interceptors>
 	

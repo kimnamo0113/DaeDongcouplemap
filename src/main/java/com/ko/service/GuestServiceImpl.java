@@ -1,6 +1,7 @@
 package com.ko.service;
 
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletResponse;
@@ -121,5 +122,10 @@ public class GuestServiceImpl implements GuestService {
 	@Override
 	public Guest selectByGNo(int gNo) {
 		return dao.selectByGNo(gNo);
+	}
+
+	@Override
+	public List<Guest> selectSearchGIdAll(String keyword) {
+		return dao.selectSearchGIdAll(keyword);
 	}
 }
