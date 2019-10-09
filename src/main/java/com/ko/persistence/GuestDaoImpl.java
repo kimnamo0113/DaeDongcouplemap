@@ -1,6 +1,7 @@
 package com.ko.persistence;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.mail.HtmlEmail;
@@ -149,6 +150,11 @@ public class GuestDaoImpl implements GuestDao{
 	@Override
 	public Guest selectByGNo(int gNo) {
 		return sqlSession.selectOne(namespace+".selectByGNo",gNo);
+	}
+
+	@Override
+	public List<Guest> selectSearchGIdAll(String keyword) {
+		return sqlSession.selectList(namespace+".selectSearchGIdAll",keyword);
 	}
 	
 

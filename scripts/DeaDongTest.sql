@@ -142,6 +142,32 @@ join board b
 	on b.b_no = l.b_no
 join guest g
 	on b.g_no = g.g_no
-where l_read = 0 and g.g_no=2; 
+where l_read = 0 and g.g_no=4;
+
+
+
+select *
+	FROM daedong.`like` l
+join board b
+	on b.b_no = l.b_no
+join guest g
+	on l.g_no = g.g_no
+where b.g_no=4 and b.b_delete=0
+order by l.l_date desc;
+
+
+select l.b_no, b_title, g.g_no, g.g_name, g.g_id
+	FROM daedong.`like` l
+join board b
+	on b.b_no = l.b_no
+join guest g
+	on l.g_no = g.g_no
+where b.g_no=4 and b.b_delete=0
+order by l.l_date desc;
+
+
+
+
+
 
 

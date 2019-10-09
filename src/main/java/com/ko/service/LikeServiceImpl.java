@@ -1,5 +1,7 @@
 package com.ko.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,11 @@ public class LikeServiceImpl implements LikeService{
 	@Override
 	public int selectLikeAlarmCount(int gNo) {
 		return dao.selectLikeAlarmCount(gNo);
+	}
+
+	@Override
+	public List<Like> selectLikeList(int gNo) {
+		return dao.selectLikeList(gNo);
 	}
 
 }

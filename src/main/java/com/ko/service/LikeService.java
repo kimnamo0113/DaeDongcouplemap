@@ -1,5 +1,7 @@
 package com.ko.service;
 
+import java.util.List;
+
 import com.ko.domain.Like;
 
 public interface LikeService {
@@ -10,4 +12,6 @@ public interface LikeService {
 	public void deleteLike(int bNo, int gNo);
 
 	public int selectLikeAlarmCount(int gNo);
+
+	public List<Like> selectLikeList(int gNo);
 }

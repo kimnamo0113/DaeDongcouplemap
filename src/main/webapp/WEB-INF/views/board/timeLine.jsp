@@ -685,10 +685,12 @@ var startPage=0;
           
           <div class="col-4 modalBodyRight">
           	<div>
-          		<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
-          		<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
+          		
+          		<a id="dBGId"><span></span></a>
         		<h5 id="dBTitle"></h5>
 	          	<p id="dBContents"></p>
+	          	<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
+          		<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
 	          	<div id="dReplys" class="replysList form-control">
 			          	
 				</div>

@@ -138,6 +138,16 @@ $(function(){
 				dataType:"json",
 				success:function(res){
 					console.log(res)
+						var $imgGuest;
+						if(res.bGNo.gImage!=null){
+							$imgGuest = $("<img>").attr("src","/daedong/upload/displayFile?filename="+res.bGNo.gImage).addClass("guestImg");
+						}else{
+							$imgGuest = $("<img>").attr("src","/daedong/resources/images/boy.png").addClass("guestImg");
+						}
+						
+					$("#dBGId").find("span").append($imgGuest);
+					$("#dBGId").append(res.bGNo.gId).attr("href","/daedong/board/timeLine?gNo="+res.bGNo.gNo);
+					
 					$("#dBPlace").append(res.bPlace);
 					$("#dBTitle").append(res.bTitle);
 					$("#dBContents").append(res.bContents);
@@ -183,6 +193,17 @@ $(function(){
 				dataType:"json",
 				success:function(res){
 					console.log(res)
+					
+					var $imgGuest;
+					if(res.bGNo.gImage!=null){
+						$imgGuest = $("<img>").attr("src","/daedong/upload/displayFile?filename="+res.bGNo.gImage).addClass("guestImg");
+					}else{
+						$imgGuest = $("<img>").attr("src","/daedong/resources/images/boy.png").addClass("guestImg");
+					}
+					
+					$("#dBGId").find("span").append($imgGuest);
+					$("#dBGId").append(res.bGNo.gId).attr("href","/daedong/board/timeLine?gNo="+res.bGNo.gNo);
+					
 					$("#dBPlace").append(res.bPlace);
 					$("#dBTitle").append(res.bTitle);
 					$("#dBContents").append(res.bContents);

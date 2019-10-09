@@ -1,5 +1,7 @@
 package com.ko.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.ko.domain.Guest;
@@ -30,4 +32,6 @@ public interface GuestService {
 	public void updateAll(Guest guest);
 
 	public Guest selectByGNo(int gNo);
+
+	public List<Guest> selectSearchGIdAll(String keyword);
 }

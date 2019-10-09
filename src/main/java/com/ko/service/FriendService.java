@@ -20,4 +20,5 @@ public interface FriendService {
 	public void updateFrined(int follow, int follower, Date date, int fRead);
 	public List<Friend> selectFollowerList(int gNo,HttpSession session);
 	public List<Friend> selectFollowList(int gNo,HttpSession session);
+	public List<Friend> selectFolloingList(int userno);
 }

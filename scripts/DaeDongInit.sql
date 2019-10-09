@@ -1,3 +1,7 @@
+
+create database daedong;
+
+
 -- 댓글
 DROP TABLE IF EXISTS `daedong`.`Reply` RESTRICT;
 

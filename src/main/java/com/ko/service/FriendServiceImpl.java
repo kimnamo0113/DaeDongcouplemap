@@ -160,5 +160,26 @@ public class FriendServiceImpl implements FriendService{
 		return friends;
 	}
 
+	@Override
+	public List<Friend> selectFolloingList(int userno) {
+		List<Friend> friends = dao.selectFollowList(userno);
+		
+		int follow = userno;
+		
+		for(int i=0; i<friends.size(); i++) {
+			int follower = friends.get(i).getFollower().getgNo();
+			
+			Friend onlyFollow=dao.selectFriend(follow,follower);
+			Friend onlyFollower=dao.selectFriend(follower,follow);
+			
+			if(onlyFollower!=null && onlyFollow!=null) {
+				
+			}else {
+				friends.remove(i);
+			}
+		}
+		return friends;
+	}
+
 	
 }
