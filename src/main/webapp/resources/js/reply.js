@@ -1,5 +1,4 @@
 
-var mySlider3;
 $(function(){
 	
 	
@@ -73,21 +72,24 @@ $(function(){
 			dataType:"json",
 			success:function(res){
 				
-				
-				
-				
 				console.log(res)
 				$(res.replys).each(function(i,obj){
-					var $labelId = $("<label>").addClass("id").append(obj.rGNo.gId+" : ");
+					var $imgGuest;
+					if(obj.rGNo.gImage!=null){
+						$imgGuest = $("<img>").attr("src","/daedong/upload/displayFile?filename="+obj.rGNo.gImage).addClass("guestImg");
+					}else{
+						$imgGuest = $("<img>").attr("src","/daedong/resources/images/boy.png").addClass("guestImg");
+					}
+					var $aId = $("<a>").addClass("id").append(obj.rGNo.gId+" : ").attr("href","/daedong/board/timeLine?gNo="+obj.rGNo.gNo);
 					
-					var $spanText = $("<span>").addClass("text").append(obj.rContent);
+					var $spanText = $("<span>").append($imgGuest).append($aId).addClass("text").append(obj.rContent);
 					var time = new Date(obj.rWritetime);
 					/*(time.getFullYear()+"").slice(-2)*/
 					var $spanTime = $("<span>").append(" "+time.format("yy-MM-dd HH:mm")).addClass("date");
 					/* yy-MM-dd hh:mm */
 					$spanText.append($spanTime);
 					
-					var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
+					var $divReply = $("<div>").addClass("reply").append($spanText);
 					$(addDivreplysList).append($divReply);
 				})
 				printPaging(res,ulObj);
@@ -124,13 +126,14 @@ $(function(){
 	
 	
 	
-	$("figcaption").click(function(){
+	$(document).on("click",".boardDetail",function(){
 			var bNo=$(this).attr("data-bNo");
 			$(".pagination").attr("data-bNo",bNo);
 			$(".reply-textArea").attr("data-bNo",bNo);
 			
 			  $(".bxslider3").empty();
 			  $("#dBPlace").empty();
+			  $("#dBGId").empty();
 			$.ajax({
 				url:"/daedong/board/boardDetail",
 				type:"post",
@@ -145,64 +148,7 @@ $(function(){
 							$imgGuest = $("<img>").attr("src","/daedong/resources/images/boy.png").addClass("guestImg");
 						}
 						
-					$("#dBGId").find("span").append($imgGuest);
-					$("#dBGId").append(res.bGNo.gId).attr("href","/daedong/board/timeLine?gNo="+res.bGNo.gNo);
-					
-					$("#dBPlace").append(res.bPlace);
-					$("#dBTitle").append(res.bTitle);
-					$("#dBContents").append(res.bContents);
-					$divReply = $("<div>").addClass("replys");
-					
-					$(res.replys).each(function(i,obj){
-						var id = obj.rGNo.gId;
-						var text = obj.rContent;
-						$divReply.append(id+" : ").append(text+"<br>");
-					})
-					$("#dReplys").append($divReply);
-					$(res.contents).each(function(i,obj){
-						var $div = $("<div>");
-						
-						var $img = $("<img>").attr("src","/daedong/upload/displayFile?filename="+obj.cImage);
-						var $divImg = $("<div>").append($img).addClass("divImg");
-						
-						var $pText = $("<p>").append(obj.cContents);
-						var $divText = $("<div>").append($pText).addClass("divText form-control");
-						
-						$div.append($divImg).append($divText);
-						$(".bxslider3").append($div);
-					})
-					
-					imgLoading();
-					
-					getReplyListAll(res.bNo,1,$(".pagination"))
-				}
-				
-			})
-		})
-		$(".fa-comment").click(function(){
-			var bNo=$(this).attr("data-bNo");
-			$(".pagination").attr("data-bNo",bNo);
-			$(".reply-textArea").attr("data-bNo",bNo);
-			
-			$(".bxslider3").empty();
-			$("#dBPlace").empty();
-			$.ajax({
-				url:"/daedong/board/boardDetail",
-				type:"post",
-				data: {bNo:bNo},
-				dataType:"json",
-				success:function(res){
-					console.log(res)
-					
-					var $imgGuest;
-					if(res.bGNo.gImage!=null){
-						$imgGuest = $("<img>").attr("src","/daedong/upload/displayFile?filename="+res.bGNo.gImage).addClass("guestImg");
-					}else{
-						$imgGuest = $("<img>").attr("src","/daedong/resources/images/boy.png").addClass("guestImg");
-					}
-					
-					$("#dBGId").find("span").append($imgGuest);
-					$("#dBGId").append(res.bGNo.gId).attr("href","/daedong/board/timeLine?gNo="+res.bGNo.gNo);
+					$("#dBGId").attr("href","/daedong/board/timeLine?gNo="+res.bGNo.gNo).append($imgGuest).append(res.bGNo.gId);
 					
 					$("#dBPlace").append(res.bPlace);
 					$("#dBTitle").append(res.bTitle);
