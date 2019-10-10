@@ -8,9 +8,11 @@
 		<result property="rWritetime" column="r_writetime" />
 		<result property="rDelete" column="r_delete" />
 		<result property="rGood" column="r_good" />
+		<result property="rRead" column="r_read" />
 	</resultMap>
 	
 	<resultMap type="Reply" id="ReplyDetail" extends="ReplyBasic">
+		<association property="rBNo" resultMap="com.ko.mapper.BoardMapper.BoardBasic"/>
 		<association property="rGNo" resultMap="com.ko.mapper.GuestMapper.GuestBasic" />
 	</resultMap>
 
@@ -46,5 +48,23 @@
 		limit #{cri.pageStart},#{cri.perPageNum}
 	</select>
 	
+	
+	<select id="selectBoardAlarmLimit10" resultMap="ReplyDetail">
+		select r.r_no, r.b_no, b.b_title, r.r_writetime, r.g_no, g.g_id, g.g_image, r.r_read, 'r' r_content from reply r
+			join board b
+				on r.b_no = b.b_no
+			join guest g
+				on r.g_no = g.g_no
+			where r.g_no=#{gNo}
+		union
+		select l.l_no, l.b_no, b.b_title, l.l_date, l.g_no, g.g_id, g.g_image, l.l_read, 'l' r_content from `like` l
+			join board b
+				on l.b_no = b.b_no
+			join guest g
+				on l.g_no = g.g_no
+			where l.g_no=#{gNo}
+		order by r_writetime desc, r_no desc
+		limit #{cri.pageStart},#{cri.perPageNum};
+	</select>
 	
 </mapper>

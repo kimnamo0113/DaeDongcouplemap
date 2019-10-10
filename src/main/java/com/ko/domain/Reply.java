@@ -12,12 +12,13 @@ public class Reply {
 	private Date rWritetime;
 	private int rDelete;
 	private int rGood;
+	private int rRead;
 	public Reply() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Reply(int rNo, Board rBNo, Guest rGNo, Manager rMNo, String rContent, Date rWritetime, int rDelete,
-			int rGood) {
+			int rGood, int rRead) {
 		super();
 		this.rNo = rNo;
 		this.rBNo = rBNo;
@@ -27,6 +28,7 @@ public class Reply {
 		this.rWritetime = rWritetime;
 		this.rDelete = rDelete;
 		this.rGood = rGood;
+		this.rRead = rRead;
 	}
 	public int getrNo() {
 		return rNo;
@@ -76,10 +78,18 @@ public class Reply {
 	public void setrGood(int rGood) {
 		this.rGood = rGood;
 	}
+	public int getrRead() {
+		return rRead;
+	}
+	public void setrRead(int rRead) {
+		this.rRead = rRead;
+	}
 	@Override
 	public String toString() {
 		return "Reply [rNo=" + rNo + ", rBNo=" + rBNo + ", rGNo=" + rGNo + ", rMNo=" + rMNo + ", rContent=" + rContent
-				+ ", rWritetime=" + rWritetime + ", rDelete=" + rDelete + ", rGood=" + rGood + "]";
+				+ ", rWritetime=" + rWritetime + ", rDelete=" + rDelete + ", rGood=" + rGood + ", rRead=" + rRead + "]";
 	}
+	
+	
 	
 }

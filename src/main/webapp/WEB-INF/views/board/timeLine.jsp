@@ -14,14 +14,12 @@
 		max-height: 700px;
 		top:100px;
 	}
+	
 	div.container-fluid{
 		margin-top:120px;
 	}
-	.boardList img{
-		width:180px;
-		height: 180px;
-		margin: 10px;
-	}
+	
+	
 	.reply-text button{
 		border:1px solid #d1d3e2
 	}
@@ -60,6 +58,14 @@
 		font-size:1.5rem;
 		margin-right: 10px;
 	}
+	.boardList img{
+		width:180px;
+		height: 180px;
+		margin: 10px;
+	}
+
+
+	
 	
 	/* mouseover이벤트 */
 	
@@ -178,84 +184,68 @@ figure.snip1384.hover i {
   transform: translate(0px, 0px);
   opacity: 1;
 }
-
-@media (max-width: 768px) {
+	@media (max-width: 768px) {
 		 .boardList img{
-				width:150px;
-				height: 150px;
-				margin: 10px;
-			}
-		.modalBodyLeft{
-			-webkit-box-flex: 0 !important;
-		    -ms-flex: 0 0 100% !important;
-		    flex: 0 0 100% !important;
-		    max-width: 100% !important;
-		}
-		.modalBodyRight{
-			-webkit-box-flex: 0 !important;
-		    -ms-flex: 0 0 100% !important;
-		    flex: 0 0 100% !important;
-		    max-width: 100% !important;
-		}
-		#myModal3 #modal-content{
-			min-height:1000px; 
-		}
-		
-		.divText{
-			height: 50px;
-			overflow: auto;
-		}
-	#header {
-		width:500px;
-	}
-
-}
-@media (max-width: 768px) {
-	figcaption h3{
-		display: none;
-	}
-
-	figure.snip1384 i.fa-heart{
-	 bottom: 5px;
-	 left: 10px;
-	}
-	figure.snip1384 i.fa-comment{
-	  bottom: 5px;
-	  right: 40px;
-	}
-		figure.snip1384 figcaption {
-	  z-index: 1;
-	  padding: 20px;
-	}
-}
-@media (max-width: 576px) {
-	.reply-text{
-		margin: 25px;
-	}
-}
-@media (max-width: 550px) {
-	 .boardList img{
-			width:130px;
-			height: 130px;
+			width:150px;
+			height: 150px;
 			margin: 10px;
 		}
-}
-#followModal #modal-content,#followerModal #modal-content{
-	height:600px;
-	width: 370px !important;
-	margin:0 auto;
-}
-.followScroll, .followerScroll{
-	overflow: auto;
-	height: 500px;
-	width: 360px;
-}
-
-
-
+	}
+	@media (max-width: 550px) {
+		#header{
+			width:360px;
+			font-size: 14px;
+		}
+		.timelineDiv div{
+			padding: 1px;
+		}
+		
+		#profileImg{
+			width:100px;
+			height: 100px;
+		}
+		 .boardList img{
+			width:100px;
+			height: 100px;
+			margin: 5px;
+		}
+		figure.snip1384 i {
+		  position: absolute;
+		  padding: 20px 25px;
+		  width:10px;
+		  text-align:center;
+		  font-size: 13px;
+		  opacity: 0;
+		  -webkit-transform: translateX(-10px);
+		  transform: translateX(-10px);
+		}
+		figure.snip1384 figcaption {
+		  z-index: 1;
+		  padding: 20px;
+		}
+		figure.snip1384 i.fa-heart{
+		 bottom: 5px;
+		 left: 8px;
+		}
+		figure.snip1384 i.fa-comment{
+		  bottom: 5px;
+		  right: 18px;
+		}
+		figure.snip1384 {
+		  font-family: 'Raleway', Arial, sans-serif;
+		  position: relative;
+		  overflow: hidden;
+		  color: #ffffff;
+		  text-align: left;
+		  float:left;
+		  font-size: 13px;
+		}
+	
+		
+	}
 </style>
 
-<script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
+
 
 <script type="text/javascript">
 var startPage=0;
@@ -575,7 +565,7 @@ var startPage=0;
 		  		</c:if>
 	  		</h1>
 	  		<br>
-	  		<div class="row">
+	  		<div class="row timelineDiv">
 	  		<div class="col-4">
 	  			<label>게시글</label><br>
 	  		</div>
@@ -653,7 +643,7 @@ var startPage=0;
 		    		<c:set var="img" value="${board.contents[0].cImage }"/>
 		    		<c:set var="imglength" value="${fn:length(img) }"/>
 		    	  	 <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(img,0,20)}s_${fn:substring(img,22,imglength) }" >
-		    	   		<figcaption data-bNo="${board.bNo }">
+		    	   		<figcaption data-bNo="${board.bNo }" class="boardDetail">
 					    <h3>${board.bTitle }</h3>
 						<p>${board.bPlace }</p><!-- <i class="ion-ios-arrow-right"></i> -->
  						<i class="fas fa-heart"> ${board.bGood }</i><i class="fas fa-comment"> ${board.replyCount }</i>
@@ -666,55 +656,7 @@ var startPage=0;
 	    </div>
 	 </div>
   </div>
-  <div class="modal fade" id="myModal3" role="dialog" >
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content" id="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="dBPlace"></h4><br>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-         <div class="modal-body row">
-          <div class="col-8 modalBodyLeft">
-	          <div class="bxslider3">
-	          	
-	          </div>
-          </div>
-          
-          <div class="col-4 modalBodyRight">
-          	<div>
-          		
-          		<a id="dBGId"><span></span></a>
-        		<h5 id="dBTitle"></h5>
-	          	<p id="dBContents"></p>
-	          	<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
-          		<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
-	          	<div id="dReplys" class="replysList form-control">
-			          	
-				</div>
-				
-				
-				<ul class="pagination justify-content-center">
-					</ul>
-          	</div>
-          	
-          	<c:if test="${Auth!=null }">
-              	<div class="reply-text row">
-              		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bNo="${board.bNo }"></textarea>
-              		<button type="button" class="reply-addBtn btn btn-default active col-sm-2" data-gNo=${Auth.userno }>게시</button>
-              	</div>
-            </c:if>
-          </div>
-        </div>
-        
-		    <div class="modal-footer">
-	        </div>
-      </div>
-      
-    </div>
-  </div>
+  
   
   
   

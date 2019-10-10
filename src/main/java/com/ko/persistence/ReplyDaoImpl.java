@@ -41,5 +41,13 @@ public class ReplyDaoImpl implements ReplyDao{
 		return sqlSession.selectList(namespace+".selectPageByBNoPage",map);
 	}
 
+	@Override
+	public List<Reply> selectBoardAlarmLimit10(Criteria cri, int gNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("cri", cri);
+		map.put("gNo", gNo);
+		return sqlSession.selectList(namespace+".selectBoardAlarmLimit10",map);
+	}
+
 	
 }

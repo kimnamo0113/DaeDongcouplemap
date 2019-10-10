@@ -260,4 +260,19 @@ public class BoardController {
 		}
 		return entity;
 	}
+	@RequestMapping(value="alarmList",method=RequestMethod.POST)
+	public ResponseEntity<List<Reply>> alarmList(Criteria cri,int gNo){
+		ResponseEntity<List<Reply>> entity = null;
+		System.out.println(cri.getPage());
+		System.out.println(gNo);
+		try {
+			List<Reply> replies = rService.selectBoardAlarmLimit10(cri,gNo);
+			entity = new ResponseEntity<List<Reply>>(replies,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<List<Reply>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
 }

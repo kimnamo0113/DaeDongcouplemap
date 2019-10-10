@@ -9,4 +9,5 @@ public interface ReplyDao {
 	public List<Reply> selectReplyLimit5(int bNo);
 	public int selectReplyCount(int bNo);
 	public List<Reply> selectPageByBNoPage(int bNo, Criteria cri);
+	public List<Reply> selectBoardAlarmLimit10(Criteria cri, int gNo);
 }

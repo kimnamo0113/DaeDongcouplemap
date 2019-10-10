@@ -1,7 +1,3 @@
-
-create database daedong;
-
-
 -- 댓글
 DROP TABLE IF EXISTS `daedong`.`Reply` RESTRICT;
 
@@ -42,9 +38,10 @@ CREATE TABLE `daedong`.`Reply` (
 	`g_no`        INT      NULL     COMMENT '손님번호', -- 손님번호
 	`m_no`        INT      NULL     COMMENT '관리자번호', -- 관리자번호
 	`r_content`   TEXT     NULL     COMMENT '내용', -- 내용
-	`r_writetime` DATETIME NULL     COMMENT '작성일', -- 작성일
+	`r_writetime` DATETIME NULL     DEFAULT now() COMMENT '작성일', -- 작성일
 	`r_delete`    BOOLEAN  NULL     COMMENT '삭제여부', -- 삭제여부
-	`r_good`      INT      NULL     COMMENT '좋아요' -- 좋아요
+	`r_good`      INT      NULL     COMMENT '좋아요', -- 좋아요
+	`r_read`      INT(1)   NULL     DEFAULT 0 COMMENT '읽음' -- 읽음
 )
 COMMENT '댓글';
 

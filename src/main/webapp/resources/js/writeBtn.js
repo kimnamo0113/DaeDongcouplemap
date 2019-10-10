@@ -137,7 +137,14 @@ $(function(){
 			}
 		})		
 		
+		
 		$("#writeForm").submit(function(e){
+			
+			if(formData.has("files")==false){
+				alert("이미지를 올려주세요.");
+				return false;
+			}
+			
 			e.preventDefault();
 			formData.append("bGNo.gNo",$("input[name='userno']").val());
 			/*formData.append("bGNo.gNo",1);//test용

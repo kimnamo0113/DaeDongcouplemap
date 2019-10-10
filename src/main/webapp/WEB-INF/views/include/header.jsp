@@ -33,10 +33,50 @@
 <script src="${pageContext.request.contextPath }/resources/js/writeBtn.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/areaChoice.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/writeBtn.css">
+
+<script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
 <style type="text/css">
 	i{
 		cursor: pointer;
 	}
+	.text a { 
+		color:black;
+		text-decoration: none;
+	}
+	.text:hover{
+		font-size: 1.2rem;
+	}
+	
+	/* timeLine과 list의 공용 소스 modal3안에꺼*/
+	
+	#myModal3 #modal-content{
+			min-height:1000px; 
+	}
+	#myModal3 .modal-dialog{
+		width:100%;
+		max-width:100%;
+	}
+	.divText{
+			height: 60px;
+			overflow: auto;
+		}
+	#header {
+		width:500px;
+	}
+	
+		#followModal #modal-content,#followerModal #modal-content{
+			height:600px;
+			width: 370px !important;
+			margin:0 auto;
+		}
+		.followScroll, .followerScroll{
+			overflow: auto;
+			height: 500px;
+			width: 360px;
+		}
+		
+	/*  */
+	
 	
 	#hanbandoImg{
 		width:50px;
@@ -85,7 +125,7 @@
 		margin-right:2px;
 	}
 	#friendAlarmDropDouwn{
-		left-5rem
+		left:-100px;
 	}
 	
 	.unreadBackGround{
@@ -93,18 +133,11 @@
 	}
 	
 	.divAlarmList{
-		height: 400px;
+		max-height:400px;
 		width:100%;
 		overflow: auto;
 	}	
-	@media (max-width: 767px){
-		nav.navbar{
-			-webkit-box-flex:0;
-			-ms-flex:0 0 100%;
-			flex:0 0 100%;
-			max-width:100%;
-		}
-	}
+
 	.searchText{
 		height: auto;
 	}
@@ -125,8 +158,14 @@
 		margin-right:10px !important;
 	}
 	#friendSearchList{
-		width: 45%;
-    	left: 120px;
+		width: 100%;
+    	left: 0px;
+    	height: 300px;
+    	overflow: auto;
+	}
+	#friendSearchList2{
+		width: 100%;
+		left:0px;
     	height: 300px;
     	overflow: auto;
 	}
@@ -135,8 +174,9 @@
 	}
 	#searchDropdown{
 		width:280px;
-		
 	}
+
+	
 	.friendsList{
 		color: white;
 		text-decoration: none;
@@ -153,6 +193,90 @@
 		height: 300px;
 		overflow: auto;
 	}
+	
+	
+	nav.navbar{
+		-webkit-box-flex:0;
+		-ms-flex:0 0 100%;
+		flex:0 0 100%;
+		max-width:102%;
+		width:102%;
+	}
+	@media (max-width: 768px) {
+		nav.navbar{
+			-webkit-box-flex:0;
+			-ms-flex:0 0 100%;
+			flex:0 0 100%;
+			max-width:102%;
+			width:102%;
+		}
+		figcaption h3{
+			display: none;
+		}
+	
+		figure.snip1384 i.fa-heart{
+		 bottom: 5px;
+		 left: 10px;
+		}
+		figure.snip1384 i.fa-comment{
+		  bottom: 5px;
+		  right: 40px;
+		}
+		figure.snip1384 figcaption {
+		  z-index: 1;
+		  padding: 20px;
+		}
+		.modalBodyLeft{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+		.modalBodyRight{
+			-webkit-box-flex: 0 !important;
+		    -ms-flex: 0 0 100% !important;
+		    flex: 0 0 100% !important;
+		    max-width: 100% !important;
+		}
+	
+	}
+	@media (max-width: 576px) {
+		.reply-text{
+			margin: 25px;
+		}
+		#searchDropdown{
+			left:0px;
+		}
+	}
+@media (max-width: 550px) {
+ 	.boardList img{
+		width:130px;
+		height: 130px;
+		margin: 10px;
+	}
+	.dropdown-menu {
+		left: 30px !important;
+	}
+	.dropdown-list {
+		left: 30px !important;
+	}
+	.topbar .dropdown-list {
+   		left:30 !important;
+  	}
+	#followModal #modal-content,#followerModal #modal-content{
+		height:600px;
+		width: 80% !important;
+		margin:0 auto;
+	}
+	.followScroll, .followerScroll{
+		overflow: auto;
+		height: 500px;
+		width: 80%;
+	}
+}
+
+
+	
 </style>
 <!-- Bootstrap core JavaScript-->
 
@@ -208,23 +332,51 @@
 		<div>
 		<a class="dropdown-item text-center small text-gray-500" id="addFriendAlarmList">Show All Alerts</a>
 	</script>
+	
+	
 <script id="boardTemp" type="text/x-handlebars-template">
-	<h6 class="dropdown-header">
-      Board Alarm
-    </h6>
-    <a class="dropdown-item d-flex align-items-center" href="#">
-      <div class="mr-3">
-        <div class="icon-circle bg-primary">
-          <i class="fas fa-file-alt text-white"></i>
-        </div>
-      </div>
-      <div>
-        <div class="small text-gray-500">December 12, 2019</div>
-        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-      </div>
-    </a>
-    <a class="dropdown-item text-center small text-gray-500" >Show All Alerts</a>
+	{{#each.}}
+			{{#if rRead 0}}
+			    <a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" data-fRead="1" data-gNo="{{rGNo.gNo}}">
+			{{/if}}
+			{{#if rRead 1}}
+				<a class="dropdown-item d-flex align-items-center">
+			{{/if}}
+			{{#if rRead 3}}
+				<a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" data-rRead="4" data-gNo="{{rGNo.gNo}}">
+			{{/if}}
+			  
+			  <div class="mr-3">
+			    <div>
+				  {{#if rGNo.gImage null}}
+					<img id="profileImgSmall" src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">					
+				  {{else}}
+					<img src="${pageContext.request.contextPath }/upload/displayFile?filename={{rGNo.gImage}}" class="guestImg">
+				  {{/if}}
+			    </div>
+			  </div>
+			  <div>
+			    <div class="small text-gray-500" row>{{rWritetime}}</div>
+					{{#if rContent 'r'}}
+			    		<span class=" font-weight-bold">[{{rGNo.gId}}]님이 회원님의 [{{rBNo.bTitle}}]글에 댓글을 달았습니다.</span>
+						<div>
+							<button class="btn btn-primary btn friendAccept" data-gNo="{{rGNo.gNo}}" data-fRead="0">수락</button>
+							<button class="btn btn-light btn friendRemove" data-gNo="{{rGNo.gNo}}" data-fRead="2">삭제</button>
+						</div>
+					{{/if}}
+					{{#if rContent 'l'}}
+			    		<span class=" font-weight-bold">{{rGNo.gId}}님이 회원님의 [{{rBNo.bTitle}}]글을 좋아합니다.</span>
+						<div>
+							<button class="btn btn-primary btn friendAccept" data-gNo="{{rGNo.gNo}}" data-fRead="1">수락</button>
+							<button class="btn btn-light btn friendRemove" data-gNo="{{rGNo.gNo}}">삭제</button>
+						</div>
+					{{/if}}
+				
+			  </div>
+			</a>
+	{{/each}}
 </script>
+
 	
 	
 <script type="text/javascript">
@@ -268,42 +420,44 @@
 	
 	$(function() {
 		
-		var width_size = window.outerWidth;
-		
+		var width_size = window.outerWidth-16;
 		 if ($(".sidebar").hasClass("toggled")) {
 		      $('.sidebar .collapse').collapse('hide');
 		      
-		      if(width_size <= 776){
+		      if(width_size <= 767){
+		    	  	$("#page-top").addClass("sidebar-toggled");
 					$("#accordionSidebar").addClass("toggled");
 					$("#content").css("margin-left","0px");
-				}else{
+			  }else{
 					$("#content").css("margin-left","110px");
-				}
-		    }else{
-		      $("#content").css("margin-left","220px");
-		      if(width_size <= 776){
-					$("#content").css("margin-left","110px");
-				}else{
+			}
+		 }else{
+		      if(width_size <= 767){
+		    	  	$("#page-top").addClass("sidebar-toggled");
+					$("#accordionSidebar").addClass("toggled");
+					$("#content").css("margin-left","0px");
+			 }else{
 					$("#content").css("margin-left","220px");
-				}
-		    }
+			 }
+		 }
 		
 		$(window).resize(function(){
-			width_size = window.outerWidth;
-			
+			width_size = window.outerWidth-16;
 			 if ($(".sidebar").hasClass("toggled")) {
 			      $('.sidebar .collapse').collapse('hide');
 			      
-			      if(width_size <= 776){
+			      if(width_size <= 767){
+			    	  	$("#page-top").addClass("sidebar-toggled");
 						$("#accordionSidebar").addClass("toggled");
 						$("#content").css("margin-left","0px");
 					}else{
 						$("#content").css("margin-left","110px");
 					}
 			    }else{
-			      $("#content").css("margin-left","220px");
-			      if(width_size <= 776){
-						$("#content").css("margin-left","110px");
+			      if(width_size <= 767){
+			    	  	$("#page-top").addClass("sidebar-toggled");
+						$("#accordionSidebar").addClass("toggled");
+						$("#content").css("margin-left","0px");
 					}else{
 						$("#content").css("margin-left","220px");
 					}
@@ -361,17 +515,22 @@
 		$("#searchType2").change(function(){
 			var searchType = $(this).val();
 			if(searchType=='friend'){
-				$("#searchText2").addClass("searchFriend");
+				$("#searchText2").addClass("searchFriend2");
 				
 			}else{
-				$("#searchText").removeClass("searchFriend");
-				$("#friendSearchList").removeClass("show");
+				$("#searchText2").removeClass("searchFriend2");
+				$("#friendSearchList2").removeClass("show");
 			}
 			
 		})
 		
 		
 		$("#friendSearchList").mouseleave(function(){
+			if($(this).hasClass("show")){
+				$(this).removeClass("show");
+			}
+		})
+		$("#friendSearchList2").mouseleave(function(){
 			if($(this).hasClass("show")){
 				$(this).removeClass("show");
 			}
@@ -413,6 +572,38 @@
 						var $aId = $("<a>").append($img).append(obj.gId).attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.gNo);		
 						var $p = $("<p>").append($aId);
 						$("#friendSearchList").append($p);	
+					})
+					
+					
+				}
+			})
+			
+		})
+		$(document).on("propertychange change keyup paste input",".searchFriend2",function(){
+			
+			var select = $("select[name='searchType2']").val();
+			var keyword=$(this).val();
+			$("#friendSearchList2").empty();
+			$.ajax({
+				url:"${pageContext.request.contextPath}/member/searchFriend",
+				type:"get",
+				dataType:"json",
+				data:{page:1,keyword:keyword},
+				success:function(res){
+					console.log(res)
+					$("#friendSearchList2").addClass("show");
+					$(res).each(function(i,obj){
+						
+						var $img;
+						if(obj.gImage!=null){
+							$img = $("<img>").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+obj.gImage).addClass("guestImg");	
+						}else{
+							$img = $("<img>").attr("src","${pageContext.request.contextPath }/resources/images/boy.png").addClass("guestImg");
+						}
+						
+						var $aId = $("<a>").append($img).append(obj.gId).attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.gNo);		
+						var $p = $("<p>").append($aId);
+						$("#friendSearchList2").append($p);	
 					})
 					
 					
@@ -497,6 +688,47 @@
 				}
 			})
 		})
+		
+		
+		
+		
+		/* 종 알람 */
+		$("#boardAlarmDropdown").click(function(){
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath}/board/alarmList",
+				type:"post",
+				dataType:"json",
+				data:{gNo:"${Auth.userno}",page:1},
+				success:function(res){
+					console.log(res)
+					
+					$(res).each(function(i,obj){
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						
+					})
+					var source=$("#boardTemp").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$("#boardAlarmList").append(str);
+					
+				}
+			})
+		})
+		
+	 $('#boardAlarmList').scroll(function () {
+       
+	      //스크롤 끝까지 닿으면 새로운 데이터 50개를 불러온다       
+	      var dh = $('#boardAlarmEnd').height();
+	      var wt = $('#boardAlarmList').scrollTop();
+	 		
+	      console.log("dh:"+dh);
+	      console.log("wt:"+wt);
+	      if (dh == (wt+133)) {
+	         alert("??")
+      	  }
+	 })
 		
 		
 		
@@ -716,46 +948,6 @@
 			    </div>
             </div>
           </form>
-           <ul class="navbar-nav ml-auto" id="dotbogi">
-	          <li class="nav-item dropdown no-arrow d-sm-none">
-		            
-	              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <i class="fas fa-search fa-fw"></i>
-	              </a>
-	              
-	              <!-- Dropdown - Messages -->
-	              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown" id="searchDropdown">
-	                <form class="form-inline mr-auto w-100 navbar-search">
-	                  <div class="input-group">
-	                  <!-- max width 수정 -->
-	                  	<select class="form-control" name="searchType2" id="searchType2">
-		               		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
-		               		<option value="area" ${cri.searchType=='area'?'selected':'' }>Area</option>
-		               		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
-		               		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
-		               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
-		               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
-		               	</select>
-	                    <input id="searchText2" type="text" class="form-control bg-light border-0 small searchText dropdown-toggle" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-	                    
-	                    <div class="input-group-append">
-	                      <button class="btn btn-primary" type="button" id="searchBtn2">
-	                        <i class="fas fa-search fa-sm"></i>
-	                      </button>
-	                    </div>
-	                    
-	                    
-	                    
-	                  </div>
-	                </form>
-	              </div>
-	              
-	            </li>
-          </ul>
-          
-               
-          
-          
           
           
           
@@ -781,27 +973,8 @@
           
          
           
-          
-          <c:if test="${Auth!=null }">
-          <!-- class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" -->
-          	<div class="input-group-append d-none d-sm-inline-block form-inline mr-auto">
-                <button class="btn btn-primary" type="button" id="writeBtn" data-toggle="modal" data-target="#writeModal">
-                  <i class="fas fa-pen fa-sm"></i> 글쓰기
-                </button>
-              </div>
-          	<div id="right">
-	          <ul class="navbar-nav ml-auto">
-	          
-	          	<li class="nav-item dropdown no-arrow d-sm-none">
-					<a href="#" id="write" class="nav-link" data-toggle="modal" data-target="#writeModal" aria-haspopup="true" aria-expanded="false">
-			          	<i class="fas fa-pen fa-fw">
-			          	</i>
-		          	</a>
-		         </li>
-	            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-	            
-				
-				<!-- Modal -->
+          <!-- 글쓰기 모달 -->
+          	<!-- Modal -->
 			<div class="modal fade" id="writeModal" role="dialog">
 			    <div class="modal-dialog">
 			    
@@ -837,7 +1010,7 @@
 						  		
 				        		<input type="hidden" name="userno" value="${Auth.userno }">
 					    <div class="modal-footer">
-					   		<button type="button" id="test">test</button>
+					   		<!-- <button type="button" id="test">test</button> -->
 				          	<input type="submit" class="btn btn-default" value="Write">
 				          	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				        </div>
@@ -846,8 +1019,68 @@
 			      
 			    </div>
 			  </div>
-			   <!-- 친구알림 -->
-	            <!-- Nav Item - Alerts -->
+          
+          
+          
+          
+          
+          <c:if test="${Auth!=null }">
+          <!-- class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" -->
+          	<div class="input-group-append d-none d-sm-inline-block form-inline mr-auto">
+                <button class="btn btn-primary" type="button" id="writeBtn" data-toggle="modal" data-target="#writeModal">
+                  <i class="fas fa-pen fa-sm"></i> 글쓰기
+                </button>
+              </div>
+          	<div id="right">
+	          <ul class="navbar-nav ml-auto">
+		            
+		          <li class="nav-item dropdown no-arrow d-sm-none">
+			            
+		              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                <i class="fas fa-search fa-fw"></i>
+		              </a>
+		              
+		              <!-- Dropdown - Messages -->
+		              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown" id="searchDropdown">
+		                <form class="form-inline mr-auto w-100 navbar-search">
+		                  <div class="input-group">
+		                  <!-- max width 수정 -->
+		                  	<select class="form-control" name="searchType2" id="searchType2">
+			               		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
+			               		<option value="area" ${cri.searchType=='area'?'selected':'' }>Area</option>
+			               		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
+			               		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
+			               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
+			               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
+			               	</select>
+		                    <input id="searchText2" type="text" class="form-control bg-light border-0 small searchText dropdown-toggle" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+		                    
+		                    <div class="input-group-append">
+		                      <button class="btn btn-primary" type="button" id="searchBtn2">
+		                        <i class="fas fa-search fa-sm"></i>
+		                      </button>
+		                    </div>
+		                    <div class="dropdown-menu" id="friendSearchList2">
+						      <a class="dropdown-item" href="#">Link 1</a>
+						      <a class="dropdown-item" href="#">Link 2</a>
+						      <a class="dropdown-item" href="#">Link 3</a>
+						    </div>
+		                    
+		                    
+		                  </div>
+		                </form>
+		              </div>
+		              
+		            </li>
+          
+	            	<li class="nav-item dropdown no-arrow d-sm-none">
+					<a href="#" id="write" class="nav-link" data-toggle="modal" data-target="#writeModal" aria-haspopup="true" aria-expanded="false">
+			          	<i class="fas fa-pen fa-fw">
+			          	</i>
+		          	</a>
+		         </li>
+	            
+	            <!-- 친구 알림 -->
 	            <li class="nav-item dropdown no-arrow mx-1">
 	              <a class="nav-link dropdown-toggle" href="#" id="friendAlarmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-user fa-fw"></i>
@@ -862,39 +1095,20 @@
 	            
 	            <!-- 종 알림 -->
 	            <li class="nav-item dropdown no-arrow mx-1">
-	              <a class="nav-link dropdown-toggle" href="#" id="friendAlarmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	              <a class="nav-link dropdown-toggle" href="#" id="boardAlarmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-bell fa-fw"></i>
 	                <!-- Counter - Alerts -->
 	                <span class="badge badge-danger badge-counter">${Auth.boardAlarm }</span>
 	              </a>
 	              <!-- Dropdown - Alerts -->
-	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="friendAlarmDropDouwn">
+	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="boardAlarmDropDouwn">
 	              	<h6 class="dropdown-header">
 				      Board Alarm
 				    </h6>
-	                <c:forEach var="like" items="${likes }">
-	                	<c:if test="${like.lRead==0 }">
-	                		<a class="dropdown-item d-flex align-items-center unreadBackGround" href="#">
-	                	</c:if>
-	                	<c:if test="${like.lRead==1 }">
-	                		<a class="dropdown-item d-flex align-items-center unreadBackGround" href="#">
-	                	</c:if>
-	                	
-					      <div class="mr-3">
-					     	<c:if test="${like.lGNo.gImage == null}">
-								<img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">
-					     	</c:if>
-					     	<c:if test="${like.lGNo.gImage != null}">
-					 	      <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${like.lGNo.gImage}" class="guestImg">
-					     	</c:if>
-					      </div>
-					      <div>
-					        <div class="small text-gray-500">날자</div>
-					        <span class="font-weight-bold">[${like.lGNo.gId }]님이 회원님의 <span>[${like.lBNo.bTitle }]</span>게실물을 좋아합니다.</span>
-					      </div>
-					    </a>
-	                </c:forEach>
-	                    <a class="dropdown-item text-center small text-gray-500" >Show All Alerts</a>
+				    <div class="divAlarmList" id="boardAlarmList">
+	           			<!-- boardAlarm temp -->
+                	</div>
+	                    <a class="dropdown-item text-center small text-gray-500" id="boardAlarmEnd">Show All Alerts</a>
 	              </div>
 	            </li>
 	            
@@ -1054,7 +1268,63 @@
         <div id="map">
         </div>
         
+       
+       
+       
+       
+       
+       
+ <div class="modal fade" id="myModal3" role="dialog" >
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content" id="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="dBPlace"></h4><br>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
         
+         <div class="modal-body row">
+          <div class="col-8 modalBodyLeft">
+	          <div class="bxslider3">
+	          	
+	          </div>
+          </div>
+          
+          <div class="col-4 modalBodyRight">
+          	<div>
+          		
+          		<a id="dBGId"></a>
+        		<h5 id="dBTitle"></h5>
+	          	<p id="dBContents"></p>
+	          	<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
+          		<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
+	          	<div id="dReplys" class="replysList form-control">
+			          	
+				</div>
+				
+				
+				<ul class="pagination justify-content-center">
+					</ul>
+          	</div>
+          	
+          	<c:if test="${Auth!=null }">
+              	<div class="reply-text row">
+              		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bNo="${board.bNo }"></textarea>
+              		<button type="button" class="reply-addBtn btn btn-default active col-sm-2" data-gNo=${Auth.userno }>게시</button>
+              	</div>
+            </c:if>
+          </div>
+        </div>
+        
+		    <div class="modal-footer">
+	        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+   
         
   <script src="${pageContext.request.contextPath }/resources/bootTemplate/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

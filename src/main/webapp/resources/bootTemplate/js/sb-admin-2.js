@@ -3,26 +3,25 @@
 
   // Toggle the side navigation
   $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-	    var width_size = window.outerWidth;
+	    var width_size = window.outerWidth-16;
 	  
 	    $("body").toggleClass("sidebar-toggled");
 	    $(".sidebar").toggleClass("toggled");
 	    if ($(".sidebar").hasClass("toggled")) {
 	      $('.sidebar .collapse').collapse('hide');
 	      
-	      if(width_size <= 776){
+	      if(width_size <= 767){
 				$("#accordionSidebar").addClass("toggled");
 				$("#content").css("margin-left","0px");
 			}else{
 				$("#content").css("margin-left","110px");
 			}
 	    }else{
-	      $("#content").css("margin-left","220px");
-	      if(width_size <= 776){
+	      if(width_size <= 767){
 				$("#content").css("margin-left","110px");
-			}else{
+		  }else{
 				$("#content").css("margin-left","220px");
-			}
+		  }
 	    }
 	    var length = $(".bxslider2").length;
 		for(var i=0; i<length; i++){

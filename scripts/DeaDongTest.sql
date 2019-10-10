@@ -166,8 +166,21 @@ where b.g_no=4 and b.b_delete=0
 order by l.l_date desc;
 
 
+SELECT * FROM `LIKE`;
+select * from reply;
 
-
+	
+select r.r_no, r.b_no, b.b_title, r.r_writetime, r.g_no, r.r_read, 'r' flag from reply r
+	join board b
+		on r.b_no = b.b_no
+	where r.g_no=1
+union
+select l.l_no, l.b_no, b.b_title, l.l_date, l.g_no, l.l_read, 'l' flag from `like` l
+	join board b
+		on l.b_no = b.b_no
+	where l.g_no=1
+order by r_writetime desc, r_no desc
+limit 0,10;
 
 
 
