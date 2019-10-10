@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,22 +223,30 @@ public class BoardController {
 		return entity;
 	}
 	@RequestMapping(value="boardDetail",method=RequestMethod.POST)
-	public ResponseEntity<Board> boardDetail(int bNo,Criteria cri){
-		ResponseEntity<Board> entity = null;
+	public ResponseEntity<Map<String,Object>> boardDetail(int bNo,Criteria cri,int rNo){
+		logger.info("---------------------- boardDetail");
+		ResponseEntity<Map<String,Object>> entity = null;
+		Map<String, Object> map = new HashMap<>();
 		try {
+			if(rNo!=0) {
+				int page = rService.selectByRNoOrderBNo(bNo,rNo);
+				page=(page-1)/10;
+				
+				cri.setPage(page+1);
+			}
 			Board board = bService.selectBNoReplyLimit10(bNo,cri);
-			entity = new ResponseEntity<Board>(board,HttpStatus.OK);
+			map.put("board", board);
+			map.put("cri", cri);
+			entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<Board>(HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<Map<String,Object>>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
 	@RequestMapping(value="insertHeart",method=RequestMethod.POST)
 	public ResponseEntity<Boolean> insertHeart(int bNo, int gNo){
 		logger.info("--------------------insertHeart");
-		System.out.println(bNo);
-		System.out.println(gNo);
 		ResponseEntity<Boolean> entity = null;
 		try {
 			lService.insertLike(bNo,gNo);
@@ -250,6 +259,7 @@ public class BoardController {
 	}
 	@RequestMapping(value="deleteHeart",method=RequestMethod.POST)
 	public ResponseEntity<Boolean> deleteHeart(int bNo, int gNo){
+		logger.info("------------------------- deleteHeart");
 		ResponseEntity<Boolean> entity = null;
 		try {
 			lService.deleteLike(bNo,gNo);
@@ -262,15 +272,46 @@ public class BoardController {
 	}
 	@RequestMapping(value="alarmList",method=RequestMethod.POST)
 	public ResponseEntity<List<Reply>> alarmList(Criteria cri,int gNo){
+		logger.info("------------------------- alarmList");
 		ResponseEntity<List<Reply>> entity = null;
-		System.out.println(cri.getPage());
-		System.out.println(gNo);
 		try {
 			List<Reply> replies = rService.selectBoardAlarmLimit10(cri,gNo);
 			entity = new ResponseEntity<List<Reply>>(replies,HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<List<Reply>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	@RequestMapping(value="likeRead",method=RequestMethod.POST)
+	public ResponseEntity<Boolean> likeRead(int lNo,int read){
+		logger.info("------------------------- likeRead");
+		ResponseEntity<Boolean> entity = null;
+		System.out.println(lNo);
+		System.out.println(read);
+		try {
+			lService.updateLikeRead(lNo,read);
+			entity = new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	@RequestMapping(value="replyRead",method=RequestMethod.POST)
+	public ResponseEntity<Boolean> replyRead(int rNo,int read){
+		logger.info("------------------------- likeRead");
+		ResponseEntity<Boolean> entity = null;
+		System.out.println(rNo);
+		System.out.println(read);
+		try {
+			rService.updateReplyRead(rNo,read);
+			entity = new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
 		}
 		
 		return entity;

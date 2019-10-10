@@ -193,85 +193,12 @@ figure.snip1384.hover i {
 		#modal-content{
 			min-height:1000px; 
 		}
-		.divText{
-			height: 50px;
-			overflow: auto;
-		}
-	#header {
-		width:500px;
+	#header{
+		width: 500px;
+	    text-align: center;
+	    margin: 0 auto;
 	}
-	.col-1 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 8.33333%;
-    flex: 0 0 8.33333%;
-    max-width: 8.33333%;
-  }
-  .col-2 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 16.66667%;
-    flex: 0 0 16.66667%;
-    max-width: 16.66667%;
-  }
-  .col-3 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 25%;
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-  .col-4 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 33.33333%;
-    flex: 0 0 33.33333%;
-    max-width: 33.33333%;
-  }
-  .col-5 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 41.66667%;
-    flex: 0 0 41.66667%;
-    max-width: 41.66667%;
-  }
-  .col-6 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-  .col-7 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 58.33333%;
-    flex: 0 0 58.33333%;
-    max-width: 58.33333%;
-  }
-  .col-8 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 66.66667%;
-    flex: 0 0 66.66667%;
-    max-width: 66.66667%;
-  }
-  .col-9 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 75%;
-    flex: 0 0 75%;
-    max-width: 75%;
-  }
-  .col-10 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 83.33333%;
-    flex: 0 0 83.33333%;
-    max-width: 83.33333%;
-  }
-  .col-11 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 91.66667%;
-    flex: 0 0 91.66667%;
-    max-width: 91.66667%;
-  }
-  .col-12 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
+	
 }
 @media (max-width: 768px) {
 	figcaption h3{
@@ -297,22 +224,61 @@ figure.snip1384.hover i {
 	}
 }
 @media (max-width: 550px) {
-	 .boardList img{
-			width:130px;
-			height: 130px;
-			margin: 10px;
+		#header{
+			width:360px;
+			font-size: 14px;
 		}
-}
-#dBGId{
-	color:black;
-	font-size: 20px;
-	font-weight: bold;
-}
+		.timelineDiv div{
+			padding: 1px;
+		}
+		
+		#profileImg{
+			width:100px;
+			height: 100px;
+		}
+		 .boardList img{
+			width:100px;
+			height: 100px;
+			margin: 5px;
+		}
+		figure.snip1384 i {
+		  position: absolute;
+		  padding: 20px 25px;
+		  width:10px;
+		  text-align:center;
+		  font-size: 13px;
+		  opacity: 0;
+		  -webkit-transform: translateX(-10px);
+		  transform: translateX(-10px);
+		}
+		figure.snip1384 figcaption {
+		  z-index: 1;
+		  padding: 20px;
+		}
+		figure.snip1384 i.fa-heart{
+		 bottom: 5px;
+		 left: 8px;
+		}
+		figure.snip1384 i.fa-comment{
+		  bottom: 5px;
+		  right: 18px;
+		}
+		figure.snip1384 {
+		  font-family: 'Raleway', Arial, sans-serif;
+		  position: relative;
+		  overflow: hidden;
+		  color: #ffffff;
+		  text-align: left;
+		  float:left;
+		  font-size: 13px;
+		}
+	
+		
+	}
 
 
 </style>
 
-<script src="${pageContext.request.contextPath }/resources/js/reply.js"></script>
 
 <script type="text/javascript">
 var startPage=0;
@@ -432,7 +398,7 @@ var startPage=0;
 		    		<c:set var="img" value="${board.contents[0].cImage }"/>
 		    		<c:set var="imglength" value="${fn:length(img) }"/>
 		    	  	 <img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(img,0,20)}s_${fn:substring(img,22,imglength) }" >
-		    	   		<figcaption data-bNo="${board.bNo }">
+		    	   		<figcaption data-bNo="${board.bNo }" class="boardDetail">
 					    <h3>${board.bTitle }</h3>
 						<p>${board.bPlace }</p><!-- <i class="ion-ios-arrow-right"></i> -->
  						<i class="fas fa-heart"> ${board.bGood }</i><i class="fas fa-comment"> ${board.replyCount }</i>
@@ -445,52 +411,7 @@ var startPage=0;
 	    </div>
 	 </div>
   </div>
-  <div class="modal fade" id="myModal3" role="dialog" >
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content" id="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="dBPlace"></h4><br>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-         <div class="modal-body row">
-          <div class="col-8 modalBodyLeft">
-	          <div class="bxslider3">
-	          	
-	          </div>
-          </div>
-          
-          <div class="col-4 modalBodyRight">
-          	<div>
-          		<a id="dBGId"><span></span></a>
-        		<h5 id="dBTitle"></h5>
-	          	<p id="dBContents"></p>
-	          	<div id="dReplys" class="replysList form-control">
-			          	
-				</div>
-				
-				
-				<ul class="pagination justify-content-center">
-					</ul>
-          	</div>
-          	
-          	<c:if test="${Auth!=null }">
-              	<div class="reply-text row">
-              		<textarea rows="2" cols="" class="reply-textArea form-control col-sm-10" data-bNo="${board.bNo }"></textarea>
-              		<button type="button" class="reply-addBtn btn btn-default active col-sm-1" data-gNo=${Auth.userno }>게시</button>
-              	</div>
-            </c:if>
-          </div>
-        </div>
-        
-		    <div class="modal-footer">
-	        </div>
-      </div>
-      
-    </div>
-  </div>
+
 </div>
 <!-- /.container-fluid -->
 

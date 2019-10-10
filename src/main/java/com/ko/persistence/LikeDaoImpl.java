@@ -69,4 +69,13 @@ public class LikeDaoImpl implements LikeDao{
 		return sqlSession.selectList(namespace+".selectLikeList",gNo);
 	}
 
+
+	@Override
+	public void updateLikeRead(int lNo,int read) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("lNo", lNo);
+		map.put("read", read);
+		sqlSession.update(namespace+".updateLikeRead",map);
+	}
+
 }

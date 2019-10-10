@@ -17,6 +17,7 @@ import com.ko.domain.Friend;
 import com.ko.domain.Like;
 import com.ko.service.FriendService;
 import com.ko.service.LikeService;
+import com.ko.service.ReplyService;
 
 public class RefreshIntercepter extends HandlerInterceptorAdapter{
 	private static final Logger logger = LoggerFactory.getLogger(RefreshIntercepter.class);
@@ -31,7 +32,7 @@ public class RefreshIntercepter extends HandlerInterceptorAdapter{
 	FriendService fService;
 
 	@Autowired
-	LikeService lService;
+	ReplyService rService;
 	
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
@@ -41,17 +42,14 @@ public class RefreshIntercepter extends HandlerInterceptorAdapter{
 		Auth auth = (Auth)session.getAttribute("Auth");
 		
 		List<Friend> friends=null;
-		List<Like> likes=null;
 		
 		if(auth!=null) {
 			auth.setFriendAlarm(fService.selectFriendAlarmCount(auth.getUserno()));
-			auth.setBoardAlarm(lService.selectLikeAlarmCount(auth.getUserno()));
-
+			auth.setBoardAlarm(rService.selectBoardAlarmCount(auth.getUserno()));
+			
 			friends = fService.selectFolloingList(auth.getUserno());
-			likes=lService.selectLikeList(auth.getUserno());
 			
 			request.setAttribute("friends", friends);
-			request.setAttribute("likes", likes);
 			
 			
 		}

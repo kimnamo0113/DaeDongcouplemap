@@ -8,7 +8,7 @@ $(function(){
 		  stopAutoOnClick: false,
 		  pager: true,
 		  pagerType : 'short',
-		  slideWidth: 700,
+		  slideWidth: 1100,
 		  touchEnabled:false
 	});
 	
@@ -130,6 +130,10 @@ $(function(){
 			var bNo=$(this).attr("data-bNo");
 			$(".pagination").attr("data-bNo",bNo);
 			$(".reply-textArea").attr("data-bNo",bNo);
+			var rNo = $(this).attr("data-rNo");
+			if(rNo==null){
+				rNo=0;
+			}			
 			
 			  $(".bxslider3").empty();
 			  $("#dBPlace").empty();
@@ -137,31 +141,33 @@ $(function(){
 			$.ajax({
 				url:"/daedong/board/boardDetail",
 				type:"post",
-				data: {bNo:bNo},
+				data: {bNo:bNo,rNo:rNo},
 				dataType:"json",
 				success:function(res){
-					console.log(res)
+					console.log(res);
 						var $imgGuest;
-						if(res.bGNo.gImage!=null){
-							$imgGuest = $("<img>").attr("src","/daedong/upload/displayFile?filename="+res.bGNo.gImage).addClass("guestImg");
+						if(res.board.bGNo.gImage!=null){
+							$imgGuest = $("<img>").attr("src","/daedong/upload/displayFile?filename="+res.board.bGNo.gImage).addClass("guestImg");
 						}else{
 							$imgGuest = $("<img>").attr("src","/daedong/resources/images/boy.png").addClass("guestImg");
 						}
 						
-					$("#dBGId").attr("href","/daedong/board/timeLine?gNo="+res.bGNo.gNo).append($imgGuest).append(res.bGNo.gId);
+					$("#dBGId").attr("href","/daedong/board/timeLine?gNo="+res.board.bGNo.gNo).append($imgGuest).append(res.board.bGNo.gId);
 					
-					$("#dBPlace").append(res.bPlace);
-					$("#dBTitle").append(res.bTitle);
-					$("#dBContents").append(res.bContents);
-					$divReply = $("<div>").addClass("replys");
+					$("#dBPlace").append(res.board.bPlace);
+					$("#dBTitle").append(res.board.bTitle);
+					$("#dBContents").append(res.board.bContents);
+					var $divReply = $("<div>").addClass("replys");
 					
-					$(res.replys).each(function(i,obj){
+					$(res.board.replys).each(function(i,obj){
+						console.log("여기 어디고")
+						console.log(obj)
 						var id = obj.rGNo.gId;
 						var text = obj.rContent;
 						$divReply.append(id+" : ").append(text+"<br>");
 					})
 					$("#dReplys").append($divReply);
-					$(res.contents).each(function(i,obj){
+					$(res.board.contents).each(function(i,obj){
 						var $div = $("<div>");
 						
 						var $img = $("<img>").attr("src","/daedong/upload/displayFile?filename="+obj.cImage);
@@ -175,8 +181,7 @@ $(function(){
 					})
 					
 					imgLoading();
-					
-					getReplyListAll(res.bNo,1,$(".pagination"))
+					getReplyListAll(res.board.bNo,res.cri.page,$(".pagination"))
 				}
 				
 			})

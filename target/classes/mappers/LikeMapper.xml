@@ -53,4 +53,10 @@
 		where b.g_no=#{gNo} and b.b_delete=0
 		order by l.l_date desc;
 	</select>
+	
+	<update id="updateLikeRead">
+		UPDATE daedong.`like`
+		SET l_read=#{read}
+		WHERE l_no=#{lNo};
+	</update>
 </mapper>

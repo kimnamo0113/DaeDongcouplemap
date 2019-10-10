@@ -6239,7 +6239,7 @@ a.close.disabled {
 	}
 }
 @media(min-width:767px){
-		.modal-content {
+	.modal-content {
 	  position: relative;
 	  display: -webkit-box;
 	  display: -ms-flexbox;
@@ -6248,28 +6248,8 @@ a.close.disabled {
 	  -webkit-box-direction: normal;
 	  -ms-flex-direction: column;
 	  flex-direction: column;
-	  width: 80%;
-	  margin-left:190px;
-	  pointer-events: auto;
-	  background-color: #fff;
-	  background-clip: padding-box;
-	  border: 1px solid rgba(0, 0, 0, 0.2);
-	  border-radius: 0.3rem;
-	  outline: 0;
-	}
-}
-@media(min-width:940px){
-		.modal-content {
-	  position: relative;
-	  display: -webkit-box;
-	  display: -ms-flexbox;
-	  display: flex;
-	  -webkit-box-orient: vertical;
-	  -webkit-box-direction: normal;
-	  -ms-flex-direction: column;
-	  flex-direction: column;
-	  width: 100%;
-	  margin-left:120px;
+	  width: 130%;
+	  margin-left:-50px;
 	  pointer-events: auto;
 	  background-color: #fff;
 	  background-clip: padding-box;
@@ -6387,7 +6367,7 @@ a.close.disabled {
 @media (min-width:768px){
   .modal-dialog {
     max-width: 700px;
-    margin: 1.75rem auto;
+    margin: 1.75rem 200px;
   }
 }
 @media (max-width: 767px) {

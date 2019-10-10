@@ -131,10 +131,10 @@ $(function(){
 /*      */
 		$(document).on("click","#test",function(){
 			console.log(formData);
-			for(var item of formData.entries()) {
+			/*for(var item of formData.entries()) {
 			  console.log(item[0]); // key, value를 각각 출력
 			  console.log(item[1]); // key, value를 각각 출력
-			}
+			}*/
 		})		
 		
 		
