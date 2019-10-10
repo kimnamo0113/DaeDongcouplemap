@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,12 +40,15 @@
 	i{
 		cursor: pointer;
 	}
+	a{
+		cursor: pointer;
+	}
+	.dropdown-item{
+		cursor: pointer;
+	}
 	.text a { 
 		color:black;
 		text-decoration: none;
-	}
-	.text:hover{
-		font-size: 1.2rem;
 	}
 	
 	/* timeLine과 list의 공용 소스 modal3안에꺼*/
@@ -53,7 +57,6 @@
 			min-height:1000px; 
 	}
 	#myModal3 .modal-dialog{
-		width:100%;
 		max-width:100%;
 	}
 	.divText{
@@ -64,16 +67,16 @@
 		width:500px;
 	}
 	
-		#followModal #modal-content,#followerModal #modal-content{
-			height:600px;
-			width: 370px !important;
-			margin:0 auto;
-		}
-		.followScroll, .followerScroll{
-			overflow: auto;
-			height: 500px;
-			width: 360px;
-		}
+	#followModal #modal-content,#followerModal #modal-content{
+		height:600px;
+		width: 370px !important;
+		margin:0 auto;
+	}
+	.followScroll, .followerScroll{
+		overflow: auto;
+		height: 500px;
+		width: 360px;
+	}
 		
 	/*  */
 	
@@ -125,7 +128,10 @@
 		margin-right:2px;
 	}
 	#friendAlarmDropDouwn{
-		left:-100px;
+		left:-200px;
+	}
+	#boardAlarmDropDouwn{
+		left:-200px;
 	}
 	
 	.unreadBackGround{
@@ -150,9 +156,15 @@
 		cursor: pointer;
 		margin-bottom: 10px;
 	}
+	
+	
 	#logoutToggle{
-		margin-right:80px !important;
+		margin-right:300px !important;
 	}
+	#writeModal{
+		left:10%;
+	}
+
 	form.navbar-search{
 		margin-left:auto !important;
 		margin-right:10px !important;
@@ -194,15 +206,24 @@
 		overflow: auto;
 	}
 	
-	
+	#liFriendsList p{
+		margin-bottom: 0px;
+		padding-top:0px;
+		padding-bottom:0px;
+	}	
+	.sidebar-heading{
+		margin-bottom:10px;
+	}
 	nav.navbar{
 		-webkit-box-flex:0;
 		-ms-flex:0 0 100%;
 		flex:0 0 100%;
-		max-width:102%;
-		width:102%;
+		max-width:100%;
+		width:100%;
 	}
-	@media (max-width: 768px) {
+	
+
+	@media (max-width: 1299px) {
 		nav.navbar{
 			-webkit-box-flex:0;
 			-ms-flex:0 0 100%;
@@ -239,6 +260,32 @@
 		    max-width: 100% !important;
 		}
 	
+	}
+		@media (min-width: 769px) {
+		nav.navbar{
+			-webkit-box-flex:0;
+			-ms-flex:0 0 100%;
+			flex:0 0 100%;
+			max-width:100%;
+			width:95%;
+		}
+		#myModal3 .modal-dialog{
+			width:60%;
+			margin: 1.75rem 200px;
+		}
+		#writeModal{
+			width:80%;
+			margin: 1.75rem 50px;
+		}
+	}
+	@media (max-width:700px){
+		#logoutToggle{
+			margin-right:100px !important;
+		}	
+		#writeModal{
+			width100%;
+			left:0;
+		}		
 	}
 	@media (max-width: 576px) {
 		.reply-text{
@@ -330,22 +377,30 @@
 			</a>
 		{{/each}}
 		<div>
-		<a class="dropdown-item text-center small text-gray-500" id="addFriendAlarmList">Show All Alerts</a>
+		<p class="dropdown-item text-center small text-gray-500" id="addFriendAlarmList">Show Add Alerts</p>
 	</script>
 	
 	
+	
+<!-- 종 알림 -->
 <script id="boardTemp" type="text/x-handlebars-template">
 	{{#each.}}
+		{{#if rContent 'l'}}
 			{{#if rRead 0}}
-			    <a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" data-fRead="1" data-gNo="{{rGNo.gNo}}">
+			    <a class="checkBoardMessage boardDetail unreadBackGround dropdown-item d-flex align-items-center"  data-read="{{rRead}}" data-bNo="{{rBNo.bNo}}" data-upRead="1" data-flag="{{rContent}}" data-rNo="{{rNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3">
 			{{/if}}
 			{{#if rRead 1}}
-				<a class="dropdown-item d-flex align-items-center">
+				<a class="boardDetail dropdown-item d-flex align-items-center" data-rNo="{{rNo}}" data-flag="{{rContent}}" data-bNo="{{rBNo.bNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3">
 			{{/if}}
-			{{#if rRead 3}}
-				<a class="checkFriendMessage unreadBackGround dropdown-item d-flex align-items-center" data-rRead="4" data-gNo="{{rGNo.gNo}}">
+		{{/if}}
+		{{#if rContent 'r'}}
+			{{#if rRead 0}}
+			    <a class="checkBoardMessage boardDetail unreadBackGround dropdown-item d-flex align-items-center"  data-read="{{rRead}}" data-bNo="{{rBNo.bNo}}" data-upRead="1" data-flag="{{rContent}}" data-rNo="{{rNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3">
 			{{/if}}
-			  
+			{{#if rRead 1}}
+				<a class="dropdown-item boardDetail d-flex align-items-center" data-rNo="{{rNo}}" data-flag="{{rContent}}" data-gNo="{{rGNo.gNo}}" data-bNo="{{rBNo.bNo}}" data-toggle="modal" data-target="#myModal3">
+			{{/if}}
+		{{/if}}
 			  <div class="mr-3">
 			    <div>
 				  {{#if rGNo.gImage null}}
@@ -355,20 +410,18 @@
 				  {{/if}}
 			    </div>
 			  </div>
-			  <div>
-			    <div class="small text-gray-500" row>{{rWritetime}}</div>
+			  <div class="row">
+			    <div class="col-12 small text-gray-500">{{rWritetime}}</div>
 					{{#if rContent 'r'}}
-			    		<span class=" font-weight-bold">[{{rGNo.gId}}]님이 회원님의 [{{rBNo.bTitle}}]글에 댓글을 달았습니다.</span>
-						<div>
-							<button class="btn btn-primary btn friendAccept" data-gNo="{{rGNo.gNo}}" data-fRead="0">수락</button>
-							<button class="btn btn-light btn friendRemove" data-gNo="{{rGNo.gNo}}" data-fRead="2">삭제</button>
+			    		<span class="col-9 font-weight-bold">[{{rGNo.gId}}]님이 회원님의 [{{rBNo.bTitle}}]글에 댓글을 달았습니다.</span>
+						<div class="col-3">
+							<button class="btn btn-light btn checkBoardMessage" data-read="{{rRead}}" data-upRead="2" data-flag="{{rContent}}" data-rNo="{{rNo}}">삭제</button>
 						</div>
 					{{/if}}
 					{{#if rContent 'l'}}
-			    		<span class=" font-weight-bold">{{rGNo.gId}}님이 회원님의 [{{rBNo.bTitle}}]글을 좋아합니다.</span>
-						<div>
-							<button class="btn btn-primary btn friendAccept" data-gNo="{{rGNo.gNo}}" data-fRead="1">수락</button>
-							<button class="btn btn-light btn friendRemove" data-gNo="{{rGNo.gNo}}">삭제</button>
+			    		<span class="col-9 font-weight-bold">{{rGNo.gId}}님이 회원님의 [{{rBNo.bTitle}}]글을 좋아합니다.</span>
+						<div class="col-3">
+							<button class="btn btn-light btn checkBoardMessage" data-read="{{rRead}}" data-upRead="2" data-flag="{{rContent}}" data-rNo="{{rNo}}"">삭제</button>
 						</div>
 					{{/if}}
 				
@@ -687,6 +740,7 @@
 					
 				}
 			})
+			
 		})
 		
 		
@@ -694,7 +748,7 @@
 		
 		/* 종 알람 */
 		$("#boardAlarmDropdown").click(function(){
-			
+			$("#boardAlarmList").empty();
 			$.ajax({
 				url:"${pageContext.request.contextPath}/board/alarmList",
 				type:"post",
@@ -716,8 +770,33 @@
 				}
 			})
 		})
+		var startPage=1;
+		$("#addBoardAlarmList").click(function(){
+			startPage++;
+			$.ajax({
+				url:"${pageContext.request.contextPath}/board/alarmList",
+				type:"post",
+				dataType:"json",
+				data:{gNo:"${Auth.userno}",page:startPage},
+				success:function(res){
+					console.log(res)
+					
+					$(res).each(function(i,obj){
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						
+					})
+					var source=$("#boardTemp").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$("#boardAlarmList").append(str);
+					
+				}
+			})
+			return false;
+		})
 		
-	 $('#boardAlarmList').scroll(function () {
+	/*  $('#boardAlarmList').scroll(function () {
        
 	      //스크롤 끝까지 닿으면 새로운 데이터 50개를 불러온다       
 	      var dh = $('#boardAlarmEnd').height();
@@ -728,7 +807,7 @@
 	      if (dh == (wt+133)) {
 	         alert("??")
       	  }
-	 })
+	 }) */
 		
 		
 		
@@ -775,7 +854,53 @@
 				}
 			})
 		})
-		
+		$(document).on("click",".checkBoardMessage",function(){
+			/* rNo로 하였지만 r이나 l 둘다 rNo로 저장하고 flag로 구별 */
+			var rNo = $(this).attr("data-rNo");
+			var flag = $(this).attr("data-flag");
+			var read = $(this).attr("data-read");
+			var upRead = $(this).attr("data-upRead");
+			if(flag=="l"){
+				$.ajax({
+					url:"/daedong/board/likeRead",
+					type:"post",
+					data:{lNo:rNo,read:upRead},
+					dataType:"text",
+					success:function(res){
+						console.log(res);
+						
+					}
+					
+				})	
+			}else{
+				$.ajax({
+					url:"/daedong/board/replyRead",
+					type:"post",
+					data:{rNo:rNo,read:upRead},
+					dataType:"text",
+					success:function(res){
+						console.log(res);
+						
+					}
+					
+				})
+			}
+			
+			/* read 0 upRead 1,2 */
+			if(read==0 && (upRead==1 || upRead==2)){
+				var boardAlarmCount = $("#boardAlarmCount").text();
+				$("#boardAlarmCount").text(Number(boardAlarmCount)-1);	
+			}
+			
+			if(upRead==2){
+				$(this).closest(".dropdown-item").remove();
+				return false;
+			}
+			
+			
+			
+			
+		})
 		
 		/* setInterval(function() {
 	    var elem = document.getElementById('accordionSidebar');
@@ -942,14 +1067,48 @@
                 </button>
               </div>
               <div class="dropdown-menu" id="friendSearchList">
-			      <a class="dropdown-item" href="#">Link 1</a>
-			      <a class="dropdown-item" href="#">Link 2</a>
-			      <a class="dropdown-item" href="#">Link 3</a>
 			    </div>
             </div>
           </form>
           
-          
+            <ul class="navbar-nav ml-auto">
+		            
+		          <li class="nav-item dropdown no-arrow d-sm-none">
+			            
+		              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                <i class="fas fa-search fa-fw"></i>
+		              </a>
+		              
+		              <!-- Dropdown - Messages -->
+		              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown" id="searchDropdown">
+		                <form class="form-inline mr-auto w-100 navbar-search">
+		                  <div class="input-group">
+		                  <!-- max width 수정 -->
+		                  	<select class="form-control" name="searchType2" id="searchType2">
+			               		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
+			               		<option value="area" ${cri.searchType=='area'?'selected':'' }>Area</option>
+			               		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
+			               		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
+			               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
+			               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
+			               	</select>
+		                    <input id="searchText2" type="text" class="form-control bg-light border-0 small searchText dropdown-toggle" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+		                    
+		                    <div class="input-group-append">
+		                      <button class="btn btn-primary" type="button" id="searchBtn2">
+		                        <i class="fas fa-search fa-sm"></i>
+		                      </button>
+		                    </div>
+		                    <div class="dropdown-menu" id="friendSearchList2">
+						    </div>
+		                    
+		                    
+		                  </div>
+		                </form>
+		              </div>
+		              
+		            </li>
+		  </ul>
           
           
 
@@ -1020,7 +1179,7 @@
 			    </div>
 			  </div>
           
-          
+           
           
           
           
@@ -1034,44 +1193,6 @@
           	<div id="right">
 	          <ul class="navbar-nav ml-auto">
 		            
-		          <li class="nav-item dropdown no-arrow d-sm-none">
-			            
-		              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		                <i class="fas fa-search fa-fw"></i>
-		              </a>
-		              
-		              <!-- Dropdown - Messages -->
-		              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown" id="searchDropdown">
-		                <form class="form-inline mr-auto w-100 navbar-search">
-		                  <div class="input-group">
-		                  <!-- max width 수정 -->
-		                  	<select class="form-control" name="searchType2" id="searchType2">
-			               		<option value="all" ${cri.searchType==null?'selected':'' }>All</option>
-			               		<option value="area" ${cri.searchType=='area'?'selected':'' }>Area</option>
-			               		<option value="title" ${cri.searchType=='title'?'selected':'' }>Title</option>
-			               		<option value="contents" ${cri.searchType=='content'?'selected':'' }>Contents</option>
-			               		<option value="friend" ${cri.searchType=='friend'?'selected':'' }>Friend</option>
-			               		<option value="hash" ${cri.searchType=='hash'?'selected':'' }>Hash</option>
-			               	</select>
-		                    <input id="searchText2" type="text" class="form-control bg-light border-0 small searchText dropdown-toggle" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-		                    
-		                    <div class="input-group-append">
-		                      <button class="btn btn-primary" type="button" id="searchBtn2">
-		                        <i class="fas fa-search fa-sm"></i>
-		                      </button>
-		                    </div>
-		                    <div class="dropdown-menu" id="friendSearchList2">
-						      <a class="dropdown-item" href="#">Link 1</a>
-						      <a class="dropdown-item" href="#">Link 2</a>
-						      <a class="dropdown-item" href="#">Link 3</a>
-						    </div>
-		                    
-		                    
-		                  </div>
-		                </form>
-		              </div>
-		              
-		            </li>
           
 	            	<li class="nav-item dropdown no-arrow d-sm-none">
 					<a href="#" id="write" class="nav-link" data-toggle="modal" data-target="#writeModal" aria-haspopup="true" aria-expanded="false">
@@ -1098,7 +1219,7 @@
 	              <a class="nav-link dropdown-toggle" href="#" id="boardAlarmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <i class="fas fa-bell fa-fw"></i>
 	                <!-- Counter - Alerts -->
-	                <span class="badge badge-danger badge-counter">${Auth.boardAlarm }</span>
+	                <span class="badge badge-danger badge-counter" id="boardAlarmCount">${Auth.boardAlarm }</span>
 	              </a>
 	              <!-- Dropdown - Alerts -->
 	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="boardAlarmDropDouwn">
@@ -1108,7 +1229,7 @@
 				    <div class="divAlarmList" id="boardAlarmList">
 	           			<!-- boardAlarm temp -->
                 	</div>
-	                    <a class="dropdown-item text-center small text-gray-500" id="boardAlarmEnd">Show All Alerts</a>
+	                    <p class="dropdown-item text-center small text-gray-500" id="addBoardAlarmList">Show Add Alerts</p>
 	              </div>
 	            </li>
 	            
@@ -1161,7 +1282,7 @@
 	                    Spending Alert: We've noticed unusually high spending for your account.
 	                  </div>
 	                </a>
-	                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+	                <a class="dropdown-item text-center small text-gray-500" href="#">Show Add Alerts</a>
 	              </div>
 	            </li> -->
 	
@@ -1285,13 +1406,13 @@
         </div>
         
          <div class="modal-body row">
-          <div class="col-8 modalBodyLeft">
+          <div class="col-7 modalBodyLeft">
 	          <div class="bxslider3">
 	          	
 	          </div>
           </div>
           
-          <div class="col-4 modalBodyRight">
+          <div class="col-5 modalBodyRight">
           	<div>
           		
           		<a id="dBGId"></a>

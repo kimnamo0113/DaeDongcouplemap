@@ -49,5 +49,32 @@ public class ReplyDaoImpl implements ReplyDao{
 		return sqlSession.selectList(namespace+".selectBoardAlarmLimit10",map);
 	}
 
+	@Override
+	public int selectBoardAlarmCount(int gNo) {
+		List<Reply> list = sqlSession.selectList(namespace+".selectBoardAlarmCount",gNo);
+		int result = 0;
+		for(Reply r : list) {
+			result += r.getrNo();
+		}
+		return result;
+	}
+
+	@Override
+	public void updateReplyRead(int rNo, int read) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("rNo", rNo);
+		map.put("read", read);
+		sqlSession.update(namespace+".updateReplyRead",map);
+	}
+
+	@Override
+	public int selectByRNoOrderBNo(int bNo, int rNo) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("bNo", bNo);
+		map.put("rNo", rNo);
+		
+		return sqlSession.selectOne(namespace+".selectByRNoOrderBNo",map);
+	}
+
 	
 }

@@ -35,5 +35,21 @@ public class ReplyServiceImpl implements ReplyService{
 		return dao.selectBoardAlarmLimit10(cri,gNo);
 	}
 
+	@Override
+	public int selectBoardAlarmCount(int gNo) {
+		return dao.selectBoardAlarmCount(gNo);
+	}
+
+	@Override
+	public void updateReplyRead(int rNo, int read) {
+		dao.updateReplyRead(rNo,read);
+	}
+
+	@Override
+	public int selectByRNoOrderBNo(int bNo, int rNo) {
+		return dao.selectByRNoOrderBNo(bNo,rNo);
+	}
+
+
 	
 }

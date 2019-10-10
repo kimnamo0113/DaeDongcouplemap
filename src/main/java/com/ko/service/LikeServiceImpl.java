@@ -45,8 +45,9 @@ public class LikeServiceImpl implements LikeService{
 	}
 
 	@Override
-	public List<Like> selectLikeList(int gNo) {
-		return dao.selectLikeList(gNo);
+	public void updateLikeRead(int lNo,int read) {
+		dao.updateLikeRead(lNo,read);
 	}
+
 
 }

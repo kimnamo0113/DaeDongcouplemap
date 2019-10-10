@@ -19,4 +19,6 @@ public interface LikeDao {
 	public int selectLikeAlarmCount(int gNo);
 
 	public List<Like> selectLikeList(int gNo);
+
+	public void updateLikeRead(int lNo,int read);
 }
