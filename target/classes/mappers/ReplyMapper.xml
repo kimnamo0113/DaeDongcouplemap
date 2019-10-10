@@ -55,35 +55,35 @@
 				on r.b_no = b.b_no
 			join guest g
 				on r.g_no = g.g_no
-			where b.g_no=#{gNo} and (r.r_read=0 or r.r_read=1)
+			where b.g_no=#{gNo} and b.g_no!=r.g_no and (r.r_read=0 or r.r_read=1)
 		union
 		select l.l_no, l.b_no, b.b_title, l.l_date, l.g_no, g.g_id, g.g_image, l.l_read, 'l' r_content from `like` l
 			join board b
 				on l.b_no = b.b_no
 			join guest g
 				on l.g_no = g.g_no
-			where b.g_no=#{gNo} and (l.l_read=0 or l.l_read=1)
-		order by r_writetime desc, r_no desc
+			where b.g_no=#{gNo} and b.g_no!=l.g_no and (l.l_read=0 or l.l_read=1)
+		order by r_no desc
 		limit #{cri.pageStart},#{cri.perPageNum};
 	</select>
 	
 <!-- 중복된 내용은 mybatis가 알아서 primary로 정해서 제외하고 select함 -->
 	<select id="selectBoardAlarmCount" resultMap="ReplyDetail">
-		select count(r.r_no) r_no,'r' r_content
-			from reply r
-			join board b
-				on r.b_no = b.b_no
-			join guest g
-				on r.g_no = g.g_no
-			where b.g_no=#{gNo} and r.r_read=0
-		union
-		select count(l.l_no) r_no,'l' r_content
-			from `like` l
-			join board b
-				on l.b_no = b.b_no
-			join guest g
-				on l.g_no = g.g_no
-			where b.g_no=#{gNo} and l.l_read=0
+	select count(r.r_no) r_no,'r'
+		from reply r
+		join board b
+			on r.b_no = b.b_no
+		join guest g
+			on r.g_no = g.g_no
+		where b.g_no=#{gNo} and b.g_no!=r.g_no and r.r_read=0
+	union
+	select count(l.l_no) r_no,'l'
+		from `like` l
+		join board b
+			on l.b_no = b.b_no
+		join guest g
+			on l.g_no = g.g_no
+		where b.g_no=#{gNo} and b.g_no!=l.g_no and l.l_read=0
 	</select>
 	
 	

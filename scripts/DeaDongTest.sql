@@ -191,7 +191,7 @@ select count(r.r_no) r_no,'r'
 		on r.b_no = b.b_no
 	join guest g
 		on r.g_no = g.g_no
-	where b.g_no=1 and r.r_read=0
+	where b.g_no=1 and b.g_no!=r.g_no and r.r_read=0
 union
 select count(l.l_no) r_no,'l'
 	from `like` l
@@ -199,7 +199,7 @@ select count(l.l_no) r_no,'l'
 		on l.b_no = b.b_no
 	join guest g
 		on l.g_no = g.g_no
-	where b.g_no=1 and l.l_read=0
+	where b.g_no=1 and b.g_no!=l.g_no and l.l_read=0
 	
 select COUNT(*)
 from reply r

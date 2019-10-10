@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
  <!-- Begin Page Content -->
-
+<% 
+	pageContext.setAttribute("searchType", request.getParameter("searchType"));
+	pageContext.setAttribute("keyword", request.getParameter("keyword"));
+%>
 <style>
 	#profileImg{
 		cursor: pointer;
@@ -281,7 +284,7 @@ figure.snip1384.hover i {
 
 
 <script type="text/javascript">
-var startPage=0;
+var startPage=1;
 	var mySlider3;
 	$(function() {
 		
@@ -306,7 +309,8 @@ var startPage=0;
 		
 	})
 	
-	
+	var searchType="${searchType}";
+	var keyword="${keyword}";
 	
 	
 	$(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
@@ -317,18 +321,24 @@ var startPage=0;
  */				
 		if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height() || $(window).scrollTop() == $(document).height() - $(window).height()) {
 			
-			startPage+=24;
+			startPage+=1;
 			$.ajax({
-				url:"${pageContext.request.contextPath}/board/timelineListAdd",
-				type:"get",
-				data: {page:startPage,gNo:"${boards[0].bGNo.gNo}"},
+				url:"${pageContext.request.contextPath}/board/searchBoard",
+				type:"post",
+				data: {page:startPage,searchType:searchType,keyword:keyword},
 				dataType:"json",
 				success:function(res){
 					console.log(res);
+					
 					$(res).each(function(i,obj){
-												
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
 					})
 					
+					var source=$("#addTimeLine").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$(".boardList").append(str);		
 				}
 				
 			})
@@ -339,7 +349,20 @@ var startPage=0;
 	
 	});
 </script>
-
+<script id="addTimeLine" type="text/x-handlebars-template">
+	{{#each.}}
+   		<figure class="snip1384" data-toggle="modal" data-target="#myModal3">
+   	  	 <img src="${pageContext.request.contextPath }/upload/displayFile?filename={{contents.[0].cImage}}" >
+   	   		<figcaption data-bNo="{{bNo}}" class="boardDetail">
+		    <h3>{{bTitle}}</h3>
+			<p>{{bPlace}}</p><!-- <i class="ion-ios-arrow-right"></i> -->
+				<i class="fas fa-heart"> {{board.bGood}}</i><i class="fas fa-comment"> {{replyCount}}</i>
+			
+			<p></p>
+		  </figcaption>
+		</figure>
+   	{{/each}}
+</script>
 <div class="container-fluid">
 
 
