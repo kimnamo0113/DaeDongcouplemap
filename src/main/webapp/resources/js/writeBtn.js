@@ -210,6 +210,9 @@ $(function(){
 			  $("select[name=dong]").val("지역선택");
 			  $("select[name=dong]").hide();
 			  
+			  formData = new FormData();
+			  
+			  location.reload();
 		})
 		
     });

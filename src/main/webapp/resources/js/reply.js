@@ -39,7 +39,7 @@ $(function(){
 			success:function(res){
 				var ulObj=$(rContent).parent().prev().find("ul.pagination");
 				var page=1;
-				getReplyListAll(bNo,page,ulObj);
+				getReplyListAll(bNo,page,ulObj,0);
 			}
 			
 		})
@@ -58,11 +58,11 @@ $(function(){
 		var bNo=$(this).attr("data-bNo");
 		var page=1;
 		$(this).hide();
-		getReplyListAll(bNo,page,ulObj);
+		getReplyListAll(bNo,page,ulObj,0);
 		
 	})
 	
-	function getReplyListAll(bNo,page,ulObj){
+	function getReplyListAll(bNo,page,ulObj,rNo){
 		var addDivreplysList=$(ulObj).parent().find(".replysList");
 		$(addDivreplysList).empty();
 		$.ajax({
@@ -83,7 +83,7 @@ $(function(){
 					}
 					var $aId = $("<a>").addClass("id").append(obj.rGNo.gId+" : ").attr("href","/daedong/board/timeLine?gNo="+obj.rGNo.gNo);
 					
-					var $spanText = $("<span>").append($imgGuest).append($aId).addClass("text").append(obj.rContent);
+					var $spanText = $("<span>").append($imgGuest).append($aId).addClass("text").append(obj.rContent).attr("data-rNo",obj.rNo);
 					var time = new Date(obj.rWritetime);
 					/*(time.getFullYear()+"").slice(-2)*/
 					var $spanTime = $("<span>").append(" "+time.format("yy-MM-dd HH:mm")).addClass("date");
@@ -92,11 +92,22 @@ $(function(){
 					
 					var $divReply = $("<div>").addClass("reply").append($spanText);
 					$(addDivreplysList).append($divReply);
+					
+					
+					if(rNo!=0){
+						$("span[data-rNo="+rNo+"]").parent().css("background-color","yellow").attr("id","focusReply");
+					}
 				})
+			
 				printPaging(res,ulObj);
 			}
 		})
+		
 	}
+	
+	
+	
+	
 	
 	function printPaging(res,ulObj){
 		$(ulObj).empty();
@@ -122,7 +133,7 @@ $(function(){
 		var ulObj=$(this).parent().parent();
 		var bNo=$(ulObj).attr("data-bNo");
 		
-		getReplyListAll(bNo,page,ulObj);
+		getReplyListAll(bNo,page,ulObj,0);
 	})
 	
 	
@@ -166,7 +177,7 @@ $(function(){
 						var $iHeart = $("<i>").addClass("far fa-heart insertHeart").attr("data-bNo",res.board.bNo);
 						$(".modalBodyRight").find(".icons").html($iHeart);
 					}
-					$(".whoLike").find("span").text(res.board.bGood);
+					$("#whoLike").attr("data-bNo",res.board.bNo).find("span").text(res.board.bGood);
 					$(res.board.contents).each(function(i,obj){
 						var $div = $("<div>");
 						
@@ -181,10 +192,12 @@ $(function(){
 					})
 					
 					imgLoading();
-					getReplyListAll(res.board.bNo,res.cri.page,$(".pagination"))
+					getReplyListAll(res.board.bNo,res.cri.page,$(".pagination"),rNo);
+					
 				}
 				
 			})
+			
 		})
 		
 		

@@ -74,6 +74,10 @@
 		height: 250px;
 		overflow: auto;
 	}
+	.floatRight{
+		float: right;
+		line-height: 60px;
+	}
 </style>
 
 
@@ -172,10 +176,11 @@ $(function(){
 								iHeart= $("<i>").addClass("far fa-heart insertHeart").attr("data-bNo",obj.bNo);
 							}
 							
-							var iComment = $("<i>").addClass("far fa-comment boardDetail").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
+							var iComment = $("<i>").addClass("far fa-comment").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
 							var iShare = $("<i>").addClass("far fa-share-square");
-						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 <span>"+obj.bGood+"</span>명이 좋아합니다.");
+						var $pWhoLike = $("<p>").addClass("whoLike").append("<span>"+obj.bGood+"</span>명이 좋아합니다.").attr("data-bNo",obj.bNo);
 						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iComment).append(iShare);
+						/*  */
 						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
 						var $pHash = $("<p>").addClass("bHash").append(obj.bHash);
@@ -209,7 +214,8 @@ $(function(){
 								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/resources/images/boy.png");
 							}
 							var $aId = $("<a>").attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.bGNo.gNo).append(obj.bGNo.gId);
-								var $h6Id = $("<h6>").append($imgGuest).append($aId).addClass("font-weight-bold");
+								var $spanWritetime = $("<span>").append(obj.bWritetime).addClass("floatRight");
+								var $h6Id = $("<h6>").append($imgGuest).append($aId).addClass("font-weight-bold").append($spanWritetime);
 							var $h6bPlace = $("<h6>").append(obj.bPlace).addClass("font-weight-bold"); 
 						var $divCardHeader1=$("<div>").addClass("card-header py-3").append($h6Id);
 						var $divCardHeader2=$("<div>").addClass("card-header py-3").append($h6bPlace);
@@ -293,7 +299,10 @@ $(function(){
 	                  <c:if test="${board.bGNo.gImage!=null}">
 	                  	<c:set var="gImg" value="${board.bGNo.gImage}"/>
 	                  	<c:set var="imglength" value="${fn:length(gImg)}"/>
-	                  	<h6 class="font-weight-bold guestInfo"><img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(gImg,0,21)}s_${fn:substring(gImg,23,imglength) }" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a></h6>
+	                  	<h6 class="font-weight-bold guestInfo">
+	                  		<img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(gImg,0,21)}s_${fn:substring(gImg,23,imglength) }" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a>
+	                  		<span class="floatRight">${board.bWritetime }</span>
+	                  	</h6>
 	                  </c:if>
 	                  <c:if test="${board.bGNo.gImage==null}">
 	                  	<h6 class="font-weight-bold guestInfo"><img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a></h6>
@@ -330,10 +339,11 @@ $(function(){
 						<c:if test="${likeList[status.count-1]==null }">
 							<i class="far fa-heart insertHeart" data-bNo="${board.bNo}"></i>
 						</c:if>
-						<i class="far fa-comment boardDetail" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i><i class="far fa-share-square"></i>
+						<i class="far fa-comment boardDetail" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i>
+						<i class="far fa-share-square"></i>
 					</p>
 					
-					<p class="whoLike">??님 외 <span>${board.bGood }</span>명이 좋아합니다.</p>
+					<p class="whoLike" data-bNo="${board.bNo }" class="btn"><span>${board.bGood }</span>명이 좋아합니다.</p>
 	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
 					<p class="bHash">${board.bHash }</p>

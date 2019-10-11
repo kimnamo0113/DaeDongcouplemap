@@ -48,7 +48,6 @@ public class RefreshIntercepter extends HandlerInterceptorAdapter{
 			auth.setBoardAlarm(rService.selectBoardAlarmCount(auth.getUserno()));
 			
 			friends = fService.selectFolloingList(auth.getUserno());
-			
 			request.setAttribute("friends", friends);
 			
 			

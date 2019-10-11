@@ -50,7 +50,7 @@ public class GuestDaoImpl implements GuestDao{
 				String charSet = "utf-8";
 				String hostSMTP = "smtp.naver.com";
 				String hostSMTPid = "klnver@naver.com";
-				String hostSMTPpwd = "knh9482!";
+				String hostSMTPpwd = "knh1686155";
 
 				// 보내는 사람 EMail, 제목, 내용
 				String fromEmail = "klnver@naver.com";

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ko.domain.Board;
+import com.ko.domain.Criteria;
 import com.ko.domain.Like;
 import com.ko.persistence.BoardDao;
 import com.ko.persistence.LikeDao;
@@ -47,6 +48,11 @@ public class LikeServiceImpl implements LikeService{
 	@Override
 	public void updateLikeRead(int lNo,int read) {
 		dao.updateLikeRead(lNo,read);
+	}
+
+	@Override
+	public List<Like> selectListLimit10(int bNo, Criteria cri) {
+		return dao.selectListLimit10(bNo,cri);
 	}
 
 

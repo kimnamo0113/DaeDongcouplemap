@@ -313,8 +313,6 @@ public class BoardController {
 	public ResponseEntity<Boolean> likeRead(int lNo,int read){
 		logger.info("------------------------- likeRead");
 		ResponseEntity<Boolean> entity = null;
-		System.out.println(lNo);
-		System.out.println(read);
 		try {
 			lService.updateLikeRead(lNo,read);
 			entity = new ResponseEntity<Boolean>(true,HttpStatus.OK);
@@ -340,5 +338,32 @@ public class BoardController {
 		}
 		
 		return entity;
+	}
+	
+	@RequestMapping(value="likeListLimit10",method=RequestMethod.POST)
+	public ResponseEntity<List<Like>> likeListLimit10(int bNo,Criteria cri){
+		ResponseEntity<List<Like>> entity = null;
+		logger.info("-----------------------likeListLimit10");
+		System.out.println(bNo);
+		System.out.println(cri);
+		try {
+			List<Like> likes = lService.selectListLimit10(bNo,cri);
+			System.out.println(likes.size());
+			entity = new ResponseEntity<List<Like>>(likes,HttpStatus.OK);
+		}catch (Exception e) {
+			entity = new ResponseEntity<List<Like>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	
+	
+	@RequestMapping(value="activityLog",method=RequestMethod.GET)
+	public void activityLog(HttpSession session) {
+		logger.info("-------------------");
+		Auth auth = (Auth)session.getAttribute("Auth");
+		
+		Guest guest = gService.selectByGNo(auth.getUserno());
 	}
 }

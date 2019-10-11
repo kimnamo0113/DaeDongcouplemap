@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ko.domain.Board;
+import com.ko.domain.Criteria;
 import com.ko.domain.Like;
 
 @Repository
@@ -76,6 +77,15 @@ public class LikeDaoImpl implements LikeDao{
 		map.put("lNo", lNo);
 		map.put("read", read);
 		sqlSession.update(namespace+".updateLikeRead",map);
+	}
+
+
+	@Override
+	public List<Like> selectListLimit10(int bNo, Criteria cri) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("bNo", bNo);
+		map.put("cri", cri);
+		return sqlSession.selectList(namespace+".selectListLimit10",map);
 	}
 
 }
