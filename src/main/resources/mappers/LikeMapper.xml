@@ -59,4 +59,14 @@
 		SET l_read=#{read}
 		WHERE l_no=#{lNo};
 	</update>
+	
+	
+	<select id="selectListLimit10" resultMap="LikeBasic">
+		SELECT l.l_no, g.g_no, g.g_id, g.g_image
+		FROM daedong.`like` l
+			join guest g 
+			on g.g_no=l.g_no
+		where l.b_no=#{bNo}
+		limit #{cri.pageStart},#{cri.perPageNum}
+	</select>
 </mapper>

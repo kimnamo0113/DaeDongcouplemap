@@ -172,9 +172,9 @@ $(function(){
 								iHeart= $("<i>").addClass("far fa-heart insertHeart").attr("data-bNo",obj.bNo);
 							}
 							
-							var iComment = $("<i>").addClass("far fa-comment boardDetail").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
+							var iComment = $("<i>").addClass("far fa-comment").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
 							var iShare = $("<i>").addClass("far fa-share-square");
-						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 <span>"+obj.bGood+"</span>명이 좋아합니다.");
+						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 <span>"+obj.bGood+"</span>명이 좋아합니다.").attr("data-bNo",obj.bNo);
 						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iComment).append(iShare);
 						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
@@ -330,10 +330,11 @@ $(function(){
 						<c:if test="${likeList[status.count-1]==null }">
 							<i class="far fa-heart insertHeart" data-bNo="${board.bNo}"></i>
 						</c:if>
-						<i class="far fa-comment boardDetail" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i><i class="far fa-share-square"></i>
+						<i class="far fa-comment boardDetail" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i>
+						<i class="far fa-share-square"></i>
 					</p>
 					
-					<p class="whoLike">??님 외 <span>${board.bGood }</span>명이 좋아합니다.</p>
+					<p class="whoLike" data-bNo="${board.bNo }" class="btn"><span>${board.bGood }</span>명이 좋아합니다.</p>
 	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
 					<p class="bHash">${board.bHash }</p>

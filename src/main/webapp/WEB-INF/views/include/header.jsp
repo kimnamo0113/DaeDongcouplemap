@@ -43,8 +43,25 @@
 	a{
 		cursor: pointer;
 	}
+	#likeModal{
+		z-index: 1000000;
+	}
+	#likeModal{
+		top:100px;
+	}
+	#likeModal .modal-dialog{
+		width:250px;
+		margin: 0 auto;
+	}
+	#likeModal .modal-body{
+		max-height: 300px;
+		overflow: auto;
+	}
 	.dropdown-item{
 		cursor: pointer;
+	}
+	.whoLike span{
+		font-weight: bold;
 	}
 	.text a { 
 		color:black;
@@ -127,10 +144,10 @@
 		flex:0.3 0.3 auto;
 		margin-right:2px;
 	}
-	#friendAlarmDropDouwn{
+	#friendAlarmDropDownDiv{
 		left:-200px;
 	}
-	#boardAlarmDropDouwn{
+	#boardAlarmDropDownDiv{
 		left:-200px;
 	}
 	
@@ -194,7 +211,6 @@
 		text-decoration: none;
 	}
 	.friendsList:hover{
-		font-size: 18px;
 		color: white;
 		text-decoration: none;
 	}
@@ -365,7 +381,7 @@
 			    		<span class="font-weight-bold">{{follow.gId}}</span>님이 회원님을 팔로우 하셨습니다.
 						<div>
 							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="1">수락</button>
-							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}">삭제</button>
+							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}" data-fRead="2">삭제</button>
 						</div>
 					{{/if}}
 					
@@ -697,13 +713,19 @@
 	    });
 		
 		
+		var startPage=1;
+		
+		$(".dropdown").on("hide.bs.dropdown", function() {
+			startPage=1;
+		});
+		
 		$("#friendAlarmDropdown").click(function(){
-			$("#friendAlarmDropDouwn").empty();
+			$("#friendAlarmDropDownDiv").empty();
 			$.ajax({
 				url:"${pageContext.request.contextPath}/friend/alarmList",
 				type:"post",
 				dataType:"json",
-				data:{gNo:'${Auth.userno}'},
+				data:{gNo:'${Auth.userno}',page:1},
 				success:function(res){
 					console.log(res)
 					
@@ -715,18 +737,18 @@
 					var source=$("#friendTemp").html();
 					var fn = Handlebars.compile(source);
 					var str = fn(res);
-					$("#friendAlarmDropDouwn").append(str);
+					$("#friendAlarmDropDownDiv").append(str);
 					
 				}
 			})
 		})
 		$("#addFriendAlarmList").click(function(){
-			$("#friendAlarmDropDouwn").empty();
+			startPage++;
 			$.ajax({
 				url:"${pageContext.request.contextPath}/friend/alarmList",
 				type:"post",
 				dataType:"json",
-				data:{gNo:"${Auth.userno}"},
+				data:{gNo:"${Auth.userno}",page:startPage},
 				success:function(res){
 					console.log(res)
 					
@@ -738,7 +760,7 @@
 					var source=$("#friendTemp").html();
 					var fn = Handlebars.compile(source);
 					var str = fn(res);
-					$("#friendAlarmDropDouwn").append(str);
+					$("#friendAlarmDropDownDiv").append(str);
 					
 				}
 			})
@@ -772,7 +794,7 @@
 				}
 			})
 		})
-		var startPage=1;
+	
 		$("#addBoardAlarmList").click(function(){
 			startPage++;
 			$.ajax({
@@ -915,6 +937,7 @@
 		
 		
 		$(document).on("click",".insertHeart",function(){
+			var bNo = $(this).attr("data-bNo");
 			if('${Auth}'==''){
 				alert("로그인을 해주세요.")
 				return ;
@@ -924,10 +947,11 @@
 			$.ajax({
 				url:"/daedong/board/insertHeart",
 				type:"post",
-				data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+				data: {bNo:bNo,gNo:'${Auth.userno}'},
 				dataType:"text",
 				success:function(res){
 					$($thisObj).removeClass("far insertHeart").addClass("fas deleteHeart");
+					$(".icons .fa-heart[data-bNo="+bNo+"]").removeClass("far insertHeart").addClass("fas deleteHeart");
 					var bGood = $($thisObj).parent().next().find("span").text();
 					bGood = Number(bGood)+1;
 					$($thisObj).parent().next().find("span").text(bGood);
@@ -936,15 +960,16 @@
 			})	
 		})
 		$(document).on("click",".deleteHeart",function(){
-			
+			var bNo = $(this).attr("data-bNo");
 			var $thisObj = this;
 			$.ajax({
 				url:"/daedong/board/deleteHeart",
 				type:"post",
-				data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+				data: {bNo:bNo,gNo:'${Auth.userno}'},
 				dataType:"text",
 				success:function(res){
 					$($thisObj).removeClass("fas deleteHeart").addClass("far insertHeart");
+					$(".icons .fa-heart[data-bNo="+bNo+"]").removeClass("fas deleteHeart").addClass("far insertHeart");
 					var bGood = $($thisObj).parent().next().find("span").text();
 					bGood = Number(bGood)-1;
 					$($thisObj).parent().next().find("span").text(bGood);
@@ -952,11 +977,109 @@
 				}
 			})
 		})
+		var startLikePage=1;
+		$(".whoLike").click(function(){
+			var bNo=$(this).attr("data-bNo");
+			$("#likeModal").show();
+			$.ajax({
+				url:"/daedong/board/likeListLimit10",
+				type:"post",
+				data: {bNo:bNo,page:1},
+				dataType:"json",
+				success:function(res){
+					console.log(res)
+					$("#addLikeList").attr("data-bNo",bNo);
+					$(res).each(function(i,obj){
+						var $imgGuest=$("<img>");
+						if(obj.lGNo.gImage!=null){
+							var imgSrc = obj.lGNo.gImage;
+							var leftSrc = imgSrc.slice(0,21);
+							var rightSrc = imgSrc.slice(23,imgSrc.length)
+							$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+leftSrc+"s_"+rightSrc);
+								
+						}else{
+							$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/resources/images/boy.png");
+						}
+						var $aId = $("<a>").attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.lGNo.gNo).append(obj.lGNo.gId);
+						var $h6Id = $("<h6>").append($imgGuest).append($aId).addClass("font-weight-bold");
+						
+						$("#likeModal .modal-body").append($h6Id);
+					})
+					
+				}
+			})
+		})
+		$("#addLikeList").click(function(){
+			startLikePage++;
+			var bNo=$(this).attr("data-bNo");
+			$("#likeModal").show();
+			$.ajax({
+				url:"/daedong/board/likeListLimit10",
+				type:"post",
+				data: {bNo:bNo,page:startLikePage},
+				dataType:"json",
+				success:function(res){
+					console.log(res)
+					var $imgGuest;
+					$(res).each(function(i,obj){
+						var $imgGuest=$("<img>");
+						if(obj.lGNo.gImage!=null){
+							var imgSrc = obj.lGNo.gImage;
+							var leftSrc = imgSrc.slice(0,21);
+							var rightSrc = imgSrc.slice(23,imgSrc.length)
+							$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+leftSrc+"s_"+rightSrc);
+								
+						}else{
+							$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/resources/images/boy.png");
+						}
+						var $aId = $("<a>").attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.lGNo.gNo).append(obj.lGNo.gId);
+						var $h6Id = $("<h6>").append($imgGuest).append($aId).addClass("font-weight-bold");
+						
+						$("#likeModal .modal-body").append($h6Id);
+					})
+					
+					startLikePage=1;
+				}
+			})
+		})
+		
+		$("#likeModal .close").click(function(){
+			$("#likeModal").hide();
+			$("#likeModal .modal-body").empty();
+		})
 		
 	})
 </script>  
 
 <body id="page-top">
+
+ 
+ <div class="modal" id="likeModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">좋아요</h4>
+          <button type="button" class="close">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          
+        </div>
+        
+        <p class="dropdown-item text-center small text-gray-500" id="addLikeList">Show Add Alerts</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger close">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -1251,7 +1374,7 @@
 	                <span class="badge badge-danger badge-counter">${Auth.friendAlarm }</span>
 	              </a>
 	              <!-- Dropdown - Alerts -->
-	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="friendAlarmDropDouwn">
+	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="friendAlarmDropDownDiv">
 
 	              </div>
 	            </li>
@@ -1264,7 +1387,7 @@
 	                <span class="badge badge-danger badge-counter" id="boardAlarmCount">${Auth.boardAlarm }</span>
 	              </a>
 	              <!-- Dropdown - Alerts -->
-	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="boardAlarmDropDouwn">
+	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" id="boardAlarmDropDownDiv">
 	              	<h6 class="dropdown-header">
 				      Board Alarm
 				    </h6>
@@ -1277,112 +1400,7 @@
 	            
 	            
 	            
-	            <!--  -->
-	            
-	            
-	           <!--  <li class="nav-item dropdown no-arrow mx-1">
-	              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <i class="fas fa-bell fa-fw"></i>
-	                Counter - Alerts
-	                <span class="badge badge-danger badge-counter">3+</span>
-	              </a>
-	              Dropdown - Alerts
-	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-	                <h6 class="dropdown-header">
-	                  Alerts Center
-	                </h6>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="mr-3">
-	                    <div class="icon-circle bg-primary">
-	                      <i class="fas fa-file-alt text-white"></i>
-	                    </div>
-	                  </div>
-	                  <div>
-	                    <div class="small text-gray-500">December 12, 2019</div>
-	                    <span class="font-weight-bold">????????????????????????!</span>
-	                  </div>
-	                </a>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="mr-3">
-	                    <div class="icon-circle bg-success">
-	                      <i class="fas fa-donate text-white"></i>
-	                    </div>
-	                  </div>
-	                  <div>
-	                    <div class="small text-gray-500">December 7, 2019</div>
-	                    $290.29 has been deposited into your account!
-	                  </div>
-	                </a>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="mr-3">
-	                    <div class="icon-circle bg-warning">
-	                      <i class="fas fa-exclamation-triangle text-white"></i>
-	                    </div>
-	                  </div>
-	                  <div>
-	                    <div class="small text-gray-500">December 2, 2019</div>
-	                    Spending Alert: We've noticed unusually high spending for your account.
-	                  </div>
-	                </a>
-	                <a class="dropdown-item text-center small text-gray-500" href="#">Show Add Alerts</a>
-	              </div>
-	            </li> -->
-	
-	            <!-- Nav Item - Messages -->
-	          <!--   <li class="nav-item dropdown no-arrow mx-1">
-	              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <i class="fas fa-envelope fa-fw"></i>
-	                Counter - Messages
-	                <span class="badge badge-danger badge-counter">7</span>
-	              </a>
-	              Dropdown - Messages
-	              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-	                <h6 class="dropdown-header">
-	                  Message Center
-	                </h6>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="dropdown-list-image mr-3">
-	                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
-	                    <div class="status-indicator bg-success"></div>
-	                  </div>
-	                  <div class="font-weight-bold">
-	                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-	                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-	                  </div>
-	                </a>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="dropdown-list-image mr-3">
-	                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
-	                    <div class="status-indicator"></div>
-	                  </div>
-	                  <div>
-	                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-	                    <div class="small text-gray-500">Jae Chun · 1d</div>
-	                  </div>
-	                </a>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="dropdown-list-image mr-3">
-	                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
-	                    <div class="status-indicator bg-warning"></div>
-	                  </div>
-	                  <div>
-	                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-	                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-	                  </div>
-	                </a>
-	                <a class="dropdown-item d-flex align-items-center" href="#">
-	                  <div class="dropdown-list-image mr-3">
-	                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-	                    <div class="status-indicator bg-success"></div>
-	                  </div>
-	                  <div>
-	                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-	                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-	                  </div>
-	                </a>
-	                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-	              </div>
-	            </li> -->
+	           
 	
 	            <div class="topbar-divider d-none d-sm-block"></div>
 	
@@ -1415,7 +1433,7 @@
 	                  Activity Log
 	                </a>
 	                <div class="dropdown-divider"></div>
-	                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+	                <a class="dropdown-item" href="${pageContext.request.contextPath }/member/logout">
 	                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  Logout
 	                </a>
@@ -1463,7 +1481,7 @@
 	          	<p class="icons">
           			
 	          	</p>
-          		<p class="whoLike"><span></span>명이 좋아합니다.</p>
+          		<p class="whoLike" id="whoLike" class="btn"><span></span>명이 좋아합니다.</p>
 	          	<div id="dReplys" class="replysList form-control">
 			          	
 				</div>
@@ -1487,11 +1505,16 @@
       </div>
       
     </div>
+   
+    
   </div>
+  
+  
   
    
         
   <script src="${pageContext.request.contextPath }/resources/bootTemplate/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
 
   <!-- Core plugin JavaScript-->
   <script src="${pageContext.request.contextPath }/resources/bootTemplate/vendor/jquery-easing/jquery.easing.min.js"></script>

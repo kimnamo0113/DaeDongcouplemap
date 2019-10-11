@@ -18,7 +18,15 @@ select * from guest where g_email = 'klnver@naver.com';
  where (g_id='test' or g_email='') and (g_password='1234' or g_temp_password='');
  
 
+SELECT l_no, b_no, g_no, l_date, l_read
+FROM daedong.`like`;
 
+SELECT l.l_no, g.g_no, g.g_id, g.g_image
+FROM daedong.`like` l
+	join guest g 
+	on g.g_no=l.g_no
+	where l.b_no=9
+;
 
 
 select g_password,length(g_password) from guest;
