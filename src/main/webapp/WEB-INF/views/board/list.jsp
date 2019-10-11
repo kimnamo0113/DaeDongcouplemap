@@ -174,7 +174,7 @@ $(function(){
 							
 							var iComment = $("<i>").addClass("far fa-comment").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
 							var iShare = $("<i>").addClass("far fa-share-square");
-						var $pWhoLike = $("<p>").addClass("whoLike").append("??님 외 <span>"+obj.bGood+"</span>명이 좋아합니다.").attr("data-bNo",obj.bNo);
+						var $pWhoLike = $("<p>").addClass("whoLike").append("<span>"+obj.bGood+"</span>명이 좋아합니다.").attr("data-bNo",obj.bNo);
 						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iComment).append(iShare);
 						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);

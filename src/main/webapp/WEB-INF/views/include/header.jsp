@@ -217,11 +217,18 @@
 	ul#accordionSidebar{
 		position: fixed;
 	}
+	
 	li#liFriendsList{
 		height: 300px;
-		overflow: auto;
+		overflow-y:scroll;
+ 
 	}
-	
+	li#liFriendsList::-webkit-scrollbar {
+	    display: none;
+	}
+	#writeModal::-webkit-scrollbar {
+	    display: none;
+	}
 	#liFriendsList p{
 		margin-bottom: 0px;
 		padding-top:0px;
@@ -955,7 +962,7 @@
 					var bGood = $($thisObj).parent().next().find("span").text();
 					bGood = Number(bGood)+1;
 					$($thisObj).parent().next().find("span").text(bGood);
-					$(".whoLike").find("span").text(bGood);
+					$(".whoLike[data-bNo="+bNo+"]").find("span").text(bGood);
 				}
 			})	
 		})
@@ -973,12 +980,12 @@
 					var bGood = $($thisObj).parent().next().find("span").text();
 					bGood = Number(bGood)-1;
 					$($thisObj).parent().next().find("span").text(bGood);
-					$(".whoLike").find("span").text(bGood);
+					$(".whoLike[data-bNo="+bNo+"]").find("span").text(bGood);
 				}
 			})
 		})
 		var startLikePage=1;
-		$(".whoLike").click(function(){
+		$(document).on("click",".whoLike",function(){
 			var bNo=$(this).attr("data-bNo");
 			$("#likeModal").show();
 			$.ajax({
@@ -1092,7 +1099,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">대동연애지도<sup>ㅎ</sup></div>
+        <div class="sidebar-brand-text mx-3">대동연애지도<sup style="color:red">♥</sup></div>
       </a>
 
 
@@ -1157,19 +1164,18 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item" id="liFriendsList">
-      <c:forEach var="friend" items="${friends}">
-     	 <p class="nav-link collapsed" href="#">
-     	 <c:if test="${friend.follower.gImage==null }">
-     	 	<img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">	
-     	 </c:if>
-     	 <c:if test="${friend.follower.gImage!=null }">
-     	  	<img src="${pageContext.request.contextPath }/upload/displayFile?filename=${friend.follower.gImage}" class="guestImg">
-     	 </c:if>
-         
-          <a class="friendsList" href="${pageContext.request.contextPath }/board/timeLine?gNo=${friend.follower.gNo}">${friend.follower.gId }</a>
-        </p>
-      </c:forEach>
-       
+		      <c:forEach var="friend" items="${friends}">
+		     	 <p class="nav-link collapsed" href="#">
+		     	 <c:if test="${friend.follower.gImage==null }">
+		     	 	<img src="${pageContext.request.contextPath }/resources/images/boy.png" class="guestImg">	
+		     	 </c:if>
+		     	 <c:if test="${friend.follower.gImage!=null }">
+		     	  	<img src="${pageContext.request.contextPath }/upload/displayFile?filename=${friend.follower.gImage}" class="guestImg">
+		     	 </c:if>
+		         
+		          <a class="friendsList" href="${pageContext.request.contextPath }/board/timeLine?gNo=${friend.follower.gNo}">${friend.follower.gId }</a>
+		        </p>
+		      </c:forEach>
       </li>
 
       <!-- Nav Item - Charts -->
