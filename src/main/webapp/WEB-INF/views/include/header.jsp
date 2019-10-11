@@ -226,9 +226,11 @@
 	li#liFriendsList::-webkit-scrollbar {
 	    display: none;
 	}
+	
 	#writeModal::-webkit-scrollbar {
 	    display: none;
 	}
+	
 	#liFriendsList p{
 		margin-bottom: 0px;
 		padding-top:0px;
@@ -1434,7 +1436,7 @@
 	                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  Profile
 	                </a>
-	                <a class="dropdown-item" href="#">
+	                <a class="dropdown-item" href="${pageContext.request.contextPath }/board/activityLog">
 	                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  Activity Log
 	                </a>

@@ -224,3 +224,5 @@ order by r_writetime desc, r_no desc
 select COUNT(*) 
 from reply r
 where r.b_no=9 and r.r_no >= 45;
+
+

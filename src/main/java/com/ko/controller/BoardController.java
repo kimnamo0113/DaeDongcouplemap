@@ -356,4 +356,14 @@ public class BoardController {
 		
 		return entity;
 	}
+	
+	
+	
+	@RequestMapping(value="activityLog",method=RequestMethod.GET)
+	public void activityLog(HttpSession session) {
+		logger.info("-------------------");
+		Auth auth = (Auth)session.getAttribute("Auth");
+		
+		Guest guest = gService.selectByGNo(auth.getUserno());
+	}
 }
