@@ -355,14 +355,14 @@
 			  <div>
 			    <div class="small text-gray-500" row>{{fDate}}</div>
 					{{#if fRead 0}}
-			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님을 팔로우 하셨습니다.</span>
+			    		<span class="font-weight-bold">{{follow.gId}}</span>님이 회원님을 팔로우 하셨습니다.</span>
 						<div>
 							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="0">수락</button>
 							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}" data-fRead="2">삭제</button>
 						</div>
 					{{/if}}
 					{{#if fRead 1}}
-			    		<span class=" font-weight-bold">{{follow.gId}}님이 회원님을 팔로우 하셨습니다.</span>
+			    		<span class="font-weight-bold">{{follow.gId}}</span>님이 회원님을 팔로우 하셨습니다.
 						<div>
 							<button class="btn btn-primary btn friendAccept" data-gNo="{{follow.gNo}}" data-fRead="1">수락</button>
 							<button class="btn btn-light btn friendRemove" data-gNo="{{follow.gNo}}">삭제</button>
@@ -370,7 +370,7 @@
 					{{/if}}
 					
 					{{#if fRead 3}}
-			    		<span class=" font-weight-bold">{{follow.gId}}님이 팔로우요청을 수락 하셨습니다.</span>
+			    		<span class=" font-weight-bold">{{follow.gId}}</span>님이 팔로우요청을 수락 하셨습니다.
 					{{/if}}
 				
 			  </div>
@@ -387,18 +387,18 @@
 	{{#each.}}
 		{{#if rContent 'l'}}
 			{{#if rRead 0}}
-			    <a class="checkBoardMessage boardDetail unreadBackGround dropdown-item d-flex align-items-center"  data-read="{{rRead}}" data-bNo="{{rBNo.bNo}}" data-upRead="1" data-flag="{{rContent}}" data-rNo="{{rNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3">
+			    <a class="checkBoardMessage boardDetail unreadBackGround dropdown-item d-flex align-items-center"  data-read="{{rRead}}" data-bNo="{{rBNo.bNo}}" data-upRead="1" data-flag="{{rContent}}" data-rNo="{{rNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3" href="">
 			{{/if}}
 			{{#if rRead 1}}
-				<a class="boardDetail dropdown-item d-flex align-items-center" data-rNo="{{rNo}}" data-flag="{{rContent}}" data-bNo="{{rBNo.bNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3">
+				<a class="boardDetail dropdown-item d-flex align-items-center" data-rNo="{{rNo}}" data-flag="{{rContent}}" data-bNo="{{rBNo.bNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3" href="">
 			{{/if}}
 		{{/if}}
 		{{#if rContent 'r'}}
 			{{#if rRead 0}}
-			    <a class="checkBoardMessage boardDetail unreadBackGround dropdown-item d-flex align-items-center"  data-read="{{rRead}}" data-bNo="{{rBNo.bNo}}" data-upRead="1" data-flag="{{rContent}}" data-rNo="{{rNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3">
+			    <a class="checkBoardMessage boardDetail unreadBackGround dropdown-item d-flex align-items-center"  data-read="{{rRead}}" data-bNo="{{rBNo.bNo}}" data-upRead="1" data-flag="{{rContent}}" data-rNo="{{rNo}}" data-gNo="{{rGNo.gNo}}" data-toggle="modal" data-target="#myModal3" href="">
 			{{/if}}
 			{{#if rRead 1}}
-				<a class="dropdown-item boardDetail d-flex align-items-center" data-rNo="{{rNo}}" data-flag="{{rContent}}" data-gNo="{{rGNo.gNo}}" data-bNo="{{rBNo.bNo}}" data-toggle="modal" data-target="#myModal3">
+				<a class="dropdown-item boardDetail d-flex align-items-center" data-rNo="{{rNo}}" data-flag="{{rContent}}" data-gNo="{{rGNo.gNo}}" data-bNo="{{rBNo.bNo}}" data-toggle="modal" data-target="#myModal3" href="">
 			{{/if}}
 		{{/if}}
 			  <div class="mr-3">
@@ -413,13 +413,13 @@
 			  <div class="row">
 			    <div class="col-12 small text-gray-500">{{rWritetime}}</div>
 					{{#if rContent 'r'}}
-			    		<span class="col-9 font-weight-bold">[{{rGNo.gId}}]님이 회원님의 [{{rBNo.bTitle}}]글에 댓글을 달았습니다.</span>
+			    		<div class="col-9"><span class="font-weight-bold">{{rGNo.gId}}</span>님이 <span class="font-weight-bold">{{rBNo.bTitle}}</span>글에 댓글을 달았습니다.</div>
 						<div class="col-3">
 							<button class="btn btn-light btn checkBoardMessage" data-read="{{rRead}}" data-upRead="2" data-flag="{{rContent}}" data-rNo="{{rNo}}">삭제</button>
 						</div>
 					{{/if}}
 					{{#if rContent 'l'}}
-			    		<span class="col-9 font-weight-bold">{{rGNo.gId}}님이 회원님의 [{{rBNo.bTitle}}]글을 좋아합니다.</span>
+			    		<div class="col-9"><span class="font-weight-bold">{{rGNo.gId}}</span>님이 <span class="font-weight-bold">{{rBNo.bTitle}}</span>글을 좋아합니다.</div>
 						<div class="col-3">
 							<button class="btn btn-light btn checkBoardMessage" data-read="{{rRead}}" data-upRead="2" data-flag="{{rContent}}" data-rNo="{{rNo}}"">삭제</button>
 						</div>
@@ -470,6 +470,8 @@
 		  }
 		  return options.inverse(this);
 		});
+	
+
 	
 	$(function() {
 		
@@ -758,8 +760,8 @@
 					console.log(res)
 					
 					$(res).each(function(i,obj){
-						var time = new Date(obj.fDate);
-						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						var time = new Date(obj.rWritetime);
+						obj.rWritetime=time.format("yyyy-MM-dd HH:mm");
 						
 					})
 					var source=$("#boardTemp").html();
@@ -782,8 +784,8 @@
 					console.log(res)
 					
 					$(res).each(function(i,obj){
-						var time = new Date(obj.fDate);
-						obj.fDate=time.format("yyyy-MM-dd HH:mm");
+						var time = new Date(obj.rWritetime);
+						obj.rWritetime=time.format("yyyy-MM-dd HH:mm");
 						
 					})
 					var source=$("#boardTemp").html();
@@ -910,6 +912,46 @@
 		    	$("div#content").css("margin-left","230px");
 		    }
 		}, 500); */
+		
+		
+		$(document).on("click",".insertHeart",function(){
+			if('${Auth}'==''){
+				alert("로그인을 해주세요.")
+				return ;
+			}
+			
+			var $thisObj = this;
+			$.ajax({
+				url:"/daedong/board/insertHeart",
+				type:"post",
+				data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+				dataType:"text",
+				success:function(res){
+					$($thisObj).removeClass("far insertHeart").addClass("fas deleteHeart");
+					var bGood = $($thisObj).parent().next().find("span").text();
+					bGood = Number(bGood)+1;
+					$($thisObj).parent().next().find("span").text(bGood);
+					$(".whoLike").find("span").text(bGood);
+				}
+			})	
+		})
+		$(document).on("click",".deleteHeart",function(){
+			
+			var $thisObj = this;
+			$.ajax({
+				url:"/daedong/board/deleteHeart",
+				type:"post",
+				data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
+				dataType:"text",
+				success:function(res){
+					$($thisObj).removeClass("fas deleteHeart").addClass("far insertHeart");
+					var bGood = $($thisObj).parent().next().find("span").text();
+					bGood = Number(bGood)-1;
+					$($thisObj).parent().next().find("span").text(bGood);
+					$(".whoLike").find("span").text(bGood);
+				}
+			})
+		})
 		
 	})
 </script>  
@@ -1418,8 +1460,10 @@
           		<a id="dBGId"></a>
         		<h5 id="dBTitle"></h5>
 	          	<p id="dBContents"></p>
-	          	<p class="icons"><i class="fas fa-heart"></i><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-share-square"></i></p>
-          		<p class="whoLike">??님 외 ?명이 좋아합니다.</p>
+	          	<p class="icons">
+          			
+	          	</p>
+          		<p class="whoLike"><span></span>명이 좋아합니다.</p>
 	          	<div id="dReplys" class="replysList form-control">
 			          	
 				</div>

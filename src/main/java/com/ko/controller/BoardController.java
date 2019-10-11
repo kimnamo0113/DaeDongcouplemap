@@ -102,11 +102,27 @@ public class BoardController {
 	
 	@RequestMapping(value="searchBoard",method=RequestMethod.GET)
 	public void searchBoard(Model model,@ModelAttribute("cri") SearchCriteria cri) {
-		logger.info("---------------- list");
+		logger.info("---------------- searchBoard");
+		cri.setPerPageNum(24);
+		System.out.println(cri);
 		List<Board> boards = bService.selectLimit10(cri);
 		
-		
 		model.addAttribute("boards",boards);
+	}
+	@RequestMapping(value="searchBoard",method=RequestMethod.POST)
+	public ResponseEntity<List<Board>> searchBoardPOST(SearchCriteria cri) {
+		logger.info("---------------- searchBoard POST");
+		ResponseEntity<List<Board>> entity =null;
+		cri.setPerPageNum(24);
+		try {
+			List<Board> boards = bService.selectLimit10(cri);
+			entity = new ResponseEntity<>(boards,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		return entity;
 	}
 	
 	
@@ -223,7 +239,7 @@ public class BoardController {
 		return entity;
 	}
 	@RequestMapping(value="boardDetail",method=RequestMethod.POST)
-	public ResponseEntity<Map<String,Object>> boardDetail(int bNo,Criteria cri,int rNo){
+	public ResponseEntity<Map<String,Object>> boardDetail(int bNo,Criteria cri,int rNo,HttpSession session){
 		logger.info("---------------------- boardDetail");
 		ResponseEntity<Map<String,Object>> entity = null;
 		Map<String, Object> map = new HashMap<>();
@@ -235,8 +251,17 @@ public class BoardController {
 				cri.setPage(page+1);
 			}
 			Board board = bService.selectBNoReplyLimit10(bNo,cri);
+			
+			Auth auth = (Auth)session.getAttribute("Auth");
+			Like like = null;
+			if(auth!=null) {
+				like=lService.selectLikeByBNoGNo(bNo, auth.getUserno());
+			}
+			
+			
 			map.put("board", board);
 			map.put("cri", cri);
+			map.put("like", like);
 			entity = new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		}catch (Exception e) {
 			e.printStackTrace();

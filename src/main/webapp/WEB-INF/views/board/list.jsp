@@ -261,43 +261,6 @@ $(function(){
 	
 	
 	
-	$(document).on("click",".insertHeart",function(){
-		if('${Auth}'==''){
-			alert("로그인을 해주세요.")
-			return ;
-		}
-		
-		var $thisObj = this;
-		$.ajax({
-			url:"/daedong/board/insertHeart",
-			type:"post",
-			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
-			dataType:"text",
-			success:function(res){
-				$($thisObj).removeClass("far insertHeart").addClass("fas deleteHeart");
-				var bGood = $($thisObj).parent().next().find("span").text();
-				bGood = Number(bGood)+1;
-				$($thisObj).parent().next().find("span").text(bGood);
-			}
-		})	
-	})
-	$(document).on("click",".deleteHeart",function(){
-		
-		var $thisObj = this;
-		$.ajax({
-			url:"/daedong/board/deleteHeart",
-			type:"post",
-			data: {bNo:$(this).attr("data-bNo"),gNo:'${Auth.userno}'},
-			dataType:"text",
-			success:function(res){
-				$($thisObj).removeClass("fas deleteHeart").addClass("far insertHeart");
-				var bGood = $($thisObj).parent().next().find("span").text();
-				bGood = Number(bGood)-1;
-				$($thisObj).parent().next().find("span").text(bGood);
-			}
-		})
-	})
-	
 	
 })
 

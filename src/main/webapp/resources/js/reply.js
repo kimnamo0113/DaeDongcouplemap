@@ -74,6 +74,7 @@ $(function(){
 				
 				console.log(res)
 				$(res.replys).each(function(i,obj){
+					console.log(obj)
 					var $imgGuest;
 					if(obj.rGNo.gImage!=null){
 						$imgGuest = $("<img>").attr("src","/daedong/upload/displayFile?filename="+obj.rGNo.gImage).addClass("guestImg");
@@ -157,16 +158,15 @@ $(function(){
 					$("#dBPlace").append(res.board.bPlace);
 					$("#dBTitle").append(res.board.bTitle);
 					$("#dBContents").append(res.board.bContents);
-					var $divReply = $("<div>").addClass("replys");
 					
-					$(res.board.replys).each(function(i,obj){
-						console.log("여기 어디고")
-						console.log(obj)
-						var id = obj.rGNo.gId;
-						var text = obj.rContent;
-						$divReply.append(id+" : ").append(text+"<br>");
-					})
-					$("#dReplys").append($divReply);
+					if(res.like!=null){
+						var $iHeart = $("<i>").addClass("fas fa-heart deleteHeart").attr("data-bNo",res.board.bNo);
+						$(".modalBodyRight").find(".icons").html($iHeart);
+					}else{
+						var $iHeart = $("<i>").addClass("far fa-heart insertHeart").attr("data-bNo",res.board.bNo);
+						$(".modalBodyRight").find(".icons").html($iHeart);
+					}
+					$(".whoLike").find("span").text(res.board.bGood);
 					$(res.board.contents).each(function(i,obj){
 						var $div = $("<div>");
 						

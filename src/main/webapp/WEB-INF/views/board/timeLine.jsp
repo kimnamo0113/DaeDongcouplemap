@@ -527,19 +527,38 @@ var startPage=0;
 				dataType:"json",
 				success:function(res){
 					console.log(res);
+					
 					$(res).each(function(i,obj){
-						
+						var time = new Date(obj.fDate);
+						obj.fDate=time.format("yyyy-MM-dd HH:mm");
 					})
 					
+					var source=$("#addTimeLine").html();
+					var fn = Handlebars.compile(source);
+					var str = fn(res);
+					$(".boardList").append(str);					
 				}
 				
 			})
 			
 	    }
 	});
-	
-	
 </script>
+<script id="addTimeLine" type="text/x-handlebars-template">
+	{{#each.}}
+   		<figure class="snip1384" data-toggle="modal" data-target="#myModal3">
+   	  	 <img src="${pageContext.request.contextPath }/upload/displayFile?filename={{contents.[0].cImage}}" >
+   	   		<figcaption data-bNo="{{bNo}}" class="boardDetail">
+		    <h3>{{bTitle}}</h3>
+			<p>{{bPlace}}</p><!-- <i class="ion-ios-arrow-right"></i> -->
+				<i class="fas fa-heart"> {{board.bGood}}</i><i class="fas fa-comment"> {{replyCount}}</i>
+			
+			<p></p>
+		  </figcaption>
+		</figure>
+   	{{/each}}
+</script>
+
 
 <div class="container-fluid">
 
