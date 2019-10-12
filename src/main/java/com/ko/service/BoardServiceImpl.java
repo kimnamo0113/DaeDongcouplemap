@@ -93,5 +93,19 @@ public class BoardServiceImpl implements BoardService{
 		return dao.selectByBNo(bNo);
 	}
 
+
+
+	@Override
+	public List<Board> selectActivityLimit10(int gNo, Criteria cri) {
+		return dao.selectActivityLimit10(gNo,cri);
+	}
+
+
+
+	@Override
+	public int selectActivityCount(int gNo) {
+		return dao.selectActivityCount(gNo);
+	}
+
 	
 }

@@ -18,4 +18,6 @@ public interface BoardService {
 	public List<Board> selectBygNoLimit24(int page, int gNo);
 	public Board selectBNoReplyLimit10(int bNo, Criteria cri);
 	public Board selectByBNo(int bNo);
+	public List<Board> selectActivityLimit10(int gNo, Criteria cri);
+	public int selectActivityCount(int gNo);
 }

@@ -41,7 +41,13 @@
 		cursor: pointer;
 	}
 	a{
+		color:black;
 		cursor: pointer;
+		text-decoration: none;
+	}
+	
+	a:hover{
+		text-decoration: none;
 	}
 	#likeModal{
 		z-index: 1000000;
@@ -62,6 +68,14 @@
 	}
 	.whoLike span{
 		font-weight: bold;
+	}
+	.whoLike{
+		cursor: pointer;
+		height: 30px;
+		display: inline-block;
+	}
+	.whoLike:hover{
+		font-size: 1.2rem;
 	}
 	.text a { 
 		color:black;
@@ -94,7 +108,10 @@
 		height: 500px;
 		width: 360px;
 	}
-		
+	#dReplys{
+		height: 250px;
+		overflow: auto;
+	}
 	/*  */
 	
 	
@@ -1490,13 +1507,15 @@
           			
 	          	</p>
           		<p class="whoLike" id="whoLike" class="btn"><span></span>명이 좋아합니다.</p>
+          		<div id="dBHash"></div>
 	          	<div id="dReplys" class="replysList form-control">
 			          	
 				</div>
 				
 				
-				<ul class="pagination justify-content-center">
-					</ul>
+				<ul class="pagination justify-content-center ulReply">
+				
+				</ul>
           	</div>
           	
           	<c:if test="${Auth!=null }">

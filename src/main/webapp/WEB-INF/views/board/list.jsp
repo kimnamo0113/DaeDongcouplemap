@@ -31,8 +31,7 @@
 	}
 	div.replys div.reply span.text{
 		display:inline-block;
-		width:80%;
-		float: left;
+		
 	}
 	div.replys div.divAddReply{
 		clear: both;
@@ -70,10 +69,6 @@
 		cursor: pointer;
 	}
 	
-	#dReplys{
-		height: 250px;
-		overflow: auto;
-	}
 	.floatRight{
 		float: right;
 		line-height: 60px;
@@ -148,6 +143,7 @@ $(function(){
 				data: {page:startPage},
 				dataType:"json",
 				success:function(res){
+					console.log(res)
 					if(res.boards.length==0){
 						startPage-=1;
 						return;
@@ -176,22 +172,41 @@ $(function(){
 								iHeart= $("<i>").addClass("far fa-heart insertHeart").attr("data-bNo",obj.bNo);
 							}
 							
-							var iComment = $("<i>").addClass("far fa-comment").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
+							var iComment = $("<i>").addClass("far fa-comment boardDetail").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
 							var iShare = $("<i>").addClass("far fa-share-square");
 						var $pWhoLike = $("<p>").addClass("whoLike").append("<span>"+obj.bGood+"</span>명이 좋아합니다.").attr("data-bNo",obj.bNo);
 						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iComment).append(iShare);
 						/*  */
 						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
-						var $pHash = $("<p>").addClass("bHash").append(obj.bHash);
+						var $pHash = $("<p>")
+							var beforeHash = obj.bHash;
+							var afterHash = beforeHash.split('#');
+							for(var i=0; i<afterHash.length; i++){
+								var $aHash = $("<a>").addClass("bHash").append(i==0?"":"#"+afterHash[i]).attr("href","/daedong/board/searchBoard?page=1&searchType=all&keyword="+afterHash[i]);
+								$pHash.append($aHash);
+							}
+						
 						
 						var $divReplysList=$("<div>").addClass("replysList");
 						
 						$(obj.replys).each(function(i,r){
-							var $labelId = $("<label>").addClass("id").append(r.rGNo.gId+":");
+							var $imgGuest=$("<img>");				
+							
+							if(r.rGNo.gImage!=null){
+								var imgSrc = r.rGNo.gImage;
+								var leftSrc = imgSrc.slice(0,21);
+								var rightSrc = imgSrc.slice(23,imgSrc.length)
+								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/upload/displayFile?filename="+leftSrc+"s_"+rightSrc);
+									
+							}else{
+								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/resources/images/boy.png");
+							}
+							var $aId = $("<a>").addClass("id").attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+r.rGNo.gNo).append(r.rGNo.gId+":");
+							
 							var $spanWritetime = $("<span>").append(r.rWritetime).addClass("date");
 							var $spanText = $("<span>").addClass("text").append(r.rContent).append($spanWritetime);		
-							var $divReply = $("<div>").addClass("reply").append($labelId).append($spanText);
+							var $divReply = $("<div>").addClass("reply").append($imgGuest).append($aId).append($spanText);
 							$divReplysList.append($divReply);
 						})
 						if(obj.replyCount>5){
@@ -214,22 +229,22 @@ $(function(){
 								$imgGuest.addClass("guestImg").attr("src","${pageContext.request.contextPath }/resources/images/boy.png");
 							}
 							var $aId = $("<a>").attr("href","${pageContext.request.contextPath }/board/timeLine?gNo="+obj.bGNo.gNo).append(obj.bGNo.gId);
-								var $spanWritetime = $("<span>").append(obj.bWritetime).addClass("floatRight");
+								
+								var $spanWritetime = $("<span>").append((obj.bWritetime+"").slice(0,-5)).addClass("floatRight");
 								var $h6Id = $("<h6>").append($imgGuest).append($aId).addClass("font-weight-bold").append($spanWritetime);
 							var $h6bPlace = $("<h6>").append(obj.bPlace).addClass("font-weight-bold"); 
 						var $divCardHeader1=$("<div>").addClass("card-header py-3").append($h6Id);
 						var $divCardHeader2=$("<div>").addClass("card-header py-3").append($h6bPlace);
 						
 						var $divCard = $("<div>");
-						
-						if('${Auth.userid}'!=null){
+						if('${Auth.userid}'!=''){
 							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-10").attr("data-bno",obj.bNo);
 							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-1").append("게시").attr("type","button").attr("data-gNo",obj.bGNo.gNo);
 							var $divReplyText = $("<div>").addClass("reply-text row").append($textAreaReply).append($buttonReply);
 							
 							$divCard.addClass("card shadow mb-4").append($divCardHeader1).append($divCardHeader2).append($divCardBody).append($divReplyText);
 						}else{
-							$divCard.addClass("card shadow mb-4").append($divCardHeader).append($divCardBody);	
+							$divCard.addClass("card shadow mb-4").append($divCardHeader1).append($divCardHeader2).append($divCardBody);	
 						}
 						
 						var $divCol=$("<div>").addClass("col-lg-12 mb-4").append($divCard);
@@ -301,7 +316,7 @@ $(function(){
 	                  	<c:set var="imglength" value="${fn:length(gImg)}"/>
 	                  	<h6 class="font-weight-bold guestInfo">
 	                  		<img src="${pageContext.request.contextPath }/upload/displayFile?filename=${fn:substring(gImg,0,21)}s_${fn:substring(gImg,23,imglength) }" class="guestImg"><a href="${pageContext.request.contextPath }/board/timeLine?gNo=${board.bGNo.gNo}">${board.bGNo.gId }</a>
-	                  		<span class="floatRight">${board.bWritetime }</span>
+	                  		<span class="floatRight">${fn:substring(board.bWritetime,0,16) }</span>
 	                  	</h6>
 	                  </c:if>
 	                  <c:if test="${board.bGNo.gImage==null}">
@@ -346,7 +361,15 @@ $(function(){
 					<p class="whoLike" data-bNo="${board.bNo }" class="btn"><span>${board.bGood }</span>명이 좋아합니다.</p>
 	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
-					<p class="bHash">${board.bHash }</p>
+					
+					
+					<c:set var="hashs" value="${fn:split(board.bHash,'#')}" />
+					<p class="bHashs">
+						<c:forEach var="hash" items="${hashs}" varStatus="g">
+							<a class="bHash" href="/daedong/board/searchBoard?page=1&searchType=all&keyword=${hash }"">#${hash }</a>	
+						</c:forEach> 
+					</p>
+					
 					<div class="replys">
 						<div class="replysList">
 							<c:if test="${board.replys[0].rNo!=0 }">
@@ -376,7 +399,7 @@ $(function(){
 								</c:if>
 							</c:if>
 						</div>	
-						<ul class="pagination justify-content-center" data-bNo="${board.bNo }">
+						<ul class="pagination justify-content-center ulReply" data-bNo="${board.bNo }">
 							
 						</ul>
 						

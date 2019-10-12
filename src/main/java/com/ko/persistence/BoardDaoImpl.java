@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ko.domain.Board;
+import com.ko.domain.Criteria;
 import com.ko.domain.SearchCriteria;
 
 @Repository
@@ -70,6 +71,28 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public void updateBoard(Board board) {
 		sqlSession.update(namespace+".updateBoard",board);
+	}
+
+
+	@Override
+	public List<Board> selectActivityLimit10(int gNo, Criteria cri) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("gNo", gNo);
+		map.put("cri", cri);
+		return sqlSession.selectList(namespace+".selectActivityLimit10",map);
+	}
+
+
+	@Override
+	public int selectActivityCount(int gNo) {
+		List<Board> actList= sqlSession.selectList(namespace+".selectActivityCount",gNo);
+		
+		int count = 0;
+		for(Board b : actList) {
+			count+=b.getbNo();
+		}
+		
+		return count;
 	}
 	
 	

@@ -127,7 +127,7 @@ $(function(){
 	
 	
 
-	$(document).on("click", ".pagination a", function(e){
+	$(document).on("click", ".ulReply a", function(e){
 		e.preventDefault();
 		var page = $(this).text();
 		var ulObj=$(this).parent().parent();
@@ -150,6 +150,7 @@ $(function(){
 			  $(".bxslider3").empty();
 			  $("#dBPlace").empty();
 			  $("#dBGId").empty();
+			  $("#dBHash").empty();
 			$.ajax({
 				url:"/daedong/board/boardDetail",
 				type:"post",
@@ -178,6 +179,16 @@ $(function(){
 						$(".modalBodyRight").find(".icons").html($iHeart);
 					}
 					$("#whoLike").attr("data-bNo",res.board.bNo).find("span").text(res.board.bGood);
+					
+						var $pHash = $("<p>")
+						var beforeHash = res.board.bHash;
+						var afterHash = beforeHash.split('#');
+						for(var i=0; i<afterHash.length; i++){
+							var $aHash = $("<a>").addClass("bHash").append(i==0?"":"#"+afterHash[i]).attr("href","/daedong/board/searchBoard?page=1&searchType=all&keyword="+afterHash[i]);
+							$pHash.append($aHash);
+						}
+					$("#dBHash").append($pHash);
+					
 					$(res.board.contents).each(function(i,obj){
 						var $div = $("<div>");
 						

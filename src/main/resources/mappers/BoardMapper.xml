@@ -113,4 +113,74 @@
 		SET g_no=#{bGNo.gNo}<!-- , m_no=#{mNo} -->, b_title=#{bTitle}, b_place=#{bPlace}, b_hash=#{bHash}, b_contents=#{bContents}, b_writetime=#{bWritetime}, b_delete=#{bDelete}, b_flat=#{bFlag}, b_good=#{bGood}
 		WHERE b_no=#{bNo};
 	</update>
+	
+	
+	<select id="selectActivityLimit10" resultType="Board">
+	<if test="cri.searchType=='All'.toString()">
+		select b_no b_flag, b_no, b_title, b_writetime, 'b' b_contents FROM board where g_no=#{gNo}
+			union
+		select l.l_no b_flag, b.b_no, b.b_title b_title, l.l_date b_writetime, 'l' b_contents
+			from `like` l
+			join board b
+			on l.b_no = b.b_no
+			where l.g_no=#{gNo}
+			union
+		select r.r_no b_flag, b.b_no, b.b_title b_title, r.r_writetime b_writetime, 'r' b_contents
+			from reply r
+			join board b
+			on r.b_no = b.b_no
+			where r.g_no=#{gNo}
+			union
+		select f.f_no b_flag, f.g_follower b_no, g.g_id b_title, f.f_date b_writetime, f.f_read b_contents
+			from friend f
+			join guest g
+				on g.g_no=f.g_follower
+			where g_follow=#{gNo}
+	</if>
+	<if test="cri.searchType=='게시판'.toString()">
+		select b_no b_flag, b_no, b_title, b_writetime, 'b' b_contents FROM board where g_no=#{gNo}
+	</if>
+	<if test="cri.searchType=='좋아요'.toString()">
+		select l.l_no b_flag, b.b_no, b.b_title b_title, l.l_date b_writetime, 'l' b_contents
+			from `like` l
+			join board b
+			on l.b_no = b.b_no
+			where l.g_no=#{gNo}
+	</if>
+	<if test="cri.searchType=='댓글'.toString()">
+		select r.r_no b_flag, b.b_no, b.b_title b_title, r.r_writetime b_writetime, 'r' b_contents
+			from reply r
+			join board b
+			on r.b_no = b.b_no
+			where r.g_no=#{gNo}
+	</if>
+	<if test="cri.searchType=='친구'.toString()">
+		select f.f_no b_flag, f.g_follower b_no, g.g_id b_title, f.f_date b_writetime, f.f_read b_contents
+			from friend f
+			join guest g
+				on g.g_no=f.g_follower
+			where g_follow=#{gNo}
+	</if>
+			order by b_writetime desc
+			limit #{cri.pageStart},#{cri.perPageNum}
+	
+	</select>
+	<select id="selectActivityCount" resultType="Board" parameterType="int">
+		select count(b_no) b_no,'b' b_contents FROM board where g_no=#{gNo}
+			union
+		select count(l.l_no),'l'
+			from `like` l
+			join board b
+			on l.b_no = b.b_no
+			where l.g_no=#{gNo}
+			union
+		select count(r.r_no),'r'
+			from reply r
+			join board b
+			on r.b_no = b.b_no
+			where r.g_no=#{gNo}
+			union
+		select count(f.f_no),f.f_read 
+		from friend f where g_follow=#{gNo};
+	</select>
 </mapper>

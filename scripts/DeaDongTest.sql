@@ -225,4 +225,48 @@ select COUNT(*)
 from reply r
 where r.b_no=9 and r.r_no >= 45;
 
+select * from board;
+
+select b_no, b_no,b_title, b_writetime, 'b' b_contents FROM board where g_no=1
+	union
+select l.l_no, b.b_no, b.b_title, l.l_date, 'l'
+	from `like` l
+	join board b
+	on l.b_no = b.b_no
+	where l.g_no=1
+	union
+select r.r_no, b.b_no, b.b_title, r.r_writetime, 'r'
+	from reply r
+	join board b
+	on r.b_no = b.b_no
+	where r.g_no=1
+	union
+select f.f_no, f.g_follow, f.g_follower, f.f_date, f.f_read from friend f where g_follow=1
+	order by b_writetime DESC
+	LIMIT 0,10;
+
+select count(b_no),'b' b_contents FROM board where g_no=1
+	union
+select count(l.l_no),'l'
+	from `like` l
+	join board b
+	on l.b_no = b.b_no
+	where l.g_no=1
+	union
+select count(r.r_no),'r'
+	from reply r
+	join board b
+	on r.b_no = b.b_no
+	where r.g_no=1
+	union
+select count(f.f_no),f.f_read 
+from friend f where g_follow=1;
+
+
+select * from friend where g_follower=1;
+
+
+
+
+
 

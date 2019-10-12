@@ -63,7 +63,10 @@
 		height: 180px;
 		margin: 10px;
 	}
-
+	#modalImg{
+		width: 100%;
+		height: 100%;
+	}
 
 	
 	
@@ -271,13 +274,6 @@ var startPage=0;
 		})
 		
 			
-		$("#profileImg").click(function(){
-						
-			if($(this).attr("data-gNo") == '${Auth.userno}')
-				return true;	
-			else
-				return false;
-		})
 		//flag 버튼 = 0:관계x(팔로우) 1:요청됨 2:요청 수락 3:팔로잉
 		var flag = '${flag}';
 		
@@ -620,17 +616,18 @@ var startPage=0;
       <!-- Modal content-->
       <div class="modal-content" id="modalProfile">
         <div class="modal-header">
-          <h4 class="modal-title">프로필 사진 수정</h4>
+          <h4 class="modal-title">프로필 <c:if test="${guest.gNo==Auth.userno }">사진 수정</c:if></h4>
           
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <form enctype="multipart/form-data">
 	        <div id="proFileUpdate">
-	        	
-			  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
-					<input type="file" name="file" id="uploadProfileImg"  data-gNo="${guest.gNo }"s style="display:none">
-					<label class="list-group-item">사진 내리기</label>		  		
-			  	
+	 				<img id="modalImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }" data-gNo="${guest.gNo }">
+	 				<c:if test="${guest.gNo==Auth.userno }">       	
+				  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
+						<input type="file" name="file" id="uploadProfileImg"  data-gNo="${guest.gNo }"s style="display:none">
+						<label class="list-group-item">사진 내리기</label>		  		
+			  		</c:if>
 	        </div>
 		    <div class="modal-footer">
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

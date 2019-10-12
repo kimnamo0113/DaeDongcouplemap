@@ -135,7 +135,7 @@ public class BoardController {
 	@ResponseBody
 	@RequestMapping(value="listAdd",method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> listAdd(SearchCriteria cri,HttpSession session) {
-		logger.info("---------------- list");
+		logger.info("---------------- listAdd");
 		ResponseEntity<Map<String,Object>> entity = null;
 		try {
 			List<Board> boards = bService.selectLimit10(cri);
@@ -360,10 +360,39 @@ public class BoardController {
 	
 	
 	@RequestMapping(value="activityLog",method=RequestMethod.GET)
-	public void activityLog(HttpSession session) {
+	public void activityLog(HttpSession session,Model model,SearchCriteria cri) {
 		logger.info("-------------------");
 		Auth auth = (Auth)session.getAttribute("Auth");
-		
-		Guest guest = gService.selectByGNo(auth.getUserno());
+		System.out.println(cri);
+		if(cri.getSearchType()==null) {
+			cri.setSearchType("All");
+		}
+		System.out.println(cri);
+		List<Board> activityList=null;
+		try {
+			activityList= bService.selectActivityLimit10(auth.getUserno(),cri);
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			if(cri.getSearchType().equalsIgnoreCase("All"))
+				pageMaker.setTotalCount(bService.selectActivityCount(auth.getUserno()));
+			else if(cri.getSearchType().equalsIgnoreCase("게시판"))
+				pageMaker.setTotalCount(bService.selectBygNoBoardCount(auth.getUserno()));
+			else if(cri.getSearchType().equalsIgnoreCase("좋아요"))
+				pageMaker.setTotalCount(lService.selectLikeAlarmCount(auth.getUserno()));
+			else if(cri.getSearchType().equalsIgnoreCase("댓글"))
+				pageMaker.setTotalCount(rService.selectBoardAlarmCount(auth.getUserno()));
+			else if(cri.getSearchType().equalsIgnoreCase("친구"))
+				pageMaker.setTotalCount(fService.selectFollowCount(auth.getUserno()));
+			model.addAttribute("activityList", activityList);
+			model.addAttribute("pageMaker", pageMaker);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("cri",cri);
+		model.addAttribute("activityList",activityList);
 	}
+	
+	
 }
