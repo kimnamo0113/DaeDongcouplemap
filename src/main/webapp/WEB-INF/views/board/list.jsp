@@ -73,6 +73,14 @@
 		float: right;
 		line-height: 60px;
 	}
+	#mainScroll{
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+	.container-fluid{
+		padding-left:2px;
+		padding-right:2px;
+	}
 </style>
 
 
@@ -89,7 +97,7 @@ $(function(){
 			  stopAutoOnClick: false,
 			  pager: true,
 			  pagerType : 'short',
-			  slideWidth: 900,
+			  slideWidth: 1300,
 			  touchEnabled:false,
 	
 			});
@@ -131,11 +139,12 @@ $(function(){
 	
 	
 	$(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
-		/* 오차떄문에 올림을 해줌 오차발생 모르겟음 */		
-/* 		console.log(Math.ceil($(window).scrollTop()))
-		console.log($(document).height() - $(window).height())
- */				
-		if (Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height() || $(window).scrollTop() == $(document).height() - $(window).height()) {
+		/* 오차떄문에 내림/올림을 해줌 오차발생 원인 모르겟음 */		
+ 		/* console.log(Math.ceil($(window).scrollTop()))
+ 		console.log($(window).scrollTop());
+		console.log($(document).height() - $(window).height()) */
+		
+		if (Math.floor($(window).scrollTop()) == $(document).height() - $(window).height() || Math.ceil($(window).scrollTop()) == $(document).height() - $(window).height() || $(window).scrollTop() == $(document).height() - $(window).height()) {
 			startPage+=1;
 			$.ajax({
 				url:"${pageContext.request.contextPath}/board/listAdd",
@@ -296,7 +305,8 @@ $(function(){
             
           </div>
 		  <div class="row ">
-          <div class="col-lg-7" id="mainScroll">
+          <div class="col-lg-9" id="mainScroll">
+
 
             <!-- Content Column -->
             
@@ -366,7 +376,9 @@ $(function(){
 					<c:set var="hashs" value="${fn:split(board.bHash,'#')}" />
 					<p class="bHashs">
 						<c:forEach var="hash" items="${hashs}" varStatus="g">
-							<a class="bHash" href="/daedong/board/searchBoard?page=1&searchType=all&keyword=${hash }"">#${hash }</a>	
+							<c:if test="${hash!='' }">
+								<a class="bHash" href="/daedong/board/searchBoard?page=1&searchType=all&keyword=${hash }">#${hash }</a>
+							</c:if>	
 						</c:forEach> 
 					</p>
 					

@@ -10,6 +10,9 @@
 	.bx-next, .bx-prev{
 		display: none;
 	}
+	#writeBtn{
+		min-width: 100px;
+	}
 	.divImg img{
 		margin:0 auto;
 	}

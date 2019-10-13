@@ -63,11 +63,14 @@
 		height: 180px;
 		margin: 10px;
 	}
-	#modalImg{
+	.modalImg{
 		width: 100%;
-		height: 100%;
+		max-width: 400px;
 	}
-
+	#modalProfile{
+		margin:0 auto;
+		text-align: center;
+	}
 	
 	
 	/* mouseover이벤트 */
@@ -622,7 +625,16 @@ var startPage=0;
         </div>
         <form enctype="multipart/form-data">
 	        <div id="proFileUpdate">
-	 				<img id="modalImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }" data-gNo="${guest.gNo }">
+	        		
+	 				<c:if test="${guest.gImage!=null }">
+						<img class="modalImg" src="${pageContext.request.contextPath }/upload/displayFile?filename=${guest.gImage }" data-gNo="${guest.gNo }">
+					</c:if>  	
+				  	<c:if test="${guest.gImage==null }">
+				  		<img class="modalImg" src="${pageContext.request.contextPath }/resources/images/boy.png" data-gNo="${guest.gNo }">
+				  	</c:if>
+	 				
+	 				
+	 				
 	 				<c:if test="${guest.gNo==Auth.userno }">       	
 				  		<label for="uploadProfileImg" class="list-group-item">업로드<span id="proFileSpinner"></span></label>
 						<input type="file" name="file" id="uploadProfileImg"  data-gNo="${guest.gNo }"s style="display:none">

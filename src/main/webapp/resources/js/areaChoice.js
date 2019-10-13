@@ -31,7 +31,11 @@ var data;
 		var area2=$(data).find("Area[label='"+area+"']");
 		
 		$("#province").empty();
+		$("#gu").empty();
+		$("#dong").empty();
 		$("#province").append("<option>지역선택</option>");
+		$("#gu").append("<option>지역선택</option>");
+		$("#dong").append("<option>지역선택</option>");
 		
 		var provinceCheck=$(area2).children().is("Province");
 		if(provinceCheck==true){
@@ -61,6 +65,12 @@ var data;
 	$("#province").change(function(){
 		$("#gu").hide();
 		$("#dong").hide();
+		
+		$("#gu").empty();
+		$("#dong").empty();
+		$("#gu").append("<option>지역선택</option>");
+		$("#dong").append("<option>지역선택</option>");
+		
 		var province=$(this).val();
 		var province2=$(data).find("Province[label='"+province+"']");
 		
@@ -78,6 +88,11 @@ var data;
 	
 	$("#gu").change(function(){
 		$("#dong").hide();
+		
+		$("#dong").empty();
+		$("#dong").append("<option>지역선택</option>");
+		
+		
 		var gu=$(this).val();
 		var gu2=$(data).find("Gu[label='"+gu+"']");
 		

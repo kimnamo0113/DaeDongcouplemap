@@ -79,6 +79,8 @@ public class MemberRestController {
 	public ResponseEntity<Boolean> updatePasswordPOST(@RequestBody Map<String, Object> map,HttpSession session) throws Exception {
 		logger.info("---------------------updatePassword");
 		Auth auth=(Auth)session.getAttribute("Auth");
+		
+		System.out.println(auth);
 		Guest guest=service.selectByEmailAndPassword(auth.getUseremail(), (String)map.get("gPassword"));
 		String changePassword=(String)map.get("gPassword1");
 		
@@ -94,6 +96,5 @@ public class MemberRestController {
 		
 	}
 
-	
 
 }

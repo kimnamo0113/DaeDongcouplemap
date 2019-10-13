@@ -142,13 +142,21 @@ public class MemberController {
 		}
 		model.addAttribute("guest",dbguest);
 		model.addAttribute("update",true);
-		Auth dto = new Auth();
-		dto.setUserid(dbguest.getgId());
-		dto.setUsername(dbguest.getgName());
-		dto.setUseremail(guest.getgEmail());
-		model.addAttribute("loginDTO",dto);
+		Auth auth = new Auth();
+		auth.setUserid(dbguest.getgId());
+		auth.setUsername(dbguest.getgName());
+		auth.setUseremail(guest.getgEmail());
+		auth.setUserimage(dbguest.getgImage());
+		auth.setUserno(dbguest.getgNo());
+		
+		model.addAttribute("loginDTO",auth);
 		return "member/updatePassword";
 	}
+	@RequestMapping(value="updatePassword",method=RequestMethod.GET)
+	public void updatePassword() {
+		logger.info("-----------------updatePassword");
+	}
+	
 	
 	@RequestMapping(value="searchFriend",method=RequestMethod.GET)
 	public ResponseEntity<List<Guest>> searchFriend(Model model,@ModelAttribute("cri") SearchCriteria cri) {

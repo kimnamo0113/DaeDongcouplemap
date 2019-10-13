@@ -362,6 +362,7 @@
 		height: 500px;
 		width: 80%;
 	}
+
 }
 
 
@@ -1143,15 +1144,15 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-cog"></i>
           <span>Components</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
+            <a class="collapse-item" href="">Buttons</a>
+            <a class="collapse-item" href="">Cards</a>
           </div>
         </div>
       </li>
@@ -1165,10 +1166,10 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+            <a class="collapse-item" href="">Colors</a>
+            <a class="collapse-item" href="">Borders</a>
+            <a class="collapse-item" href="">Animations</a>
+            <a class="collapse-item" href="">Other</a>
           </div>
         </div>
       </li>
@@ -1353,7 +1354,7 @@
 								<input type="file" name="file" id="imgFile" style="display:none" multiple="multiple">
 								<textarea id="bContents" class="form-control list-group-item" placeholder="내용"></textarea>
 								<input type="text" class="form-control list-group-item" placeholder="친구 태그하기">
-						  		<input type="text" id="hashTag" class="form-control list-group-item" placeholder="검색 키워드">
+						  		<input type="text" id="hashTag" class="form-control list-group-item" placeholder="검색 키워드(해시태그)">
 						  		
 						  		<div id="hashResult" class="form-contorl"></div><br>
 						  		
@@ -1449,7 +1450,7 @@
 	                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  Time Line
 	                </a>
-	                <a class="dropdown-item" href="#">
+	                <a class="dropdown-item" href="${pageContext.request.contextPath }/member/updatePassword">
 	                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  Profile
 	                </a>

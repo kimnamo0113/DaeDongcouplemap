@@ -93,7 +93,7 @@ public class UploadFileUtils {
 					sourceImg, 
 					Scalr.Method.AUTOMATIC, 
 					Scalr.Mode.FIT_TO_WIDTH, 
-					700);
+					1200);
 			
 			//작은 이미지 경로. 파일명에 s_가 붙도록 한다.
 			thumbnailNameM = uploadPath+path+"/m_"+fileName;
