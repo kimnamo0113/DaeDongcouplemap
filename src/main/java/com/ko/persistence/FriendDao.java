@@ -25,4 +25,6 @@ public interface FriendDao {
 	public List<Friend> selectFollowerList(int gNo);
 
 	public List<Friend> selectFollowList(int gNo);
+
+	public List<Friend> selectFollowerNameORId(int gNo, String name);
 }

@@ -181,5 +181,10 @@ public class FriendServiceImpl implements FriendService{
 		return friends;
 	}
 
+	@Override
+	public List<Friend> selectFollowerNameORId(int gNo, String name) {
+		return dao.selectFollowerNameORId(gNo,name);
+	}
+
 	
 }

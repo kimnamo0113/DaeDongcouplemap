@@ -265,6 +265,11 @@ from friend f where g_follow=1;
 
 select * from friend where g_follower=1;
 
+SELECT f_no, g_follow, g_follower,g.g_no, g.g_name, g.g_id, g.g_image
+FROM daedong.friend f
+	join guest g
+	on f.g_follow=g.g_no
+where g_follower=1 and (f_read=3 or f_read=4) and (g_name LIKE '%z%' or g_id like '%z%');
 
 
 

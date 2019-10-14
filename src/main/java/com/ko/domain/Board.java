@@ -17,6 +17,7 @@ public class Board {
 	private int replyCount;
 	
 	private List<Content> contents;
+	private List<Guest> friendTags;
 	private List<Reply> replys;
 	private List<Like> likes;
 	public Board() {
@@ -25,7 +26,7 @@ public class Board {
 	}
 	public Board(int bNo, Guest bGNo, int mNo, String bPlace, String bTitle, String bHash, String bContents,
 			String bWritetime, String bDelete, String bFlag, int bGood, int replyCount, List<Content> contents,
-			List<Reply> replys, List<Like> likes) {
+			List<Guest> friendTags, List<Reply> replys, List<Like> likes) {
 		super();
 		this.bNo = bNo;
 		this.bGNo = bGNo;
@@ -40,6 +41,7 @@ public class Board {
 		this.bGood = bGood;
 		this.replyCount = replyCount;
 		this.contents = contents;
+		this.friendTags = friendTags;
 		this.replys = replys;
 		this.likes = likes;
 	}
@@ -121,6 +123,12 @@ public class Board {
 	public void setContents(List<Content> contents) {
 		this.contents = contents;
 	}
+	public List<Guest> getFriendTags() {
+		return friendTags;
+	}
+	public void setFriendTags(List<Guest> friendTags) {
+		this.friendTags = friendTags;
+	}
 	public List<Reply> getReplys() {
 		return replys;
 	}
@@ -138,11 +146,8 @@ public class Board {
 		return "Board [bNo=" + bNo + ", bGNo=" + bGNo + ", mNo=" + mNo + ", bPlace=" + bPlace + ", bTitle=" + bTitle
 				+ ", bHash=" + bHash + ", bContents=" + bContents + ", bWritetime=" + bWritetime + ", bDelete="
 				+ bDelete + ", bFlag=" + bFlag + ", bGood=" + bGood + ", replyCount=" + replyCount + ", contents="
-				+ contents + ", replys=" + replys + ", likes=" + likes + "]";
+				+ contents + ", friendTags=" + friendTags + ", replys=" + replys + ", likes=" + likes + "]";
 	}
-
-	
-	
 	
 	
 }

@@ -97,4 +97,12 @@
 		WHERE g_follow=#{follow} and g_follower=#{follower};
 	</update>
 	
+	
+	<select id="selectFollowerNameORId" resultMap="friendExtents">
+		SELECT f_no, g_follow, g_follower,g1.g_no g1_no, g1.g_name g1_name, g1.g_id g1_id, g1.g_image g1_image
+		FROM daedong.friend f
+			join guest g1
+			on f.g_follow=g1.g_no
+		where g_follower=#{gNo} and (f_read=3 or f_read=4) and (g_name like CONCAT('%',#{name},'%') or g_id like CONCAT('%',#{name},'%'))
+	</select>
 </mapper>

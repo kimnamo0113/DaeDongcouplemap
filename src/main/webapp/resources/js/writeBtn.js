@@ -114,8 +114,50 @@ $(function(){
          	}
 
          });
- 
-     	$(document).on("click","#hashResult span",function(){
+         
+         $(document).on("click","#frinedTagList p",function(){
+ 			$("#frinedTagList").hide();
+ 			$("#friendTag").val("");
+ 			var friendName=$(this).find("span").text();
+ 			var $p=$("<p>").attr("data-gNo",$(this).attr("data-gNo")).append("@"+friendName).addClass("friendTags");
+ 			var $span = $("<span>").html("<img src='/daedong/resources/images/x.png'>");
+ 			$("#friendTagResult").append($p).append($span);
+ 		})
+         
+         $(document).on("propertychange change keyup paste input","#friendTag",function(){
+        	 var gNo = $(this).attr("data-gNo");
+        	 var name = $(this).val();
+        	 
+        	 $("#frinedTagList").show();
+        	 $("#frinedTagList").empty();
+        	 $.ajax({
+        		 url:"/daedong/friend/selectFrinedTag",
+        		 type:"post",
+        		 data:{gNo:gNo,name:name},
+        		 dataType:"json",
+        		 success:function(res){
+        			 console.log(res);
+        			 $(res).each(function(i,obj){
+ 						var $img;
+ 						if(obj.follow.gImage!=null){
+ 							$img = $("<img>").attr("src","/daedong/upload/displayFile?filename="+obj.follow.gImage).addClass("guestImgNoHref");	
+ 						}else{
+ 							$img = $("<img>").attr("src","/daedong/resources/images/boy.png").addClass("guestImgNoHref");
+ 						}
+ 						
+ 						var $spanId = $("<span>").append($img).append(obj.follow.gName).attr("href","");		
+ 						var $p = $("<p>").append($spanId).attr("data-gNo",obj.follow.gNo);
+ 						$("#frinedTagList").append($p);	
+ 					})
+        			 
+        			 
+        		 }
+        		 
+        	 })
+         })
+         
+         
+     	$(document).on("click","#hashResult span,#friendTagResult span",function(){
 			$(this).prev().remove();
 			$(this).remove();
 		})
@@ -180,6 +222,10 @@ $(function(){
 				var textArea=$(".imgTextAreaContents").eq(i);
 				formData.append("cContents",textArea.val());
 				console.log(textArea.val());
+			}
+			for(var i=0; i<$(".friendTags").length; i++){
+				var fTag = $(".friendTags").eq(i);
+//				formData.append("friendTags",[$(fTag).attr("data-gNo")]);
 			}
 			formData.append("cContents","List로 보내기위해서");
 			$.ajax({

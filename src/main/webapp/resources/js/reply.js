@@ -141,6 +141,7 @@ $(function(){
 	
 	
 	$(document).on("click",".boardDetail",function(){
+		
 			var bNo=$(this).attr("data-bNo");
 			$(".pagination").attr("data-bNo",bNo);
 			$(".reply-textArea").attr("data-bNo",bNo);

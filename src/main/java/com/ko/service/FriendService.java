@@ -21,4 +21,5 @@ public interface FriendService {
 	public List<Friend> selectFollowerList(int gNo,HttpSession session);
 	public List<Friend> selectFollowList(int gNo,HttpSession session);
 	public List<Friend> selectFolloingList(int userno);
+	public List<Friend> selectFollowerNameORId(int gNo, String name);
 }

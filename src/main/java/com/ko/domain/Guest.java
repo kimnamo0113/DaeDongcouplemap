@@ -23,6 +23,12 @@ public class Guest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Guest(int gNo) {
+		super();
+		this.gNo = gNo;
+	}
+
 	public Guest(int gNo, String gId, String gPassword, String gName, int gTel, String gEmail, Date gBirth, Date gJoin,
 			String gMemo, Boolean gGender, int gDelete, String gAddr, String gAddr2, String gAddr3, String gImage,
 			String gCertification) {

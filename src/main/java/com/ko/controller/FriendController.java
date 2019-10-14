@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.ko.domain.Auth;
 import com.ko.domain.Friend;
+import com.ko.domain.Guest;
 import com.ko.service.FriendService;
 
 @Controller
@@ -155,6 +156,25 @@ public class FriendController {
 			e.printStackTrace();
 			entity = new ResponseEntity<List<Friend>>(HttpStatus.BAD_REQUEST);
 		}
+		return entity;
+	}
+	
+	@RequestMapping(value="selectFrinedTag",method=RequestMethod.POST)
+	public ResponseEntity<List<Friend>> selectFrinedTag(int gNo, String name){
+		logger.info("------------------------------ selectFrinedTag");
+		ResponseEntity<List<Friend>> entity = null;
+		
+		System.out.println(gNo);
+		System.out.println(name);
+		try {
+			List<Friend> friends = service.selectFollowerNameORId(gNo,name);
+			
+			entity = new ResponseEntity<List<Friend>>(friends,HttpStatus.OK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<List<Friend>>(HttpStatus.BAD_REQUEST);
+		}
+		
 		return entity;
 	}
 }

@@ -200,6 +200,7 @@ public class UploadController {
 			Area area,
 			HttpSession session) throws IOException, Exception {
 		logger.info("------------------insertBoard2");
+		System.out.println(board);
 		ResponseEntity<String> entity=null;
 		
 		ArrayList<Map<String, String>> imgNameList = new ArrayList<>();

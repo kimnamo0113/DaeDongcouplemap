@@ -87,6 +87,7 @@
 	#myModal3 #modal-content{
 			min-height:1000px; 
 	}
+
 	#myModal3 .modal-dialog{
 		max-width:100%;
 	}
@@ -190,6 +191,15 @@
 		cursor: pointer;
 		margin-bottom: 10px;
 	}
+	.guestImgNoHref{
+		border-radius: 50% 50% 50% 50%;
+		border:1px solid #ccc;
+		width:50px;
+		height: 50px;
+		margin-right:10px;
+		cursor: pointer;
+		margin-bottom: 10px;
+	}
 	
 	
 	#logoutToggle{
@@ -221,7 +231,36 @@
 	#searchDropdown{
 		width:280px;
 	}
-
+	#writeModal .friendTagListParent{
+		position: relative;
+		width:100%;
+	}
+	#writeModal #frinedTagList p:hover{
+		background: #FFCCFF;
+	}
+	#writeModal #frinedTagList p{
+		padding:5px;
+		cursor: pointer;
+	}
+	#writeModal #friendTagResult{
+		padding-left:10px;
+	}
+	#writeModal #friendTag{
+		width:100%;
+	}
+	#writeModal #frinedTagList{
+	    position: absolute;
+	    display:none;
+	    width: 40%;
+	    top: 100;
+	    left: 0;
+	    height: 200px;
+		overflow-y:scroll;	    
+		border: 1px solid black;
+		z-index:100;
+		background: white;
+		
+	}
 	
 	.friendsList{
 		color: white;
@@ -1080,6 +1119,10 @@
 			$("#likeModal .modal-body").empty();
 		})
 		
+		
+		
+		
+		
 	/* 	 $(document).on('mousewheel DOMMouseScroll',"html, body", function(e) {
                 var E = e.originalEvent;
                 delta = 0;
@@ -1380,9 +1423,14 @@
 						  		<label for="imgFile" class="list-group-item">업로드 <span>(10개)</span><span id="boardUploadSpinner"></span></label>
 								<input type="file" name="file" id="imgFile" style="display:none" multiple="multiple">
 								<textarea id="bContents" class="form-control list-group-item" placeholder="내용"></textarea>
-								<input type="text" class="form-control list-group-item" placeholder="친구 태그하기">
+								<div class="friendTagListParent">
+									<input type="text" id="friendTag" data-gNo="${Auth.userno }" class="form-control list-group-item" placeholder="친구 태그하기">
+									<div class="" id="frinedTagList">
+				    				</div>
+			    				</div>
 						  		<input type="text" id="hashTag" class="form-control list-group-item" placeholder="검색 키워드(해시태그)">
 						  		
+						  		<div id="friendTagResult" class="form-contorl"></div>
 						  		<div id="hashResult" class="form-contorl"></div><br>
 						  		
 				        		<input type="hidden" name="userno" value="${Auth.userno }">

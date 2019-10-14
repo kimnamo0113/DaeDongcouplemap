@@ -95,4 +95,13 @@ public class FriendDaoImpl implements FriendDao{
 	}
 
 
+	@Override
+	public List<Friend> selectFollowerNameORId(int gNo, String name) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("gNo", gNo);
+		map.put("name", name);
+		return sqlSession.selectList(namespace+".selectFollowerNameORId",map);
+	}
+
+
 }
