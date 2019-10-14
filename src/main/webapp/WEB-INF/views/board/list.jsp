@@ -14,6 +14,7 @@
 	
 	.reply-text{
 		margin: 25px;
+		margin-top:0px;
 	}
 	
 	
@@ -80,6 +81,10 @@
 	.container-fluid{
 		padding-left:2px;
 		padding-right:2px;
+	}
+	.bRow{
+		height: 30px;
+		margin-bottom: 10px;
 	}
 </style>
 
@@ -183,8 +188,9 @@ $(function(){
 							
 							var iComment = $("<i>").addClass("far fa-comment boardDetail").attr("data-toggle","modal").attr("data-target","#myModal3").attr("data-bno",obj.bNo);
 							var iShare = $("<i>").addClass("far fa-share-square");
-						var $pWhoLike = $("<p>").addClass("whoLike").append("<span>"+obj.bGood+"</span>명이 좋아합니다.").attr("data-bNo",obj.bNo);
-						var $pIcons = $("<p>").addClass("icons").append(iHeart).append(iComment).append(iShare);
+						var $spanWhoLike = $("<span>").addClass("whoLike").append("<span>"+obj.bGood+"</span>명이 좋아합니다.").attr("data-bNo",obj.bNo);
+						var $spanIcons = $("<span>").addClass("icons").append(iHeart).append(iComment).append(iShare);
+						var $divBRow = $("<div>").addClass("bRow").append($spanIcons).append($spanWhoLike);
 						/*  */
 						var $h6Title=$("<h6>").addClass("font-weight-bold").append(obj.bTitle);
 						var $pContents = $("<p>").addClass("bContents").append(obj.bContents);
@@ -223,10 +229,10 @@ $(function(){
 							var $divAddReply = $("<div>").addClass("divAddReply").append($aAddReply);
 							$divReplysList.append($divAddReply);
 						}
-						var $ulPagination = $("<ul>").addClass("pagination justify-content-center").attr("data-bNo",obj.bNo);
+						var $ulPagination = $("<ul>").addClass("pagination ulReply justify-content-center").attr("data-bNo",obj.bNo);
 						var $divReplys = $("<div>").addClass("replys").append($divReplysList).append($ulPagination);
 						
-						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($pIcons).append($pWhoLike).append($h6Title).append($pContents).append($pHash).append($divReplys);
+						var $divCardBody=$("<div>").addClass("card-body").append($divTextCenter).append($divBRow).append($h6Title).append($pContents).append($pHash).append($divReplys);
 							var $imgGuest=$("<img>");
 							if(obj.bGNo.gImage!=null){
 								var imgSrc = obj.bGNo.gImage;
@@ -248,7 +254,7 @@ $(function(){
 						var $divCard = $("<div>");
 						if('${Auth.userid}'!=''){
 							var $textAreaReply = $("<textarea>").attr("rows",2).addClass("reply-textArea form-control col-10").attr("data-bno",obj.bNo);
-							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-1").append("게시").attr("type","button").attr("data-gNo",obj.bGNo.gNo);
+							var $buttonReply = $("<button>").addClass("reply-addBtn btn btn-default active col-1").append("게시").attr("type","button").attr("data-gNo",${Auth.userno});
 							var $divReplyText = $("<div>").addClass("reply-text row").append($textAreaReply).append($buttonReply);
 							
 							$divCard.addClass("card shadow mb-4").append($divCardHeader1).append($divCardHeader2).append($divCardBody).append($divReplyText);
@@ -268,7 +274,7 @@ $(function(){
 							  stopAutoOnClick: false,
 							  pager: true,
 							  pagerType : 'short',
-							  slideWidth: 900,
+							  slideWidth: 1200,
 							  touchEnabled:false,
 					
 							});
@@ -356,8 +362,8 @@ $(function(){
 			              </div>
 		                </div>
 	                  </div>
-	                  
-					<p class="icons">
+	                <div class="bRow">  
+					<span class="icons">
 						<c:if test="${likeList[status.count-1]!=null }">
 							<i class="fas fa-heart deleteHeart" data-bNo="${board.bNo}"></i>
 						</c:if>
@@ -366,9 +372,9 @@ $(function(){
 						</c:if>
 						<i class="far fa-comment boardDetail" data-toggle="modal" data-target="#myModal3" data-bNo="${board.bNo }"></i>
 						<i class="far fa-share-square"></i>
-					</p>
-					
-					<p class="whoLike" data-bNo="${board.bNo }" class="btn"><span>${board.bGood }</span>명이 좋아합니다.</p>
+					</span>
+					<span class="whoLike" data-bNo="${board.bNo }" class="btn"><span>${board.bGood }</span>명이 좋아합니다.</span>
+					</div>					
 	                <h6 class="font-weight-bold">${board.bTitle }</h6>
 					<p class="bContents">${board.bContents }</p>
 					

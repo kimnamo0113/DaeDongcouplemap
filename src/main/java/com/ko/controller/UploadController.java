@@ -78,6 +78,12 @@ public class UploadController {
 		else if(formatName.equalsIgnoreCase("png")) {
 			mType=MediaType.IMAGE_PNG;
 		}
+		else if(formatName.equalsIgnoreCase("jpeg")) {
+			mType=MediaType.IMAGE_JPEG;
+		}else {
+			mType=MediaType.ALL;
+		}
+		
 		InputStream in =null;
 		try {
 			HttpHeaders headers = new HttpHeaders();
@@ -152,6 +158,7 @@ public class UploadController {
             sb.append("&bNewLine=true")
               .append("&sFileName=").append(oldName)
 //              .append("&sFileURL=").append("http://localhost:8080/picture")
+//              .append("&sFileURL=").append("http://192.168.10.59:8080/daedong/"+innerUploadPath+datePath+"/")
               .append("&sFileURL=").append("http://localhost:8080/daedong/"+innerUploadPath+datePath+"/")
         .append(saveName);
         } catch (Exception e) {

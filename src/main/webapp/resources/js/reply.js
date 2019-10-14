@@ -38,6 +38,8 @@ $(function(){
 			jsonp: false,
 			success:function(res){
 				var ulObj=$(rContent).parent().prev().find("ul.pagination");
+				console.log("이거");
+				console.log(ulObj)
 				var page=1;
 				getReplyListAll(bNo,page,ulObj,0);
 			}
@@ -95,7 +97,7 @@ $(function(){
 					
 					
 					if(rNo!=0){
-						$("span[data-rNo="+rNo+"]").parent().css("background-color","yellow").attr("id","focusReply");
+						$("#dReplys span[data-rNo="+rNo+"]").parent().css("background-color","yellow").attr("id","focusReply");
 					}
 				})
 			
@@ -145,7 +147,7 @@ $(function(){
 			var rNo = $(this).attr("data-rNo");
 			if(rNo==null){
 				rNo=0;
-			}			
+			}
 			
 			  $(".bxslider3").empty();
 			  $("#dBPlace").empty();

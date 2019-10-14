@@ -63,7 +63,7 @@
 			join guest g
 				on l.g_no = g.g_no
 			where b.g_no=#{gNo} and b.g_no!=l.g_no and (l.l_read=0 or l.l_read=1)
-		order by r_no desc
+		order by r_writetime desc
 		limit #{cri.pageStart},#{cri.perPageNum};
 	</select>
 	

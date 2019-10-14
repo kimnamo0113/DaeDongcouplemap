@@ -25,6 +25,9 @@ DROP TABLE IF EXISTS `daedong`.`Content` RESTRICT;
 -- 좋아요
 DROP TABLE IF EXISTS `daedong`.`Like` RESTRICT;
 
+-- 친구태그
+DROP TABLE IF EXISTS `daedong`.`FriendTag` RESTRICT;
+
 -- 대동연애지도
 DROP SCHEMA IF EXISTS `daedong`;
 
@@ -227,6 +230,24 @@ ALTER TABLE `daedong`.`Like`
 ALTER TABLE `daedong`.`Like`
 	MODIFY COLUMN `l_no` INT NOT NULL AUTO_INCREMENT COMMENT '좋아요번호';
 
+-- 친구태그
+CREATE TABLE `daedong`.`FriendTag` (
+	`ft_no` INT NOT NULL COMMENT '태그번호', -- 태그번호
+	`b_no`  INT NULL     COMMENT '게시판번호', -- 게시판번호
+	`g_no`  INT NULL     COMMENT '회원번호' -- 회원번호
+)
+COMMENT '친구태그';
+
+-- 친구태그
+ALTER TABLE `daedong`.`FriendTag`
+	ADD CONSTRAINT `PK_FriendTag` -- 친구태그 기본키
+		PRIMARY KEY (
+			`ft_no` -- 태그번호
+		);
+
+ALTER TABLE `daedong`.`FriendTag`
+	MODIFY COLUMN `ft_no` INT NOT NULL AUTO_INCREMENT COMMENT '태그번호';
+
 -- 댓글
 ALTER TABLE `daedong`.`Reply`
 	ADD CONSTRAINT `FK_Board_TO_Reply` -- 게시판 -> 댓글
@@ -350,6 +371,26 @@ ALTER TABLE `daedong`.`Like`
 -- 좋아요
 ALTER TABLE `daedong`.`Like`
 	ADD CONSTRAINT `FK_Guest_TO_Like` -- 회원 -> 좋아요
+		FOREIGN KEY (
+			`g_no` -- 회원번호
+		)
+		REFERENCES `daedong`.`Guest` ( -- 회원
+			`g_no` -- 회원번호
+		);
+
+-- 친구태그
+ALTER TABLE `daedong`.`FriendTag`
+	ADD CONSTRAINT `FK_Board_TO_FriendTag` -- 게시판 -> 친구태그
+		FOREIGN KEY (
+			`b_no` -- 게시판번호
+		)
+		REFERENCES `daedong`.`Board` ( -- 게시판
+			`b_no` -- 게시판번호
+		);
+
+-- 친구태그
+ALTER TABLE `daedong`.`FriendTag`
+	ADD CONSTRAINT `FK_Guest_TO_FriendTag` -- 회원 -> 친구태그
 		FOREIGN KEY (
 			`g_no` -- 회원번호
 		)

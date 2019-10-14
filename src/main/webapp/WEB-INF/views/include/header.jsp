@@ -12,7 +12,7 @@
   <meta name="author" content="">
 
 
-  <title>SB Admin 2 - Dashboard</title>
+  <title>대동연애지도</title>
   
     
   
@@ -263,7 +263,10 @@
 		max-width:100%;
 		width:100%;
 	}
-	
+	#dBRow{
+		height: 30px;
+		margin-bottom:10px;
+	}
 
 	@media (max-width: 1299px) {
 		nav.navbar{
@@ -364,7 +367,9 @@
 	}
 
 }
-
+	.bx-wrapper{
+		margin-bottom:20px;
+	}
 
 	
 </style>
@@ -1075,6 +1080,28 @@
 			$("#likeModal .modal-body").empty();
 		})
 		
+	/* 	 $(document).on('mousewheel DOMMouseScroll',"html, body", function(e) {
+                var E = e.originalEvent;
+                delta = 0;
+                if (E.deltaY==100) {
+                	$(".navbar").stop().slideUp(300);
+                }else{
+                	$(".navbar").stop().slideDown(300);
+                };
+            });
+		
+		var this_scroll = 0;
+		
+		$("#wrapper").on('touchmove', function(e) {
+		  	if(e.view.scrollY>=this_scroll){
+		  		$(".navbar").stop().slideUp(300);
+		  		this_scroll=e.view.scrollY;
+		  	}else{
+		  		$(".navbar").stop().slideDown(300);
+		  		this_scroll=e.view.scrollY;
+		  	}
+		}); */
+		
 	})
 </script>  
 
@@ -1502,12 +1529,16 @@
           	<div>
           		
           		<a id="dBGId"></a>
+          		<div id="dBRow">
+	          	<span class="icons">
+          			
+	          	</span>
+          		<span class="whoLike" id="whoLike" class="btn"><span></span>명이 좋아합니다.</span>
+          		</div>
+          		
         		<h5 id="dBTitle"></h5>
 	          	<p id="dBContents"></p>
-	          	<p class="icons">
-          			
-	          	</p>
-          		<p class="whoLike" id="whoLike" class="btn"><span></span>명이 좋아합니다.</p>
+	          	
           		<div id="dBHash"></div>
 	          	<div id="dReplys" class="replysList form-control">
 			          	
