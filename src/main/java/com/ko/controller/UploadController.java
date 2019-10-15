@@ -159,7 +159,7 @@ public class UploadController {
               .append("&sFileName=").append(oldName)
 //              .append("&sFileURL=").append("http://localhost:8080/picture")
 //              .append("&sFileURL=").append("http://192.168.10.59:8080/daedong/"+innerUploadPath+datePath+"/")
-              .append("&sFileURL=").append("http://localhost:8080/daedong/"+innerUploadPath+datePath+"/")
+              .append("&sFileURL=").append("http://192.168.10.59:8080/daedong/"+innerUploadPath+datePath+"/")
         .append(saveName);
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,10 +197,21 @@ public class UploadController {
 			List<MultipartFile> files,
 			Board board,
 			@RequestParam("cContents") List<String> cContents,
+			/*@RequestParam("friendsGNo") List<Integer> friendsGNo,*/
 			Area area,
 			HttpSession session) throws IOException, Exception {
 		logger.info("------------------insertBoard2");
-		System.out.println(board);
+//		logger.info("friends : "+friendsGNo);
+		
+		//기능개발중
+/*		List<Guest> friends = new ArrayList<>();
+		
+		for(int i=0; i<friendsGNo.size(); i++) {
+			friends.add(new Guest(friendsGNo.get(i)));
+		}
+		board.setFriendTags(friends);
+
+		System.out.println(board);*/
 		ResponseEntity<String> entity=null;
 		
 		ArrayList<Map<String, String>> imgNameList = new ArrayList<>();

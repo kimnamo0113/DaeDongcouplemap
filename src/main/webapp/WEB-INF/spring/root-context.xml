@@ -13,18 +13,18 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- 로그안보기용 -->
-	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
 		<property name="url" value="jdbc:mysql://192.168.10.59:3306/daedong"></property>
 		<property name="username" value="user_daedong"></property>
 		<property name="password" value="rootroot"></property>
-	</bean>	 -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	</bean>
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
 		<property name="url" value="jdbc:mysql://localhost:3306/daedong"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="rootroot"></property>
-	</bean>	
+	</bean> -->	
 	 
 	<!-- 로그보기용 -->
 	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

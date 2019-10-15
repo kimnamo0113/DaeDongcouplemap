@@ -223,9 +223,10 @@ $(function(){
 				formData.append("cContents",textArea.val());
 				console.log(textArea.val());
 			}
+			var friends = [];
 			for(var i=0; i<$(".friendTags").length; i++){
 				var fTag = $(".friendTags").eq(i);
-//				formData.append("friendTags",[$(fTag).attr("data-gNo")]);
+				formData.append("friendsGNo",$(fTag).attr("data-gNo"));
 			}
 			formData.append("cContents","List로 보내기위해서");
 			$.ajax({
@@ -239,16 +240,16 @@ $(function(){
 					formData = new FormData();
 					$(".close").click();
 					
-					location.href="/daedong/board/list";
+					/*location.href="/daedong/board/list";*/
 				}
-			})
 			
+			})
 		})
 		
 		
 		
 		$('#writeModal').on('hidden.bs.modal', function () {
-			  $("select[name=area]").val("지역선택");
+			 /* $("select[name=area]").val("지역선택");
 			  $("select[name=province]").val("지역선택");
 			  $("select[name=province]").hide();
 			  $("select[name=gu]").val("지역선택");
@@ -257,7 +258,7 @@ $(function(){
 			  $("select[name=dong]").hide();
 			  
 			  formData = new FormData();
-			  
+			  */
 			  location.reload();
 		})
 		

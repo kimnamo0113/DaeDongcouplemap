@@ -67,7 +67,7 @@ public class GuestDaoImpl implements GuestDao{
 					msg += "<div style='font-size: 130%'>";
 					msg += "하단의 인증 버튼 클릭 시 정상적으로 회원가입이 완료됩니다.</div><br/>";
 //					msg += "<form method='post' action='http://192.168.10.59:8080/daedong/member/loginCertification'>";
-					msg += "<form method='post' action='http://localhost:8080/daedong/member/loginCertification'>";
+					msg += "<form method='post' action='http://192.168.10.59:8080/daedong/member/loginCertification'>";
 					msg += "<input type='hidden' name='gEmail' value='" + guest.getgEmail() + "'>";
 					msg += "<input type='hidden' name='gCertification' value='"+guest.getgCertification()+"'>";
 					msg += "<input type='submit' value='인증'></form><br/></div>";
